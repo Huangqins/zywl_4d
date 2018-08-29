@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.87c3ca835652977e93022b4d8b0e172f.js"
+  "precache-manifest.a58367250181d7d8a5cbb8ad088bc030.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "zywl_3d"});
