@@ -18,6 +18,7 @@
 </template>
 <script>
 import saltedMd5  from 'md5-js'
+import { mapActions } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -28,13 +29,14 @@ import saltedMd5  from 'md5-js'
 			}
 		},
 		methods: {
+			...mapActions(['Login']),
 			async _login() {
 				let salt = 'zywl', // 密码加盐
 					params = {...this.loginForm},
 					res;
 					params.password = saltedMd5(params.password, salt);
-					res = await this.$api.login(params);
-					console.log(res.data)
+					res = await this.Login(params);
+					console.log(res)
 					if(res.data.result === 0) {
 						this.$router.push('/about')
 					}
