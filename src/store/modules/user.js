@@ -21,7 +21,7 @@ const user = {
                 commit('SET_USER_NAME', res.data.userName)
                 commit('SET_USERID', res.data.userId)
             }
-            return res //返回给登录页
+            return res //返回登录结果给登录页
         }
     }
 }

@@ -36,9 +36,8 @@ import { mapActions } from 'vuex'
 					res;
 					params.password = saltedMd5(params.password, salt);
 					res = await this.Login(params);
-					console.log(res)
 					if(res.data.result === 0) {
-						this.$router.push('/about')
+						this.$router.push('/')
 					}
 					
 			},

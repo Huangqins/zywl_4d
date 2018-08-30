@@ -3,10 +3,16 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+const Layout = async () => await import('./views/layout')
+
 export default new Router({
   routes: [
     {
       path: '/',
+      component: Layout
+    },
+    {
+      path: '/login',
       name: 'login',
       component: () => import(/* webpackChunkName: "about" */ './views/login')
     },
