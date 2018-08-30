@@ -35,7 +35,7 @@ $color: #18BB9A;
 .nav-bar {
     align-items: center;
     box-shadow: 1px 1px 4px 1px #202731;
-    height: 60px;
+    height: 50px;
     background: url(../../../../public/img/png/logoS.png) left 40px center no-repeat;
     background-size: 90px 40px;
 }
