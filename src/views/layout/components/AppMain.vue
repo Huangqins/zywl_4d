@@ -24,9 +24,9 @@ export default {
   min-height: calc(100vh - 50px);
   position: relative;
     margin-left:152px;
-  background-color: #ccc;
   overflow: hidden;
-    transition: margin-left 0.2s;
+    /* transition: margin-left 0.1s; */
+    color: #fff;
 }
 </style>
 

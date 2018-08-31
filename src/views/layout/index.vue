@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-    import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import AppMain from './components/AppMain'

@@ -16,13 +16,39 @@ export default new Router({
       name: 'login',
       component: () => import(/* webpackChunkName: "about" */ './views/login')
     },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
+      {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: Layout,
+          meta: {
+              title: '首页',
+              menuCode: '01',
+              icon: 'home'
+          },
+          children: [
+              {   // 消息通知
+                  path: 'messageNotice',
+                  name: 'messageNotice',
+                  meta: {
+                      title: '消息通知',
+                      menuCode: '01',
+                      icon: 'notice'
+                  },
+                  component: () => import('@/views/messageNotice')
+              },
+              {   // 个人信息
+                  path: 'userInfo',
+                  name: 'userInfo',
+                  meta: {
+                      title: '个人信息',
+                      menuCode: '01',
+                      icon: 'user'
+                  },
+                  component: () => import('@/views/userInfo')
+              }
+
+          ]
+      }
+
   ]
 })
