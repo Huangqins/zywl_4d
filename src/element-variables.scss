@@ -5,7 +5,9 @@ For example, to overwrite the theme color:
 */
 $--color-primary: rgb(5, 193, 210); // #151A21
 //$--color-primary: #409EFF;
-
+$--dropdown-menuItem-hover-fill: #151A21;
+$--popover-fill: transparent;
+$--popover-border-color: transparent;
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 

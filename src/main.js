@@ -6,6 +6,7 @@ import store from './store/index'
 import './registerServiceWorker'
 import './plugins/element.js'
 import Api from './api/index'
+// import '@/styles/index.scss'
 
 Vue.prototype.$api = Api;
 Vue.config.productionTip = false

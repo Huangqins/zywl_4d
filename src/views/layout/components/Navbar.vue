@@ -3,9 +3,9 @@
         <!-- 顶部栏 -->
        <el-menu mode="horizontal" class="nav-bar" background-color="#263143" text-color="#18BB9A" 
        active-text-color="#18BB9A" menu-trigger="click">
-           <hamburger class="hamburger-container"></hamburger>
+           <hamburger class="hamburger-container" :toggleClick="TOGGLE_OPEN" :isActive="isCollapse"></hamburger>
            <div class="drop-menu">
-            <el-dropdown>
+            <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
                     王姣姣<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
@@ -20,10 +20,18 @@
 </template>
 <script>
 import Hamburger from '@/components/Hamburger'
+import { mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     components: {
         Hamburger
+    },
+    methods: {
+        ...mapMutations(['TOGGLE_OPEN'])
+    },
+    computed: {
+        ...mapGetters(['isCollapse'])
     }
 }
 </script>
@@ -48,9 +56,20 @@ $color: #18BB9A;
     float: left;
     padding: 0 10px;
 }
+.el-dropdown-menu {
+    background-color: #1D242E;
+    border: none;
+    margin-top: 18px;
+}
+.el-dropdown {
+    color: $color;
+}
+.el-dropdown-menu__item {
+    color: $color;
+}
 .drop-menu {
     float: right;
-    margin: 18px 50px 0 0;
+    margin: 14px 50px 0 0;
 }
 
 
