@@ -27,16 +27,16 @@
                         title: '首页',
                         icon: 'home'
                     },
-                    {   // 消息通知
-                        path: 'messageNotice',
-                        title: '消息通知',
-                        icon: 'notice'
-                    },
-                    {   // 个人信息
-                        path: 'userInfo',
-                        title: '个人信息',
-                        icon: 'user'
-                    },
+                    // {   // 消息通知
+                    //     path: 'messageNotice',
+                    //     title: '消息通知',
+                    //     icon: 'notice'
+                    // },
+                    // {   // 个人信息
+                    //     path: 'userInfo',
+                    //     title: '个人信息',
+                    //     icon: 'user'
+                    // },
                     {
                         // 资产管理
                         path: '/assetsManage',
@@ -110,7 +110,83 @@
                     {
                         // 统计分析
                         path: '/statisticalAnalysis',
-                        title: '统计分析'
+                        title: '统计分析',
+                        children:[
+                            {
+                                path: 'LoopholeRatioReport',
+                                title: '漏洞环比统计报表'
+                            },
+                            {
+                                path: 'NetworkSecurityReport',
+                                title: '网络安全整改报表'
+                            }
+                        ]
+                    },{
+                      path:'/knowledgeManagement',
+                      title:'知识管理',
+                      children:[
+                           {
+                                path: 'vulnDatabase',
+                                title: '漏洞库信息'
+                            },
+                            {
+                                path: 'ComplianceLibrary',
+                                title: '合规库信息'
+                            },
+                            {
+                                path: 'information',
+                                title: '资讯信息'
+                            }
+
+                      ]
+                    },
+                    {
+                        path: '/reportManagement',
+                        title: '报告管理'                       
+                    },{
+                        path:'/userManagement',
+                        title:'用户管理',
+                        children:[
+                            {
+                                path: 'propertyManagement',
+                                title: '权限管理'
+                            },
+                            {
+                                path: 'userLists',
+                                title: '用户列表'
+                            }
+                            
+                        ]
+                    },{
+                        path:'/systemManagement',
+                        title:'系统管理',
+                        children:[
+                            {
+                                path: 'interfaces',
+                                title: '接口配置'
+                            },
+                            {
+                                path: 'configurations',
+                                title: '参数配置'
+                            },
+                            {
+                                path: 'logsManagement',
+                                title: '日志管理'
+                            },
+                            {
+                                path: 'systemState',
+                                title: '系统状态'
+                            },
+                            {
+                                path: ' dataDictionary',
+                                title: '数据字典配置'
+                            },
+                            {
+                                path: 'PolicySettings',
+                                title: '策略配置'
+                            }
+                            
+                        ]
                     }
                 ]
             }
