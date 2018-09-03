@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard">I am fine</div>
+    <div class="dashboard">你好</div>
 </template>
 <script>
 export default {
@@ -7,7 +7,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.dashboard {
+    color: #fff;
+}
 </style>
 
 

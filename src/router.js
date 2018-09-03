@@ -14,39 +14,59 @@ export default new Router({
         {
             path: '/about',
             name: 'about',
-            component: () => import('./views/About')
+            component: () =>
+                import('./views/About')
         },
         {
             path: '/login',
             name: 'login',
-            component: () => import('./views/login')
+            component: () =>
+                import('./views/login')
         },
         {
-            path: '/dashboard',
-            name: 'dashboard',
+            path: '/',
             component: Layout,
-            meta: {
-                title: '首页',
-                menuCode: '01'
-            }
+            children: [{
+                path: 'dashboard',
+                name: 'dashboard',
+                meta: {
+                    title: '首页',
+                    menuCode: '01'
+                },
+                component: () =>
+                    import('@/views/dashboard')
+            }],
+
         },
-        {   // 消息通知
-            path: '/messageNotice',
-            name: 'messageNotice',
-            meta: {
-                title: '消息通知',
-                menuCode: '01',
-            },
-            component: () => import('@/views/messageNotice')
+        { // 消息通知
+            path: '/',
+            component: Layout,
+            children: [{
+                name: 'messageNotice',
+                path: 'messageNotice',
+                meta: {
+                    title: '消息通知',
+                    menuCode: '01',
+                },
+                component: () =>
+                    import('@/views/messageNotice')
+            }]
         },
-        {   // 个人信息
-            path: 'userInfo',
-            name: 'userInfo',
-            meta: {
-                title: '个人信息',
-                menuCode: '01'
-            },
-            component: () => import('@/views/userInfo')
+        { // 个人信息
+            path: '/',
+            component: Layout,
+            children: [
+                {   
+                    path: 'userInfo',
+                    name: 'userInfo',
+                    meta: {
+                        title: '个人信息',
+                        menuCode: '01'
+                    },
+                    component: () =>
+                        import('@/views/userInfo')
+                }
+            ]
         }
 
     ]
