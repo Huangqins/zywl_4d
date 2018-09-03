@@ -32,4 +32,7 @@ html, body {
 .router-link-active {
    background-color:  rgb(30,36,46)
 }
+  .el-scrollbar__view {
+    height: 100%;
+  }
 </style>

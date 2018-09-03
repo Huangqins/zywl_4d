@@ -1,11 +1,13 @@
 <template>
     <div class="side-bar-container">
         <!-- 侧边栏 -->
+        <el-scrollbar  style="height: 100%">
         <el-menu class="side-bar-menu" background-color="#2b3544" text-color="#18BB9A" active-text-color="#D1FFFF"
                  :collapse="isCollapse">
             <sideitem-bar v-for="(item, index) in menuList" :key="index" :item="item"
                           :base-path="item.path"></sideitem-bar>
         </el-menu>
+        </el-scrollbar>
     </div>
 </template>
 <script>
@@ -77,6 +79,7 @@
                         // 风险管理
                         path: '/holeManage',
                         title: '风险管理',
+                        icon: 'holeManage',
                         children: [
                             {
                                 path: 'holeInfo',
@@ -96,6 +99,7 @@
                         // 工单管理
                         path: '/workManage',
                         title: '工单管理',
+                        icon: 'workManage',
                         children: [
                             {
                                 path: 'workInfo',
@@ -111,6 +115,7 @@
                         // 统计分析
                         path: '/statisticalAnalysis',
                         title: '统计分析',
+                        icon: 'statisticalAnalysis',
                         children:[
                             {
                                 path: 'LoopholeRatioReport',
@@ -121,9 +126,11 @@
                                 title: '网络安全整改报表'
                             }
                         ]
-                    },{
+                    },
+                    {
                       path:'/knowledgeManagement',
                       title:'知识管理',
+                        icon: 'knowledgeManagement',
                       children:[
                            {
                                 path: 'vulnDatabase',
@@ -142,10 +149,12 @@
                     },
                     {
                         path: '/reportManagement',
-                        title: '报告管理'                       
+                        title: '报告管理',
+                        icon: 'reportManagement'
                     },{
                         path:'/userManagement',
                         title:'用户管理',
+                        icon: 'userManagement',
                         children:[
                             {
                                 path: 'propertyManagement',
@@ -160,6 +169,7 @@
                     },{
                         path:'/systemManagement',
                         title:'系统管理',
+                        icon: 'systemManagement',
                         children:[
                             {
                                 path: 'interfaces',
@@ -185,7 +195,7 @@
                                 path: 'PolicySettings',
                                 title: '策略配置'
                             }
-                            
+
                         ]
                     }
                 ]
@@ -201,19 +211,20 @@
         bottom: 0;
         box-shadow: 1px 1px 4px 1px #202731;
         z-index: 9999;
+        overflow: hidden;
     }
 
     .el-menu {
         border-right: none;
         // width: 100% !important;
-        overflow: hidden;
+        overflow-x: hidden;
     }
 
     // .el-submenu .el-menu-item {
     //     width: 152px;
     // }
     .side-bar-menu:not(.el-menu--collapse) {
-        width: 152px;
+        width: 162px;
         min-height: 100%;
     }
 

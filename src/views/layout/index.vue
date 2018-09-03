@@ -2,8 +2,7 @@
     <div :class="['app-wrapper',{'hidden-bar': isCollapse}]">
             <navbar></navbar>     
             <!-- 布局容器 侧边栏-->
-            <sidebar></sidebar>
-            
+               <sidebar></sidebar>
             <div class="main-container">
                 <!-- 主界面 -->
                 <app-main></app-main>
@@ -33,4 +32,7 @@ export default {
         margin-left: 64px;
     }
 }
+    .scroll-bar {
+        height: 100%;
+    }
 </style>

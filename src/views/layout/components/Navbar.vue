@@ -37,9 +37,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 $color: #18BB9A;
-.nav-bar-container {
 
-}
 .nav-bar {
     align-items: center;
     box-shadow: 1px 1px 4px 1px #202731;
