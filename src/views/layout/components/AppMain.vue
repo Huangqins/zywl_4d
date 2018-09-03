@@ -21,10 +21,9 @@ export default {
 <style>
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
-  min-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
   position: relative;
-    margin-left:152px;
-  overflow: hidden;
+    margin-left:162px;
   
     /* transition: margin-left 0.1s; */
     color: #fff;

@@ -27,9 +27,12 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #232d3d;
+  background-color: #222934;
 }
 .router-link-active {
    background-color:  rgb(30,36,46)
 }
+  .el-scrollbar__view {
+    height: 100%;
+  }
 </style>
