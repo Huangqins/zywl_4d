@@ -1,7 +1,7 @@
 <template>
     <div class="side-bar-container">
         <!-- 侧边栏 -->
-        <el-menu class="side-bar-menu" background-color="#252D3A" text-color="#18BB9A" active-text-color="#D1FFFF"
+        <el-menu class="side-bar-menu" background-color="#2b3544" text-color="#18BB9A" active-text-color="#D1FFFF"
                  :collapse="isCollapse">
             <sideitem-bar v-for="(item, index) in menuList" :key="index" :item="item"
                           :base-path="item.path"></sideitem-bar>

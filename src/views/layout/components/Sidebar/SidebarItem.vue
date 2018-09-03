@@ -1,6 +1,6 @@
 <template>
         <!--  没有子菜单的情况 -->
-        <router-link v-if="!item.children" :to="item.path">
+        <router-link v-if="!item.children" :to="item.path" tag="div">
             <el-menu-item :index="item.path">
                 <svg-icon v-if="item.icon" :icon-class="item.icon"></svg-icon>
                 <span slot="title">{{item.title}}</span>

@@ -31,13 +31,19 @@ export default new Router({
             }
         },
         {   // 消息通知
-            path: '/messageNotice',
-            name: 'messageNotice',
-            meta: {
-                title: '消息通知',
-                menuCode: '01',
-            },
-            component: () => import('@/views/messageNotice')
+            path: '/',
+            component: Layout,
+            children: [
+                {
+                    path: 'messageNotice',
+                    name: 'messageNotice',
+                    meta: {
+                        title: '消息通知',
+                        menuCode: '01',
+                    },
+                    component: () => import('@/views/messageNotice')
+                }
+            ]
         },
         {   // 个人信息
             path: 'userInfo',

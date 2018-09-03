@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar-container">
         <!-- 顶部栏 -->
-       <el-menu mode="horizontal" class="nav-bar" background-color="#252D3A" text-color="#18BB9A" 
+       <el-menu mode="horizontal" class="nav-bar" background-color="#2b3544" text-color="#18BB9A" 
        active-text-color="#18BB9A" menu-trigger="click">
            <hamburger class="hamburger-container" :toggleClick="TOGGLE_OPEN" :isActive="isCollapse"></hamburger>
            <div class="drop-menu">
