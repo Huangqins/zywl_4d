@@ -10,14 +10,14 @@
         <el-submenu v-else :index="item.name||item.path">
             <template slot="title">
                 <svg-icon v-if="item.icon" :icon-class="item.icon"></svg-icon>
-                <span slot="title">{{item.title}}</span>
+                <span slot="title" >{{item.title}}</span>
             </template>
             <template v-for="child in item.children">
                 <sidebar-item :is-nest="true"  v-if="child.children && child.children.length>0" :item="child" :key="child.path" :base-path="resolvePath(child.path)"></sidebar-item>
                 <router-link v-else :to="resolvePath(child.path)" :key="child.name" tag="div">
                     <el-menu-item :index="resolvePath(child.path)">
                         <svg-icon v-if="child.icon" :icon-class="child.icon"></svg-icon>
-                        <span v-if="child.title" slot="title">{{child.title}}</span>
+                        <span  v-if="child.title" slot="title" class="childtitle">{{child.title}}</span>
                     </el-menu-item>
                 </router-link>
             </template>
@@ -52,3 +52,8 @@
     }
 </script>
 
+<style lang="scss" scoped>
+.childtitle{
+    font-size: 12px;
+}
+</style>
