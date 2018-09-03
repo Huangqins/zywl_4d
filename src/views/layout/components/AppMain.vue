@@ -25,6 +25,7 @@ export default {
   position: relative;
     margin-left:152px;
   overflow: hidden;
+  
     /* transition: margin-left 0.1s; */
     color: #fff;
 }

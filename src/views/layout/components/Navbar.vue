@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar-container">
         <!-- 顶部栏 -->
-       <el-menu mode="horizontal" class="nav-bar" background-color="#263143" text-color="#18BB9A" 
+       <el-menu mode="horizontal" class="nav-bar" background-color="#252D3A" text-color="#18BB9A" 
        active-text-color="#18BB9A" menu-trigger="click">
            <hamburger class="hamburger-container" :toggleClick="TOGGLE_OPEN" :isActive="isCollapse"></hamburger>
            <div class="drop-menu">
@@ -44,8 +44,8 @@ $color: #18BB9A;
     align-items: center;
     box-shadow: 1px 1px 4px 1px #202731;
     height: 50px;
-    background: url(../../../../public/img/png/logoS.png) left 40px center no-repeat;
-    background-size: 90px 40px;
+    background: url(../../../../public/img/png/logoS.png) left 65px center no-repeat;
+    background-size: 70px 30px;
 }
 .el-menu--horizontal {
     border: none;
@@ -55,6 +55,8 @@ $color: #18BB9A;
     height: 50px;
     float: left;
     padding: 0 10px;
+    margin-left: 12px;
+    outline: none;
 }
 .el-dropdown-menu {
     background-color: #1D242E;

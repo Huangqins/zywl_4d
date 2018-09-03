@@ -27,6 +27,9 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #252D3A;
+  background-color: #232d3d;
+}
+.router-link-active {
+   background-color:  rgb(30,36,46)
 }
 </style>
