@@ -7,7 +7,7 @@ import './registerServiceWorker'
 import './plugins/element.js'
 import Api from './api/index'
 import '@/icons' // icon
-// import '@/styles/index.scss'
+import '@/styles/index.scss'
 
 Vue.prototype.$api = Api;
 Vue.config.productionTip = false

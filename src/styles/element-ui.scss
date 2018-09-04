@@ -80,3 +80,44 @@
     display: block
   }
 }
+
+ .el-table tr {
+   background-color: #263143;
+ }
+ .el-dialog {
+   background: rgba(45,56,74,1);
+ }
+ .el-dialog__header {
+   text-align: center;
+   .el-dialog__title {
+     color: #CAD5DB;
+     font-size: 16px;
+   }
+ }
+ .el-form-item__label {
+   color: #D1FFFF;
+ }
+ .el-input__inner {
+   background-color:rgba(38,49,67,1);
+   border:1px solid rgba(68,75,90,1);
+   border-radius:4px;
+   color: #CAD5DB;
+ }
+ .el-pagination__total {
+   color: #CAD5DB;
+   font-size: 14px;
+ }
+ .el-pagination .btn-prev, .el-pagination .btn-next {
+   background-color: #232D3D;
+   color: #fff;
+ }
+ .el-pagination button:disabled {
+   background-color: #232D3D;
+ }
+ .el-pager li {
+   background: #313847;
+   color:#fff;
+ }
+ .el-pagination__jump {
+   color: #CAD5DB;
+ }
