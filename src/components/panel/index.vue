@@ -10,6 +10,15 @@
 </template>
 <script>
 export default {
+    computed: {
+    titleStyle() {
+      if (!this.showTitle) {
+        return "height:100%";
+      } else {
+        return "calc(100% - 30px)";
+      }
+    }
+  },
   props: {
     title: {
       type: String,
@@ -20,16 +29,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 .panel-title{
-    height:15px;
-    font-size:16px;
     color:rgba(209,255,255,1);
-    margin-bottom: 15px;
     &-text{
         font-size:16px;
+        margin-bottom: 8px;
     }
 }
 .panel-content{
-    background: rgba(38,49,67,1);
+    background: $main-bg;
+    width: auto;
     height:auto;
+    box-shadow: 4px 0px 4px rgba(29,36,46,1)
 }
 </style>
