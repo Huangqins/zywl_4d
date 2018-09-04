@@ -3,7 +3,6 @@ const path = require('path')
 function resolve(dir) {
     return path.join(__dirname, './', dir)
 }
-
 module.exports = {
     baseUrl: '',
     devServer: {
@@ -16,6 +15,16 @@ module.exports = {
     },
     assetsDir: 'static',
     productionSourceMap: false,
+    css: {
+        loaderOptions: {
+            sass: {
+                data: `
+                  @import "@/styles/variables.scss";
+                  @import "@/styles/mixin.scss";
+                `
+            }
+        }
+    },
     chainWebpack: config => {
         config.module
             .rule('svg')
