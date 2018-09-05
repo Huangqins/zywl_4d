@@ -17,7 +17,6 @@ let config = {
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(config => {
-    console.log(vm)
     let menuCode = vm._route.meta.menuCode,
       token = getToken(),
       userName = getUserName(),
