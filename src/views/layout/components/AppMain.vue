@@ -27,7 +27,7 @@ export default {
   position: relative;
   margin-left: 150px;
   min-width: 1200px;
-  overflow: auto;
+  overflow: hidden;
   transition: margin-left 0.4s;
   color: #fff;
 }

@@ -65,12 +65,14 @@
         </div>
         <div class='sectionTwo-state'>
             <panel title="服务情况">
+                <el-scrollbar  style="height: 100%">
                 <div class="hole-record-types" style="overflow:auto;margin-top:30px;">            
                     <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
                         <h3>{{item.total_num}}</h3>
                         <h5>{{item.info}}</h5>
                     </div>          
                </div>
+               </el-scrollbar>
             </panel>    
         </div>
         <div class='sectionTwo-vulnLeveal'>
@@ -354,9 +356,9 @@ export default {
     //任务数据
     async vulnTypeTotal(params) {
       let res = await this.$api.vulnTypeTotal(params);      
-        let data = res.vulns;
+        let data = res.data.vulns;
         this.webvulnTotal = data[0].vuln_total;
-        this.ywvulnTotal = res.vulns.length > 1 ? data[1].vuln_total : 0;
+        this.ywvulnTotal = data.length > 1 ? data[1].vuln_total : 0;
         this.vulnTotalS = Number(this.webvulnTotal) + Number(this.ywvulnTotal);
       
     }
