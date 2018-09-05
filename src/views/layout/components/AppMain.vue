@@ -23,11 +23,11 @@ export default {
   /*84 = navbar + tags-view = 50 +34 */
   height: calc(100vh - 50px);
   position: relative;
-    margin-left:162px;
+    margin-left:150px;
     min-width: 1200px;
     overflow: auto;
   
-    /* transition: margin-left 0.1s; */
+     transition: margin-left 0.4s;
     color: #fff;
 }
 </style>

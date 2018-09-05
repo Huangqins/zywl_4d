@@ -214,12 +214,12 @@
     //     width: 152px;
     // }
     .side-bar-menu:not(.el-menu--collapse) {
-        width: 162px;
+        width: 150px;
         min-height: 100%;
     }
 
     .el-menu--collapse {
-        width: 64px;
+        width: 50px;
         // transition: width 0.2s;
         min-height: 100%;
     }
