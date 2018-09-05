@@ -29,21 +29,11 @@
                         title: '首页',
                         icon: 'home'
                     },
-                    // {   // 消息通知
-                    //     path: 'messageNotice',
-                    //     title: '消息通知',
-                    //     icon: 'notice'
-                    // },
-                    // {   // 个人信息
-                    //     path: 'userInfo',
-                    //     title: '个人信息',
-                    //     icon: 'user'
-                    // },
                     {
                         // 资产管理
                         path: '/assetsManage',
                         title: '资产管理',
-                        icon: 'assets',
+                        icon: 'assetsManage',
                         children: [
                             {
                                 path: 'assetsInfo',

@@ -26,6 +26,8 @@ module.exports = {
         }
     },
     chainWebpack: config => {
+        config.resolve.alias
+            .set('public', resolve('public'))
         config.module
             .rule('svg')
             .exclude
