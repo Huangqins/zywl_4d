@@ -1,6 +1,8 @@
 "use strict";
 import axios from "axios";
-import CryptoJs  from 'crypto-js';
+import CryptoJs from 'crypto-js';
+import { getToken, getUserName } from '@/utils/auth'
+// import { mapGetters } from 'vuex'
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
@@ -15,18 +17,21 @@ let config = {
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(config => {
-    // Do something before request is sent
-    //     let _key = `${menuCode};${token};${userName}`;
-    //     let _sis = 'c1cc0f3684aa06f64846cca29fcab0524621D373CADE4E83';
-    //     let result = CryptoJs.TripleDES.encrypt(_key,CryptoJs.enc.Utf8.parse(_sis),{
-    //         iv:  CryptoJs.enc.Utf8.parse('23039817'),
-    //         mode: CryptoJs.mode.CBC,
-    //         padding: CryptoJs.pad.Pkcs7
-    //     });
-        // config.headers['session'] = result
+    console.log(vm)
+    let menuCode = vm._route.meta.menuCode,
+      token = getToken(),
+      userName = getUserName(),
+      _key = `${menuCode};${token};${userName}`,
+      _sis = 'c1cc0f3684aa06f64846cca29fcab0524621D373CADE4E83',
+      result = CryptoJs.TripleDES.encrypt(_key, CryptoJs.enc.Utf8.parse(_sis), {
+        iv: CryptoJs.enc.Utf8.parse('23039817'),
+        mode: CryptoJs.mode.CBC,
+        padding: CryptoJs.pad.Pkcs7
+      });
+    config.headers['session'] = result
     return config;
   },
-   error => {
+  error => {
     // Do something with request error
     return Promise.reject(error);
   }
@@ -37,7 +42,7 @@ _axios.interceptors.response.use(response => {
     // Do something with response data
     return response;
   },
-    error => {
+  error => {
     // Do something with response error
     return Promise.reject(error);
   }

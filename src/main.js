@@ -11,7 +11,7 @@ import '@/styles/index.scss'
 
 Vue.prototype.$api = Api;
 Vue.config.productionTip = false
-new Vue({
+window.vm = new Vue({
   router,
   store,
   render: h => h(App)

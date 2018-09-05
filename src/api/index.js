@@ -12,7 +12,42 @@ const ApiSchema = {
         url: `${path}/user/userLogin`,
         method: 'post',
         keys: ''
-    }
+    },
+    getInformation:{
+        url: `${path}kb/getInformation`,
+        method: 'post',
+        keys: ['']
+    },
+    assetsInfo:{
+        url: `${path}asset/assetsInfo`,
+        method: 'post',
+        keys: ['is_page']
+    },
+    targetInfo:{
+        url: `${path}task/targetInfo`,
+        method: 'post',
+        keys: ['target_struts']
+    },
+    vulnrepair:{
+        url: `${path}vuln/repairRate`,
+        method: 'post',
+        keys: ['target_id']
+    },
+    vulnTotal:{
+        url: `${path}vuln/vulnTotal`,
+        method: 'post',
+        keys: ['target_id']
+    },
+    serviceTotal:{
+        url: `${path}asset/serviceTotal`,
+        method: 'post',
+        keys: ['target_id']
+    },
+    vulnTypeTotal:{
+        url: `${path}vuln/vulnTypeTotal`,
+        method: 'post',
+        keys: ['target_id']
+    },
 }
 // filter keys
 const filterKey =  (obj, keys) => {

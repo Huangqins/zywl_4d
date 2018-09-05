@@ -2,7 +2,7 @@
 <div class="homePage">
     <div class="outsideInfo">
         <div>外部资讯:</div>
-        <div>妇女满身的女生经典福克斯的生经典福克斯的女生们但是凡事妇女</div>
+        <div>{{outsideInfo}}</div>
         <div>更多...</div>
     </div>
     <div class="sectionOne">
@@ -16,15 +16,42 @@
         <div class='sectionOne-state'>
             <panel>
                 <div class="deviceType">
-                
+                <charts :chartData="option" id="canvas" height="100%"></charts>
                 </div>
             </panel>    
         </div>
         <div class='sectionOne-vulnLeveal'>
-            <panel>                
-                <div class="deviceType">
-                
+            <panel>   
+                <div class="sectionOne-vulnLeveal-left">                   
+                    <charts :chartData="chartData" height="100%"  id="chartData"></charts>
                 </div>
+             <div class="vulntext" >
+              <div>                
+                <p><span>极</span>极高风险数</p>
+                <p>{{vuln_level_num[4]}}</p>
+              </div>
+              <div>
+                
+                <p><span style="background: #DD7C35;">高</span>高风险数</p>
+                <p>{{vuln_level_num[3]}}</p>
+              </div>
+              <div>
+                
+                <p><span style="background: #E2B928;">中</span>中风险数</p>
+                <p>{{vuln_level_num[2]}}</p>
+
+              </div>
+              <div>
+               
+                <p> <span style="background: #51B323;">低</span>低风险数</p>
+                <p>{{vuln_level_num[1]}}</p>
+              </div>
+              <div>
+               
+                <p><span style="background: #46A5C0;">末</span>极低风险数</p>
+                <p>{{vuln_level_num[0]}}</p>
+              </div>
+             </div>
             </panel>    
         </div>
     </div>
@@ -38,16 +65,49 @@
         </div>
         <div class='sectionTwo-state'>
             <panel title="服务情况">
-                <div class="">
-                
-                </div>
+                <div class="hole-record-types" style="overflow:auto;margin-top:30px;">            
+                    <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
+                        <h3>{{item.total_num}}</h3>
+                        <h5>{{item.info}}</h5>
+                    </div>          
+               </div>
             </panel>    
         </div>
         <div class='sectionTwo-vulnLeveal'>
             <panel title="资产情况">                
-                <div class="">
-                
-                </div>
+                <div class="vulnChange-tasks">                       
+                        <div >
+                            <div class="task-data-1 vulnTotal"></div>                  
+                            <p>{{vulnTotalS}}</p>
+                            <p>漏洞总数</p>
+                        </div>
+
+                        <div  style="margin-right:5px;">
+                            <div class="task-data-1 host"></div>
+                            <p>{{hostTotal}}</p>
+                            <p>主机数</p>
+                        </div>
+                         <div>
+                            <div class="task-data-1 riskTotal"></div>
+                            <p>{{hostvulnTotal}}</p>
+                            <p>风险总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 hostvuln"></div>
+                            <p>{{hostvulnTotal}}</p>
+                            <p>主机漏洞总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 webvuln"></div>
+                            <p>{{webvulnTotal}}</p>
+                            <p>WEB漏洞总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 yw"></div>
+                            <p>{{ywvulnTotal}}</p>
+                            <p>业务风险总数</p>
+                        </div>
+             </div>
             </panel>    
         </div>
     </div>
@@ -55,14 +115,30 @@
         <div class='sectionThree-left'>
             <panel title="资产列表">
                 <div class="">
-                
+                    <el-table :data="assetsList" style="width: 100%">
+                        <el-table-column prop="assets_url" label="域名" ></el-table-column>
+                        <el-table-column prop="assets_ip" label="IP" ></el-table-column>
+                        <el-table-column prop="assets_os_type" label="操作系统" ></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">删除</el-button>
+                                <el-button type="text" size="small">修改</el-button>
+                            </template>
+                       </el-table-column>
+                    </el-table>
                 </div>
             </panel>    
         </div>
         <div class='sectionThree-state'>
-            <panel title="最新漏洞">
+            <panel title="最新风险">
                 <div class="">
-                
+                    <el-table :data="latestRisk" style="width: 100%">
+                            <el-table-column prop="date" label="风险等级" ></el-table-column>
+                            <el-table-column prop="name" label="目标资产" ></el-table-column>
+                            <el-table-column prop="date" label="风险名称" ></el-table-column>
+                            <el-table-column prop="date" label="发现时间" ></el-table-column>
+                            <el-table-column prop="date" label="利用情况" ></el-table-column>
+                    </el-table>
                 </div>
             </panel>    
         </div>       
@@ -71,7 +147,20 @@
         <div class='sectionFour-left'>
             <panel title="正在执行的任务">
                 <div class="">
-                
+                   <el-table :data="TasksInExecution" style="width: 100%">
+                            <el-table-column prop="target_name" label="任务名称" ></el-table-column>
+                            <el-table-column prop="target_url" label="任务目标" ></el-table-column>
+                            <el-table-column prop="target_teststra" label="策略" ></el-table-column>
+                            <el-table-column prop="target_starttime" label="开始时间" ></el-table-column>
+                            <el-table-column prop="target_endtime" label="结束时间" ></el-table-column>
+                            <el-table-column prop="target_struts" label="任务状态" ></el-table-column>
+                            <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">详情</el-button>
+                                
+                            </template>
+                       </el-table-column>
+                    </el-table>
                 </div>
             </panel>    
         </div>
@@ -81,7 +170,21 @@
         <div class='sectionFive-left'>
             <panel title="待办事项">
                 <div class="">
-                
+                    <el-table :data="todoList" style="width: 100%">
+                            <el-table-column prop="date" label="工单名称" ></el-table-column>
+                            <el-table-column prop="name" label="工单紧急程度" ></el-table-column>
+                            <el-table-column prop="date" label="工单类型" ></el-table-column>
+                            <el-table-column prop="date" label="工单状态" ></el-table-column>
+                            <el-table-column prop="date" label="发起时间" ></el-table-column>
+                            <el-table-column prop="date" label="审批时间" ></el-table-column>
+                            <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">查看</el-button>
+                                <el-button  type="text" size="small">驳回</el-button>
+                                <el-button  type="text" size="small">通过</el-button>                                
+                            </template>
+                       </el-table-column>
+                    </el-table>
                 </div>
             </panel>    
         </div>
@@ -92,23 +195,179 @@
     
 </template>
 <script>
-import Panel from '@/components/panel';
+import Panel from "@/components/panel";
+import Charts from "@/components/Charts";
+const levelSchema = {
+  "4": { name: "极高风险", color: "red" },
+  "3": { name: "高风险", color: "#DD7C35" },
+  "2": { name: "中风险", color: "#E2B928" },
+  "1": { name: "低风险", color: "#51B323" },
+  "0": { name: "极低风险", color: "#46A5C0" }
+};
 export default {
-    components:{
-        Panel
+  components: {
+    Panel,
+    Charts
+  },
+  data() {
+    return {
+      assetsList: [],
+      latestRisk: [],
+      TasksInExecution: [],
+      todoList: [],
+      serviceLists: [],
+      vulnTotalS: 0,
+      hostTotal: 0,
+      hostvulnTotal: 0,
+      webvulnTotal: 0,
+      ywvulnTotal: 0,
+      outsideInfo: "",
+      kb_vuln_ref: "",
+      option: {
+        title: {
+          text: "漏洞修复状态(开放/关闭)",
+          x: "center",
+          y: "85%",
+          textStyle: {
+            color: "#18BB9A",
+            fontSize: "14px"
+          }
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+          x: "center",
+          y: "10%",
+          data: ["已修复", "未修复"],
+          textStyle: {
+            color: "#d8d8d8"
+          }
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "40%",
+            center: ["50%", "50%"],
+            color: ["#47B30D", "#128C96"],
+            data: [{ value: 0, name: "已修复" }, { value: 0, name: "未修复" }],
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      },
+      //风险等级
+      chartData: {
+        title: {
+          text: "漏洞等级分布",
+          x: "right",
+          y: "85%",
+          textStyle: {
+            color: "#18BB9A",
+            fontSize: "14px"
+          }
+        },
+        tooltip: {
+          formatter: "{b} ({c})"
+        },
+        series: [
+          {
+            type: "pie",
+            radius: "40%",
+            center: ["50%", "50%"],
+            data: [],
+            labelLine: { normal: { show: false } },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} \n ({d}%)",
+                  textStyle: { color: "#128c96" }
+                }
+              }
+            }
+          }
+        ]
+      },
+      vuln_level_num: {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    };
+  },
+  created() {
+    this.assetsInfo({ is_page: 1 });
+    this.targetInfo({ target_struts: 0 });
+    this.getInformation();
+    this.vulnrepair({ target_id: 0 });
+    this.vulnTotal({ target_id: 0 });
+    this.serviceTotal({ target_id: 0 });
+    this.vulnTypeTotal({ target_id: 0 })
+  },
+  methods: {
+    async getInformation() {
+      let res = await this.$api.getInformation();
+      this.outsideInfo = res.data.kb[0].kb_vuln_name;
     },
-    data(){
-        return{
-
-        }
+    async vulnrepair(param) {
+      let res = await this.$api.vulnrepair(param);
+      this.option.series[0].data[0].value = res.data.handle;
+      this.option.series[0].data[1].value = res.data.pending;
+    },
+    async assetsInfo(param) {
+      let res = await this.$api.assetsInfo(param);
+      this.assetsList = res.data.rows;
+    },
+    async targetInfo(params) {
+      let res = await this.$api.targetInfo(params);
+      this.TasksInExecution = res.data.targets;
+    },
+    async vulnTotal(params) {
+      let res = await this.$api.vulnTotal(params);
+      this.chartData.series[0].data = res.data.vulns.map(item => {
+        this.vuln_level_num[item.vuln_level] = item.vuln_total;
+        return {
+          value: item.vuln_total,
+          name: levelSchema[item.vuln_level].name,
+          itemStyle: {
+            color: levelSchema[item.vuln_level].color
+          }
+        };
+      });
+    },
+    async serviceTotal(params) {
+      let res = await this.$api.serviceTotal(params);
+      this.serviceLists = res.data.lists;
+    },
+    
+    //任务数据
+    async vulnTypeTotal(params) {
+      let res = await this.$api.vulnTypeTotal(params);      
+        let data = res.vulns;
+        this.webvulnTotal = data[0].vuln_total;
+        this.ywvulnTotal = res.vulns.length > 1 ? data[1].vuln_total : 0;
+        this.vulnTotalS = Number(this.webvulnTotal) + Number(this.ywvulnTotal);
+      
     }
+  }
 };
 </script>
 <style lang="scss" scoped>
-.homePage{
-    margin:0 15px;
-    height: auto;
-    overflow-y: auto; 
+.homePage {
+  margin: 0 15px;
+  height: auto;
+  overflow-y: auto;
 }
 .outsideInfo {
   padding: 0 30px;
@@ -121,14 +380,14 @@ export default {
   display: flex;
   & > div:first-child {
     width: 69px;
-    color: rgba(209, 255, 255, 1);    
+    color: rgba(209, 255, 255, 1);
     font-size: 16px;
   }
   & > div:nth-child(2) {
     flex: 1;
     margin: 0 10px;
     font-size: 14px;
-    color:rgba(24,187,154,1);
+    color: rgba(24, 187, 154, 1);
   }
   & > div:last-child {
     width: 50px;
@@ -136,67 +395,181 @@ export default {
     color: rgba(24, 187, 154, 1);
   }
 }
-.sectionOne{
-    display: flex;  
-    margin-top: 15px; 
-    & div{
-        height: 280px;
-    }
-    &-left{
-      flex: 1;
-      margin-right:10px;
-    }
-    &-state{ 
-      flex: 1; 
-      margin-right:10px;
-    }
-    &-vulnLeveal{
-      flex: 2;  
-    }
-}
-.sectionTwo{
-    display: flex;  
+.sectionOne {
+  display: flex;
+  margin-top: 15px;
+  & div {
+    height: 280px;
+  }
+  &-left {
+    flex: 1;
+    margin-right: 10px;
+  }
+  &-state {
+    flex: 1;
+    margin-right: 10px;
+  }
+  &-vulnLeveal {
+    flex: 2;
     overflow: hidden;
-    & div{
-        height: 300px;
+    &-left {
+      width: 45%;
+      float: left;
     }
-    &-left{
-      flex: 2;
-      margin-right:10px;
-    }
-    &-state{
-      flex: 1; 
-      margin-right:10px;
-    }
-    &-vulnLeveal{
-      flex: 1;  
-    }
+  }
 }
-.sectionThree{
-    display: flex;  
-    overflow: hidden; 
-    & div{
-        height: 238px;
-    }
-    &-left{
-      flex: 2;
-      margin-right:10px;
-    }
-    &-state{
-      flex: 1; 
-    }
+.sectionTwo {
+  display: flex;
+  overflow: hidden;
+  & div {
+    height: 300px;
+  }
+  &-left {
+    flex: 2;
+    margin-right: 10px;
+  }
+  &-state {
+    flex: 1;
+    margin-right: 10px;
+  }
+  &-vulnLeveal {
+    flex: 1;
+  }
 }
-.sectionFour{ 
-    overflow: hidden; 
-    & div{
-        height: 238px;
-    }
+.sectionThree {
+  display: flex;
+  overflow: hidden;
+  & div {
+    height: 238px;
+  }
+  &-left {
+    flex: 1;
+    margin-right: 10px;
+  }
+  &-state {
+    flex: 1;
+  }
 }
-.sectionFive{  
+.sectionFour {
+  overflow: hidden;
+  & div {
+    height: 238px;
+  }
+}
+.sectionFive {
+  overflow: hidden;
+  & div {
+    height: 238px;
+  }
+}
+.vulntext {
+  width: 55%;
+  height: 100%;
+  //   padding-top: 40px;
+  float: left;
+  & > div {
+    width: 29%;
+    height: 50%;
+    // background: red;
+    float: left;
+    padding: 24px 10px 10px 0;
+    p:nth-of-type(2) {
+      text-align: center;
+    }
+    p {
+      font-size: 13px;
+    }
+    span {
+      color: #000;
+      float: left;
+      padding: 0px 4px;
+      margin-right: 5px;
+      font-size: 14px;
+      &:first-child {
+        background: red;
+      }
+    }
+  }
+}
+.hole-record-types {
+  & > div {
+    float: left;
+    width: 25%;
+    height: 50%;
+    background: url(../../../public/img/png/servicePic.png) center top no-repeat;
+  }
+  .hole-pic {
+    overflow: hidden;
+    position: relative;
+    & > h5,
+    h3 {
+      font-weight: normal;
+      margin: 0;
+      text-align: center;
+    }
+    & > h3 {
+      position: absolute;
+      top: 23px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    & > h5 {
+      margin-top: 75px;
+      color: #d8d8d8;
+    }
+  }
+}
+.vulnChange {
+  display: flex;
+  height: 100%;
+  & > div {
+    flex: 1;
+    line-height: 23px;
+  }
+  &-tasks{
+    width: 100%;
+    height: 100%;
+    & > div{
+      width: 33%;
+      height: 44%;
+      text-align: center;
+      float: left;
       overflow: hidden;
-    & div{
-        height: 238px;
+      padding-left:12px;
+      p:nth-of-type(1) {
+        text-align: center;
+        margin-top: 29px;
+        font-size: 13px;
+      }
+      p:nth-of-type(2) {
+        text-align: center;
+        color: #d8d8d8;
+        
+        font-size: 13px;
+      }
+      p{
+        font-size: 13px;
+      }
     }
+  }
+}
+.riskTotal{
+  background: url('../../../public/img/png/riskToatl.png') center center no-repeat;
+}
+.vulnTotal{
+  background: url('../../../public/img/png/vulnTotal.png') center center no-repeat;
+}
+.host{
+  background: url('../../../public/img/png/host.png') center center no-repeat;
+}
+.hostvuln{
+  background: url('../../../public/img/png/hostvuln.png') center center  no-repeat;
+}
+.webvuln{
+  background: url('../../../public/img/png/web.png') center center no-repeat;
+}
+.yw{
+  background: url('../../../public/img/png/yw.png') center center no-repeat;
 }
 </style>
 

@@ -33,6 +33,7 @@ export default {
     &-text{
         font-size:16px;
         margin-bottom: 8px;
+        margin-left: 12px;
     }
 }
 .panel-content{
