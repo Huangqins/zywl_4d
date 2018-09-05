@@ -48,6 +48,36 @@ const ApiSchema = {
         method: 'post',
         keys: ['target_id']
     },
+    //任务周期
+    getRule:{
+        url: `${path}task/getRule`,
+        method: 'post',
+        keys: ['flag']
+    },
+    //任务类型
+    getTargetType:{
+        url: `${path}task/getTargetType`,
+        method: 'post',
+        keys: ['']
+    },
+    //资产url/ip
+    getAssetURL:{
+        url: `${path}asset/getAssetURL`,
+        method:'post',
+        keys:''
+    },
+    //任务列表
+    targetInfo:{
+        url: `${path}task/targetInfo`,
+        method:'post',
+        keys:['target_name','rule_id','assrts_url']
+    },
+    //添加任务
+    addTarget:{
+        url: `${path}task/addTarget`,
+        method:'post',
+        keys:['target_name', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
+    },
 }
 // filter keys
 const filterKey =  (obj, keys) => {
