@@ -127,3 +127,6 @@
 .panel-content {
   overflow: hidden !important;
 }
+ .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }

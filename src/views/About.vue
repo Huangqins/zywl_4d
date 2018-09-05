@@ -1,6 +1,10 @@
 <template>
   <div class="about">
-      <charts :chartData="option" id="canvas"></charts>
+    <el-scrollbar style="height: 200px">
+      <div style="color:#fff;height: 500px">
+          你好
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 

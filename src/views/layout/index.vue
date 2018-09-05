@@ -29,7 +29,7 @@ export default {
 <style lang="scss">
 .hidden-bar{
     .app-main {
-        margin-left: 64px;
+        margin-left: 50px;
     }
 }
     .scroll-bar {
