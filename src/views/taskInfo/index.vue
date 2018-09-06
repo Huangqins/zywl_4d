@@ -235,10 +235,9 @@ export default {
         ],
         target_teststra: [
           {
-            type: "string",
             required: true,
             message: "策略类型不能为空",
-            trigger: "change"
+              trigger: 'change'
           }
         ],
         target_starttime: [
@@ -409,10 +408,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .task {
-  margin: 20px 20px 0 20px;
+  /*margin: 20px 20px 0 20px;*/
 }
 .queryCriteria {
-  padding: 0 30px;
+  /*padding: 0 30px;*/
   color: #fff;
   height: 40px;
   line-height: 40px;
@@ -430,7 +429,7 @@ export default {
     color: rgba(24, 187, 154, 1);
   }
   & > div:last-child {
-    width: 180px;
+    /*width: 180px;*/
     font-size: 16px;
     color: rgba(24, 187, 154, 1);
   }
@@ -443,8 +442,9 @@ export default {
 }
 .task-tab {
   display: inline-block;
+    margin-left: -40px;
   // border: 1px solid #24536f;
-  height: 46px;
+  /*height: 46px;*/
   ul {
     overflow: hidden;
     color: #B0B7BB;

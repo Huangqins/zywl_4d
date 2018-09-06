@@ -367,9 +367,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .homePage {
-  margin: 0 15px;
-  height: auto;
-  overflow-y: auto;
+  /*margin: 0 15px;*/
+  /*height: auto;*/
+  /*overflow-y: auto;*/
 }
 .outsideInfo {
   padding: 0 30px;
