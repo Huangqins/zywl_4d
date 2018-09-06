@@ -118,6 +118,7 @@
                       </el-table>
               
                 </panel>
+
               </div>
         </div>
          <!-- 添加任务 -->
@@ -145,15 +146,24 @@
               <el-option v-for="(item,index) in typeArr" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="任务类型" prop="task_type_id">
+            <el-select v-model="form.task_type_id" placeholder="请选择任务类型" style="width:100%">
+              <el-option v-for="(item,index) in taskType" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
         
-          <el-form-item label="资产URL/IP" prop="target_url">           
-             <!-- <el-select v-model="form.target_url" filterable placeholder="资产url" style="width:100%">
-              <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value"></el-option>
-            </el-select> -->
-            <el-select v-model="form.target_url" multiple  filterable allow-create  default-first-option  placeholder="资产url/ip" style="width:100%">
-              <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
-           </el-select>
+          <el-form-item label="资产URL/IP" prop="target_url">
+          <div v-if="form.task_type_id ==0 ">
+            <el-select  v-model="form.target_url_IP" multiple  filterable  default-first-option  placeholder="资产url/ip" style="width:100%">
+                <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
+            </el-select>
+          </div>           
+            <div v-if="form.task_type_id ==1 ">
+               <el-input v-model="form.target_url" auto-complete="off" placeholder="例:www.xxx.com或192.168.10.104">
 
+               </el-input>
+            </div>
+           
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -161,22 +171,32 @@
           <el-button type="primary" @click="addTask(form)" :loading="addPending" style="color:#d8d8d8">确 定</el-button>
         </div>
       </el-dialog>
+        <!--分页-->
+        <pages :total="pageTotal" @pageChange="pageChange" ref="page"></pages>
     </div>
 </template>
 <script>
 import { getUserName } from "@/utils/auth";
 import Panel from "@/components/panel";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import Pages from "@/components/Pages"
 const strage = {
   medium: "常规策略",
   high: "深度策略"
 };
 export default {
-  components: {
-    Panel
+  components:{
+    Panel,
+      Pages
   },
   data() {
     return {
+        pageObj: {},
+        defaultPage: {
+            rows: 10,
+            page: 1
+        },
+        pageTotal: 0,
       dialogFormVisible: false,
       fomatterTime: fomatterTime,
       strage: strage,
@@ -189,6 +209,16 @@ export default {
       scanTarget: "",
       executionmodeS: [],
       executionmode: "",
+      taskType:[
+         {
+          label: "常规任务",
+          value: 0
+        },
+        {
+          label: "紧急任务",
+          value: 1
+        },
+      ],
       form: {
         target_name: "渗透测试+" + fomatterTime(new Date()),
         target_teststra: "",
@@ -197,6 +227,7 @@ export default {
         target_url: "",
         target_ip: "",
         type_id: 1,
+        task_type_id:'',
         userName: getUserName()
       },
       strageArr: [],
@@ -267,59 +298,47 @@ export default {
     this.getRule({ flag: 1 });
     this.getTargetType();
     this.getAssetURL();
-    // this.targetInfo(this.defaultPage, 0);
-    this.$set(this.taskTabList, 0, {
-      label: "所有任务",
-      value: this.dataTotal
-    });
-    // this.taskTabList.forEach((item, index) => {
-    //   this.switchSource(index)
-    // });
-    this.switchSource(0);
   },
+    mounted() {
+        this.switchSource(0)
+    },
   methods: {
+      pageChange(pageObj) {
+          this.pageObj = pageObj;
+          let { page, rows } = pageObj,
+              params = {};
+          if (this.activeIndex === 0) {
+              params = Object.assign({},{page, rows});
+              this.targetInfo(params)
+          } else if (this.activeIndex === 1) {
+              params = Object.assign({},{page, rows, target_struts: 0});
+              this.targetInfo(params)
+          } else {
+              params = Object.assign({},{page, rows, target_struts: 1});
+              this.targetInfo(params)
+          }
+      },
     switchSource(index) {
       this.activeIndex = index;
+      this.$refs.page.reset();
       if (index === 0) {
-        let paramsCircle = Object.assign({}, this.defaultPage);
-        this.targetInfo(paramsCircle, index);
-        console.log("所有");
+          let params = Object.assign({}, this.defaultPage);
+        this.targetInfo(params);
       } else if (index === 1) {
-        let paramsCircle = Object.assign({}, this.defaultPage, {
-          target_struts: 0
-        });
-        this.targetInfo(paramsCircle, index);
-        console.log("正在执行");
-      } else if (index === 2) {
-        let paramsCircle = Object.assign({}, this.defaultPage, {
-          target_struts: 1
-        });
-        console.log("已完成");
-        this.targetInfo(paramsCircle, index);
+          let params = Object.assign({}, this.defaultPage, {target_struts: 0});
+          this.targetInfo(params);
+      } else {
+          let params = Object.assign({}, this.defaultPage, {target_struts: 1});
+          this.targetInfo(params);
       }
     },
     //   任务列表
-    async targetInfo(params, index) {
+    async targetInfo(params) {
       this.loading = true;
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
         this.tableData = res.data.targets;
-        if (index === 0) {
-          this.$set(this.taskTabList, index, {
-            label: "所有任务",
-            value: res.total
-          });
-        } else if (index === 1) {
-          this.$set(this.taskTabList, index, {
-            label: "正在执行的任务",
-            value: res.total
-          });
-        } else {
-          this.$set(this.taskTabList, index, {
-            label: "已完成任务",
-            value: res.total
-          });
-        }
+        this.pageTotal = res.data.total;
       }
     },
     addDialog() {
@@ -382,8 +401,9 @@ export default {
     },
     // 添加任务
     addTask(params) {
-      this.$api.checkAsset({ target_url: params.target_url }).then(res => {
-        let getTargeturl=res.data;
+      // let { target_cycle, target_name, target_starttime, target_teststra, type_id, userName, target_url_IP,task_type_id} = params;
+      
+     
             if (
             params.target_starttime - Date.now() > 0 &&
             params.target_cycle === "now"
@@ -399,7 +419,7 @@ export default {
               if (res.data.result === 0) {
                 this.dialogFormVisible = false;
                 this.$message.success("任务添加成功");
-                // this._taskList(this.params);
+                this.targetInfo(this.params);
               } else if (res.result === 1) {
                 this.$message.error("任务添加失败");
               } else if (res.result === 2) {
@@ -407,7 +427,7 @@ export default {
               }
             });
           }
-      });
+    
 
       
     }

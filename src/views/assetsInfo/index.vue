@@ -161,11 +161,14 @@
         <el-button type="primary" @click="addAsset('form')" :loading="addPending">确 定</el-button>
       </div>
     </el-dialog>
+        <!--分页-->
+        <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
 </template>
 
 <script>
 import Panel from "@/components/panel";
+import  Pages from "@/components/Pages";
 import { getUserName } from "@/utils/auth";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 const assetTypestruts = {
@@ -188,7 +191,8 @@ const titlestruts = {
 
 export default {
   components: {
-    Panel
+    Panel,
+      Pages
   },
   data() {
     var checkIp = (rule, value, callback) => {
@@ -297,21 +301,28 @@ export default {
         ]
       },
       page: "",
-      rows: ""
+      rows: "",
+        pageTotal: 0
     };
   },
   created() {
     this.assetsInfo({ is_page: 0, page: "1", rows: "10" });
   },
   methods: {
+      // 触发分页
+      pageChange(pageObj) {
+          let { page, rows } = pageObj,
+               params  = { page, rows,  is_page: 0}
+          this.assetsInfo(params);
+      },
     // 资产列表
     async assetsInfo(params) {
       this.tableLoading = true;
       let res = await this.$api.assetsInfo(params);
       this.tableLoading = false;
       if (res.data.result === 0) {
-        console.log(res);
         let data = res.data.rows;
+        this.pageTotal = res.data.total;
         res.data.rows.forEach(item => {
           assetTypestruts[item.assets_type];
         });
