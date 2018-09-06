@@ -117,6 +117,7 @@
                       </el-table>
               
                 </panel>
+
               </div>
         </div>
          <!-- 添加任务 -->
@@ -156,27 +157,37 @@
           <el-button type="primary" @click="addTask(form)" :loading="addPending" style="color:#d8d8d8">确 定</el-button>
         </div>
       </el-dialog>
+        <!--分页-->
+        <pages :total="pageTotal" @pageChange="pageChange" ref="page"></pages>
     </div>
 </template>
 <script>
 import { getUserName } from "@/utils/auth";
 import Panel from '@/components/panel'
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import Pages from "@/components/Pages"
 const strage = {
   medium: "常规策略",
   high: "深度策略"
 };
 export default {
   components:{
-    Panel
+    Panel,
+      Pages
   },
   data() {
     return {
+        pageObj: {},
+        defaultPage: {
+            rows: 10,
+            page: 1
+        },
+        pageTotal: 0,
       dialogFormVisible: false,
       fomatterTime: fomatterTime,
       strage:strage,
       formatTime:formatTime,
-       activeIndex: 0,
+        activeIndex: 0,
       tasknameS:[],
       tableData:[],
       taskname:'',
@@ -262,58 +273,50 @@ export default {
     this.getRule({ flag: 1 });
     this.getTargetType();
     this.getAssetURL();
-    // this.targetInfo(this.defaultPage, 0);
-    this.$set(this.taskTabList, 0, {
-      label: "所有任务",
-      value: this.dataTotal
-    });
-    // this.taskTabList.forEach((item, index) => {
-    //   this.switchSource(index)
-    // });
-      this.switchSource(0)
 
   },
+    mounted() {
+        this.switchSource(0)
+    },
   methods: {
+      pageChange(pageObj) {
+          this.pageObj = pageObj;
+          let { page, rows } = pageObj,
+              params = {};
+          if (this.activeIndex === 0) {
+              params = Object.assign({},{page, rows});
+              this.targetInfo(params)
+          } else if (this.activeIndex === 1) {
+              params = Object.assign({},{page, rows, target_struts: 0});
+              this.targetInfo(params)
+          } else {
+              params = Object.assign({},{page, rows, target_struts: 1});
+              this.targetInfo(params)
+          }
+      },
     switchSource(index) {
       this.activeIndex = index;
+      this.$refs.page.reset();
       if (index === 0) {
-        let paramsCircle = Object.assign({}, this.defaultPage);
-        this.targetInfo(paramsCircle, index);
-        console.log("所有")
+          let params = Object.assign({}, this.defaultPage);
+        this.targetInfo(params);
       } else if (index === 1) {
-        let paramsCircle = Object.assign({}, this.defaultPage, { target_struts: 0});
-        this.targetInfo(paramsCircle, index);
-        console.log("正在执行")
-      } else if (index === 2) {
-        let paramsCircle = Object.assign({}, this.defaultPage, {
-          target_struts: 1
-        });
-        console.log("已完成")
-        this.targetInfo(paramsCircle, index);
+          let params = Object.assign({}, this.defaultPage, {target_struts: 0});
+          this.targetInfo(params);
+      } else {
+          let params = Object.assign({}, this.defaultPage, {target_struts: 1});
+          this.targetInfo(params);
       }
     },
     //   任务列表
-    async targetInfo(params,index) {
+    async targetInfo(params) {
+          console.log(params)
+
       this.loading = true;
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
         this.tableData = res.data.targets;
-        if (index === 0) {
-          this.$set(this.taskTabList, index, {
-            label: "所有任务",
-            value: res.total
-          });
-        } else if (index === 1) {
-          this.$set(this.taskTabList, index, {
-            label: "正在执行的任务",
-            value: res.total
-          });
-        }else {
-          this.$set(this.taskTabList, index, {
-            label: "已完成任务",
-            value: res.total
-          });
-        }
+        this.pageTotal = res.data.total;
       }
     },
     addDialog() {
