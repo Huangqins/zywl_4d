@@ -69,7 +69,7 @@ export default new Router({
             ]
         },
         {
-            path: '/',
+            path: '/assetsManage',
             component: Layout,
             children: [
                 {

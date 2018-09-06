@@ -80,7 +80,9 @@
     display: block
   }
 }
-
+.el-select-dropdown{
+  background-color:#2D384A; 
+}
  .el-table tr {
    background-color: #263143;
  }
@@ -89,19 +91,21 @@
  }
  .el-dialog__header {
    text-align: center;
+   padding-bottom: 0;
    .el-dialog__title {
      color: #CAD5DB;
      font-size: 16px;
    }
  }
  .el-form-item__label {
-   color: #D1FFFF;
+   color: #ABB5BC;
+   font-weight: normal;
  }
  .el-input__inner {
    background-color:rgba(38,49,67,1);
    border:1px solid rgba(68,75,90,1);
    border-radius:4px;
-   color: #CAD5DB;
+   color: #D1FFFF;
  }
  .el-pagination__total {
    color: #CAD5DB;
@@ -129,4 +133,8 @@
 }
  .el-scrollbar__wrap {
    overflow-x: hidden;
+ }
+ .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+   background-color: #232B36;
+   border: 1px solid rgba(68,75,90,1);
  }
