@@ -1,9 +1,11 @@
 <template>
     <div class="task">
-        <div class="queryCriteria">
-            <div>任务筛选:</div>
-            <div>
-                <el-select v-model="taskname" filterable placeholder="任务名称">
+      <div>     
+        <panel>            
+            <div class="task-header">
+              <div>任务筛选:</div>
+              <div>
+                 <el-select v-model="taskname" filterable placeholder="任务名称">
                     <el-option
                     v-for="item in tasknameS"
                     :key="item.value"
@@ -28,10 +30,13 @@
                     </el-option>
                 </el-select>
                 <el-button class="btn">查询</el-button>
+              </div>               
+                <div>
+                   <el-button type="primary" @click="addDialog" style='text-align:right;'><i class="el-icon-plus"></i>添加任务测试 </el-button>
+                </div>
+               
             </div>
-            <div>
-                <el-button type="primary" @click="addDialog"><i class="el-icon-plus"></i>添加任务测试 </el-button>
-            </div>
+        </panel>
         </div>
             <div>
               <div class="task-tab">
@@ -76,25 +81,22 @@
                           </template>
                         </el-table-column>
                         <el-table-column prop="pdf_name" label="报告名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column label="操作" align="cente" width="230">
+                        <el-table-column label="操作" >
                           <template slot-scope="scope">
                             <template v-if="scope.row.target_struts == 2 ">                  
-                                <el-tooltip class="item" effect="dark" content="立即执行任务" placement="top">
-                              
+                                <el-tooltip class="item" effect="dark" content="立即执行任务" placement="top">                              
                                 <div class="search start" @click.native="taskBegin(scope.row)"></div>
                                 </el-tooltip>
                             </template>
-                            <template v-else-if="scope.row.target_struts == 0">
-                            
-                                <el-tooltip class="item" effect="dark" content="立即终止任务" placement="top">                   
+                            <template v-else-if="scope.row.target_struts == 0">                            
+                                <el-tooltip class="item" effect="dark" content="立即终止任务" placement="top">             
                               
                                 <div class="search stop" @click.native="taskOver(scope.row)"></div>
                               </el-tooltip>
                             </template>
                             <template v-if="scope.row.export_url">
                               
-                              <el-tooltip class="item" effect="dark" content="下载报告" placement="top">
-                              
+                              <el-tooltip class="item" effect="dark" content="下载报告" placement="top">                
                                 
                                     <div class="search downLoad" @click.native="exportFile(scope.row.export_url,scope.row.pdf_name)"></div>
                               
@@ -111,7 +113,6 @@
                                 <el-tooltip class="item" effect="dark" content="查看任务进度" placement="top">
                                 <div @click.native="taskDetail(scope.row)" class="search detailLook">  </div>
                                 </el-tooltip>
-                            <!-- 删除按钮暂定不用 -->
                           </template>
                         </el-table-column>
                       </el-table>
@@ -146,9 +147,13 @@
           </el-form-item>
         
           <el-form-item label="资产URL/IP" prop="target_url">           
-             <el-select v-model="form.target_url" filterable placeholder="资产url" style="width:100%">
+             <!-- <el-select v-model="form.target_url" filterable placeholder="资产url" style="width:100%">
               <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value"></el-option>
-            </el-select>
+            </el-select> -->
+            <el-select v-model="form.target_url" multiple  filterable allow-create  default-first-option  placeholder="资产url/ip" style="width:100%">
+              <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
+           </el-select>
+
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -160,30 +165,30 @@
 </template>
 <script>
 import { getUserName } from "@/utils/auth";
-import Panel from '@/components/panel'
+import Panel from "@/components/panel";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 const strage = {
   medium: "常规策略",
   high: "深度策略"
 };
 export default {
-  components:{
+  components: {
     Panel
   },
   data() {
     return {
       dialogFormVisible: false,
       fomatterTime: fomatterTime,
-      strage:strage,
-      formatTime:formatTime,
-       activeIndex: 0,
-      tasknameS:[],
-      tableData:[],
-      taskname:'',
-      scanTargetS:[],
-      scanTarget:'',
-      executionmodeS:[],
-      executionmode:'',
+      strage: strage,
+      formatTime: formatTime,
+      activeIndex: 0,
+      tasknameS: [],
+      tableData: [],
+      taskname: "",
+      scanTargetS: [],
+      scanTarget: "",
+      executionmodeS: [],
+      executionmode: "",
       form: {
         target_name: "渗透测试+" + fomatterTime(new Date()),
         target_teststra: "",
@@ -198,7 +203,7 @@ export default {
       cycleArr: [],
       typeArr: [],
       urlArr: [],
-      taskTabList:[
+      taskTabList: [
         {
           label: "所有任务",
           value: 0
@@ -270,8 +275,7 @@ export default {
     // this.taskTabList.forEach((item, index) => {
     //   this.switchSource(index)
     // });
-      this.switchSource(0)
-
+    this.switchSource(0);
   },
   methods: {
     switchSource(index) {
@@ -279,21 +283,23 @@ export default {
       if (index === 0) {
         let paramsCircle = Object.assign({}, this.defaultPage);
         this.targetInfo(paramsCircle, index);
-        console.log("所有")
+        console.log("所有");
       } else if (index === 1) {
-        let paramsCircle = Object.assign({}, this.defaultPage, { target_struts: 0});
+        let paramsCircle = Object.assign({}, this.defaultPage, {
+          target_struts: 0
+        });
         this.targetInfo(paramsCircle, index);
-        console.log("正在执行")
+        console.log("正在执行");
       } else if (index === 2) {
         let paramsCircle = Object.assign({}, this.defaultPage, {
           target_struts: 1
         });
-        console.log("已完成")
+        console.log("已完成");
         this.targetInfo(paramsCircle, index);
       }
     },
     //   任务列表
-    async targetInfo(params,index) {
+    async targetInfo(params, index) {
       this.loading = true;
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
@@ -308,7 +314,7 @@ export default {
             label: "正在执行的任务",
             value: res.total
           });
-        }else {
+        } else {
           this.$set(this.taskTabList, index, {
             label: "已完成任务",
             value: res.total
@@ -373,33 +379,37 @@ export default {
           });
         });
       }
-    },    
+    },
     // 添加任务
     addTask(params) {
-      console.log(params)
-      if (
-        params.target_starttime - Date.now() > 0 &&
-        params.target_cycle === "now"
-      ) {
-        this.$message.error(`执行开始时间大于当前时间,不能选择立即执行`);
-      } else {
-        let obj = Object.assign({}, params, {
-          target_starttime: fomatterTime(params.target_starttime)
-        });
-        this.addPending = true;
-        this.$api.addTarget(obj).then(res => {
-          this.addPending = false;
-          if (res.result === 0) {
-            this.dialogFormVisible = false;
-            this.$message.success("任务添加成功");
-            // this._taskList(this.params);
-          } else if (res.result === 1) {
-            this.$message.error("任务添加失败");
-          } else if (res.result === 2) {
-            this.$message.error("填写资产不存在");
+      this.$api.checkAsset({ target_url: params.target_url }).then(res => {
+        let getTargeturl=res.data;
+            if (
+            params.target_starttime - Date.now() > 0 &&
+            params.target_cycle === "now"
+          ) {
+            this.$message.error(`执行开始时间大于当前时间,不能选择立即执行`);
+          } else {
+            let obj = Object.assign({}, params, {
+              target_starttime: fomatterTime(params.target_starttime)
+            });
+            this.addPending = true;
+            this.$api.addTarget(obj).then(res => {
+              this.addPending = false;
+              if (res.data.result === 0) {
+                this.dialogFormVisible = false;
+                this.$message.success("任务添加成功");
+                // this._taskList(this.params);
+              } else if (res.result === 1) {
+                this.$message.error("任务添加失败");
+              } else if (res.result === 2) {
+                this.$message.error("填写资产不存在");
+              }
+            });
           }
-        });
-      }
+      });
+
+      
     }
   }
 };
@@ -408,28 +418,21 @@ export default {
 .task {
   margin: 20px 20px 0 20px;
 }
-.queryCriteria {
-  padding: 0 30px;
-  color: #fff;
-  height: 40px;
-  line-height: 40px;
-  font-weight: 400;
-  display: flex;
+.task-header {
+  padding: 20px;
+   display: flex;
   & > div:first-child {
     width: 69px;
-    color: rgba(209, 255, 255, 1);
-    font-size: 16px;
+    color: #d1ffff;
+    margin-right: 10px;
+    line-height: 36px;
   }
   & > div:nth-child(2) {
     flex: 1;
     margin: 0 10px;
-    font-size: 14px;
-    color: rgba(24, 187, 154, 1);
   }
   & > div:last-child {
     width: 180px;
-    font-size: 16px;
-    color: rgba(24, 187, 154, 1);
   }
 }
 .select {
@@ -440,29 +443,83 @@ export default {
 }
 .task-tab {
   display: inline-block;
-  // border: 1px solid #24536f;
-  height: 46px;
   ul {
     overflow: hidden;
-    color: #B0B7BB;
+    color: #b0b7bb;
+    padding: 0;
+    margin-bottom: 0;
     .active {
-      color: #18BB9A;
-      background: #2D384A;
-      border-top: 2px solid #18BB9A;
+      color: #18bb9a;
+      background: #2d384a;
+      border-top: 2px solid #18bb9a;
     }
     li {
       float: left;
-      border-top: 2px solid #2D384A;
+      border-top: 2px solid #2d384a;
       cursor: pointer;
       list-style: none;
-      width:126px;
-      height:46px;
-      background:rgba(38,49,67,1);
+      width: 126px;
+      height: 46px;
+      background: rgba(38, 49, 67, 1);
       line-height: 46px;
-      text-align: center  ;
-      margin-right: 3px;   
+      text-align: center;
+      margin-right: 3px;
     }
-    
   }
+}
+.search{  
+   margin-right:15px;
+   display: inline-block;
+   cursor: pointer;  
+}
+.detailLook{
+   width: 18px;
+   height: 18px;
+   background: url('../../../public/img/png/search.png') center center no-repeat;
+   background-size: 100% 100%;
+   &:hover {
+     background: url('../../../public/img/png/searchActive.png') center center no-repeat;
+     background-size: 100% 100%;
+   }
+}
+.birth{
+   width: 18px;
+   height: 18px;
+   background: url('../../../public/img/png/birthm.png') center center no-repeat;
+   background-size: 100% 100%;
+   &:hover {
+     background: url('../../../public/img/png/birth.png') center center no-repeat;
+     background-size: 100% 100%;
+   }
+}
+.downLoad{
+  width: 18px;
+   height: 18px;
+   background: url('../../../public/img/png/downw.png') center center no-repeat;
+   background-size: 100% 100%;
+   &:hover {
+     background: url('../../../public/img/png/down.png') center center no-repeat;
+     background-size: 100% 100%;
+   }
+}
+.stop{
+   width: 18px;
+   height: 18px;
+   background: url('../../../public/img/png/stop.png') center center no-repeat;
+   background-size: 100% 100%;
+   &:hover {
+     background: url('../../../public/img/png/stopSure.png') center center no-repeat;
+     background-size: 100% 100%;
+   }
+}
+.start{
+   width: 18px;
+   height: 18px;
+   background: url('../../../public/img/png/strat.png') center center no-repeat;
+   background-size: 100% 100%;
+   &:hover {
+     background: url('../../../public/img/png/startSure.png') center center no-repeat;
+     background-size: 100% 100%;
+   }
 }
 </style>

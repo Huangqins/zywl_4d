@@ -138,3 +138,18 @@
    background-color: #232B36;
    border: 1px solid rgba(68,75,90,1);
  }
+ .el-range-editor .el-range-input{
+   background-color: #263143;
+ }
+ .el-date-editor .el-range-separator{
+   color: #D1FFFF;
+   width: 6%;
+ }
+ .el-button:hover, .el-button:focus{
+   border: 1px solid #098A72;
+   background-color: #18bb9a;
+   color: #fff;
+ }
+ .el-select-dropdown__item{
+   color: #D1FFFF;
+ }
