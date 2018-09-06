@@ -2,11 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4acdef1e-10b2-4532-9655-a2ad03221cc3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/img/png/birth.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/birthm.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/down.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/downw.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/searchActive.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/startSure.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/stop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/stopSure.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/strat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/png/success.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/element-ui.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/element-ui.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/assetsInfo/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/assetsInfo/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/dashboard/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dashboard/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/layout/components/AppMain.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/layout/components/AppMain.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/layout/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/layout/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/taskInfo/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/taskInfo/index.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -111,23 +120,47 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/taskInfo/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="455" column="8" lean-forward="true" selection-start-line="455" selection-start-column="8" selection-end-line="455" selection-end-column="8" />
+            <state relative-caret-position="11904">
+              <caret line="496" column="8" lean-forward="true" selection-start-line="496" selection-start-column="8" selection-end-line="496" selection-end-column="8" />
               <folding>
-                <element signature="e#9185#9228#0" expanded="true" />
+                <element signature="n#style#0;n#el-button#0;n#div#2;n#div#0;n#panel#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-table-column#1;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#3;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-table-column#4;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#5;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#6;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#el-form-item#2;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-date-picker#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#div#0;n#el-form-item#6;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-button#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#9960#10003#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/assetsInfo/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="401" column="1" lean-forward="true" selection-start-line="401" selection-start-column="1" selection-end-line="401" selection-end-column="1" />
+            <state relative-caret-position="3113">
+              <caret line="448" lean-forward="true" selection-start-line="448" selection-end-line="448" />
+              <folding>
+                <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-button#0;n#template#0;n#el-table-column#8;n#el-table#0;n#panel#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#8566#8605#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -302,6 +335,7 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-253" />
     <option name="y" value="23" />
     <option name="width" value="1680" />
     <option name="height" value="971" />
@@ -422,15 +456,15 @@
       <workItem from="1536112885079" duration="15469000" />
       <workItem from="1536183666886" duration="2000" />
       <workItem from="1536198552355" duration="7830000" />
-      <workItem from="1536208263615" duration="15753000" />
+      <workItem from="1536208263615" duration="15930000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99050000" />
+    <option name="totallyTimeSpent" value="99227000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="971" extended-state="6" />
+    <frame x="-253" y="23" width="1680" height="971" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.36577994" />
@@ -794,20 +828,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/taskInfo/index.vue">
+    <entry file="file://$PROJECT_DIR$/src/views/assetsInfo/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="455" column="8" lean-forward="true" selection-start-line="455" selection-start-column="8" selection-end-line="455" selection-end-column="8" />
+        <state relative-caret-position="3113">
+          <caret line="448" lean-forward="true" selection-start-line="448" selection-end-line="448" />
           <folding>
-            <element signature="e#9185#9228#0" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#template#0;n#el-table-column#8;n#el-table#0;n#panel#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#template#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#8566#8605#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/assetsInfo/index.vue">
+    <entry file="file://$PROJECT_DIR$/src/views/taskInfo/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="401" column="1" lean-forward="true" selection-start-line="401" selection-start-column="1" selection-end-line="401" selection-end-column="1" />
+        <state relative-caret-position="11904">
+          <caret line="496" column="8" lean-forward="true" selection-start-line="496" selection-start-column="8" selection-end-line="496" selection-end-column="8" />
+          <folding>
+            <element signature="n#style#0;n#el-button#0;n#div#2;n#div#0;n#panel#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table-column#1;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#3;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table-column#4;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#5;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#6;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#el-form-item#2;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-date-picker#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-select#0;n#div#0;n#el-form-item#6;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#9960#10003#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

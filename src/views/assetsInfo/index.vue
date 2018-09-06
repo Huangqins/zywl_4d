@@ -1,47 +1,56 @@
 <template>
     <div class="assets">
-        <div>
+        <div class="assets-header">
         <panel>
-            <!-- <div>
-                筛选条件：
-                <el-select v-model="taskname" filterable placeholder="任务名称">
+            <div class="assets-header-search">
+                <span>筛选条件:</span>
+                <el-select v-model="assetsArea" filterable placeholder="资产区域" class="select">
                     <el-option
-                    v-for="item in tasknameS"
+                    v-for="item in assetsAreaS"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                     </el-option>
                 </el-select>
-                <el-select v-model="scanTarget" filterable placeholder="扫描目标" class="select">
+                <el-select v-model="equipmentType" filterable placeholder="设备类型" class="select">
                     <el-option
-                    v-for="item in scanTargetS"
+                    v-for="item in equipmentTypeS"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                     </el-option>
                 </el-select>
-                <el-select v-model="executionmode" filterable placeholder="执行方式" >
+                <el-select v-model="osystem" filterable placeholder="操作系统" class="select">
                     <el-option
-                    v-for="item in executionmodeS"
+                    v-for="item in osystemS"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                     </el-option>
                 </el-select>
-                <el-input v-model="input" placeholder="请输入内容" style="width:200px;"></el-input>
+                <el-select v-model="port" filterable placeholder="端口号" class="select">
+                    <el-option
+                    v-for="item in portS"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-date-picker class="selectDate" v-model="assetdate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                 </el-date-picker>
                 <el-button class="btn">查询</el-button>
-            </div> -->
+            </div>
             
         </panel>
         </div>
-        <div>
-            <el-button @click='addAssets'>添加资产</el-button>
-            <el-button>导入资产</el-button>
-            <el-button>导出资产</el-button>
-        </div>
-        <div>
-
-            <panel title="资产列表" style="text-align:center">
+        
+        <div class="assets-content">           
+            <panel>
+                 <div class="assets-content-btn">
+                    <el-button type="primary" @click='addAssets'>添加资产</el-button>
+                    <el-button type="primary" >导入资产</el-button>
+                    <el-button type="primary" >导出资产</el-button>
+                </div>
                <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
                     <el-table-column type="selection" width="35"></el-table-column>
                     <el-table-column prop="assets_name" label="资产名称" align="center" :show-overflow-tooltip="true"></el-table-column>
@@ -217,6 +226,15 @@ export default {
       addPending: false,
       state: "1",
       status: "edit",
+      assetsAreaS:[],
+      assetsArea:'',
+      equipmentTypeS:[],
+      equipmentType:'',
+      osystemS:[],
+      osystem:'',
+      portS:[],
+      port:'',
+      assetdate:[],
       form: {
         assets_name: "",
         assets_url: "",
@@ -326,6 +344,14 @@ export default {
       this.status = "edit";
       this.state = "2";
     },
+    // 清空表单
+    resetForm() {
+      this.dialogFormVisible = false;
+      this.$refs.form.resetFields();
+      setTimeout(() => {
+        this.form = Object.assign({}, this.formCopy);
+      }, 200);
+    },
     // 添加资产
     addAsset(params) {
       if (this.$refs.form) {
@@ -400,4 +426,25 @@ export default {
 .assets {
   /*margin: 0 20px;*/
 }
+.assets-header{
+    &-search{   
+      padding:20px 10px;
+      span{
+          color: #D1FFFF;
+          margin-right: 10px;
+      }
+    }
+     margin-bottom: 25px;
+}
+.assets-content-btn{
+    margin: 15px 0px 10px 7px;
+    
+}
+.select{
+    margin-right: 15px;
+}
+.selectDate{
+     margin-right: 30px;
+}
+
 </style>

@@ -62,12 +62,19 @@ const ApiSchema = {
         method: 'post',
         keys: ['target_name', 'rule_id', 'assrts_url', "target_struts","rows", "page"]
     },
+    //检测资产是否存在在执行任务
+    checkAsset: {
+        url: `${path}task/checkAsset`,
+        method: 'post',
+        keys: ['target_url']
+    },
     //添加任务
     addTarget: {
         url: `${path}task/addTarget`,
         method: 'post',
-        keys: ['target_name', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
+        keys: ['task_type_id','target_name', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
+    
     // 资产列表
     assetsInfo: {
         url: `${path}asset/assetsInfo`,
