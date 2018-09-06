@@ -424,7 +424,7 @@ export default {
 
 <style scoped lang="scss">
 .assets {
-  margin: 0 20px;
+  /*margin: 0 20px;*/
 }
 .assets-header{
     &-search{   

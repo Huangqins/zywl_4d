@@ -1,11 +1,9 @@
 <template>
     <div class="task">
-      <div>     
-        <panel>            
-            <div class="task-header">
-              <div>任务筛选:</div>
-              <div>
-                 <el-select v-model="taskname" filterable placeholder="任务名称">
+        <div class="queryCriteria">
+            <div>任务筛选:</div>
+            <div>
+                <el-select v-model="taskname" filterable placeholder="任务名称">
                     <el-option
                     v-for="item in tasknameS"
                     :key="item.value"
@@ -30,13 +28,10 @@
                     </el-option>
                 </el-select>
                 <el-button class="btn">查询</el-button>
-              </div>               
-                <div>
-                   <el-button type="primary" @click="addDialog" style='text-align:right;'><i class="el-icon-plus"></i>添加任务测试 </el-button>
-                </div>
-               
             </div>
-        </panel>
+            <div>
+                <el-button type="primary" @click="addDialog"><i class="el-icon-plus"></i>添加任务测试 </el-button>
+            </div>
         </div>
             <div>
               <div class="task-tab">
@@ -86,22 +81,25 @@
                           </template>
                         </el-table-column>
                         <el-table-column prop="pdf_name" label="报告名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column label="操作" >
+                        <el-table-column label="操作" align="cente" width="230">
                           <template slot-scope="scope">
                             <template v-if="scope.row.target_struts == 2 ">                  
-                                <el-tooltip class="item" effect="dark" content="立即执行任务" placement="top">                              
+                                <el-tooltip class="item" effect="dark" content="立即执行任务" placement="top">
+                              
                                 <div class="search start" @click.native="taskBegin(scope.row)"></div>
                                 </el-tooltip>
                             </template>
-                            <template v-else-if="scope.row.target_struts == 0">                            
-                                <el-tooltip class="item" effect="dark" content="立即终止任务" placement="top">             
+                            <template v-else-if="scope.row.target_struts == 0">
+                            
+                                <el-tooltip class="item" effect="dark" content="立即终止任务" placement="top">                   
                               
                                 <div class="search stop" @click.native="taskOver(scope.row)"></div>
                               </el-tooltip>
                             </template>
                             <template v-if="scope.row.export_url">
                               
-                              <el-tooltip class="item" effect="dark" content="下载报告" placement="top">                
+                              <el-tooltip class="item" effect="dark" content="下载报告" placement="top">
+                              
                                 
                                     <div class="search downLoad" @click.native="exportFile(scope.row.export_url,scope.row.pdf_name)"></div>
                               
@@ -118,12 +116,13 @@
                                 <el-tooltip class="item" effect="dark" content="查看任务进度" placement="top">
                                 <div @click.native="taskDetail(scope.row)" class="search detailLook">  </div>
                                 </el-tooltip>
+                            <!-- 删除按钮暂定不用 -->
                           </template>
                         </el-table-column>
                       </el-table>
               
                 </panel>
-
+              
               </div>
         </div>
          <!-- 添加任务 -->
@@ -162,13 +161,10 @@
             <el-select  v-model="form.asset_ids" multiple  filterable  default-first-option  placeholder="" style="width:100%">
                 <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
             </el-select>
-          </div>           
-            <div v-if="form.task_type_id ==1 ">
-               <el-input v-model="form.target_url" auto-complete="off" placeholder="例:www.xxx.com或192.168.10.104">
-
-               </el-input>
             </div>
-           
+            <div v-if="form.task_type_id ==1 ">
+              <el-input type="textarea" v-model="form.target_url" auto-complete="off" placeholder="例：192.168.1.1或192.168.1.1-192.168.1.255或192.168.1.1/24或www.xxx.com.cn"></el-input>
+            </div>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -179,10 +175,11 @@
         <!--分页-->
         <pages :total="pageTotal" @pageChange="pageChange" ref="page"></pages>
     </div>
+  
 </template>
 <script>
 import { getUserName } from "@/utils/auth";
-import Panel from "@/components/panel";
+import Panel from '@/components/panel'
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 import Pages from "@/components/Pages";
 const strage = {
@@ -241,7 +238,7 @@ export default {
       cycleArr: [],
       typeArr: [],
       urlArr: [],
-      taskTabList: [
+      taskTabList:[
         {
           label: "所有任务",
           value: 0
@@ -267,10 +264,9 @@ export default {
         ],
         target_teststra: [
           {
-            type: "string",
             required: true,
             message: "策略类型不能为空",
-            trigger: "change"
+              trigger: 'change'
           }
         ],
         target_starttime: [
@@ -305,6 +301,7 @@ export default {
     this.getRule({ flag: 1 });
     this.getTargetType();
     this.getAssetURL();
+
   },
   mounted() {
     this.switchSource(0);
@@ -341,6 +338,8 @@ export default {
     },
     //   任务列表
     async targetInfo(params) {
+          console.log(params)
+
       this.loading = true;
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
@@ -405,7 +404,7 @@ export default {
           });
         });
       }
-    },
+    },    
     // 添加任务
     addTask(params) {
       params.asset_ids = params.asset_ids.join(",");
@@ -439,23 +438,30 @@ export default {
 </script>
 <style lang="scss" scoped>
 .task {
-  margin: 20px 20px 0 20px;
+  /*margin: 20px 20px 0 20px;*/
 }
-.task-header {
-  padding: 20px;
+.queryCriteria {
+  /*padding: 0 30px;*/
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  font-weight: 400;
   display: flex;
   & > div:first-child {
     width: 69px;
-    color: #d1ffff;
-    margin-right: 10px;
-    line-height: 36px;
+    color: rgba(209, 255, 255, 1);
+    font-size: 16px;
   }
   & > div:nth-child(2) {
     flex: 1;
     margin: 0 10px;
+    font-size: 14px;
+    color: rgba(24, 187, 154, 1);
   }
   & > div:last-child {
-    width: 180px;
+    /*width: 180px;*/
+    font-size: 16px;
+    color: rgba(24, 187, 154, 1);
   }
 }
 .select {
@@ -466,28 +472,30 @@ export default {
 }
 .task-tab {
   display: inline-block;
+    margin-left: -40px;
+  // border: 1px solid #24536f;
+  /*height: 46px;*/
   ul {
     overflow: hidden;
-    color: #b0b7bb;
-    padding: 0;
-    margin-bottom: 0;
+    color: #B0B7BB;
     .active {
-      color: #18bb9a;
-      background: #2d384a;
-      border-top: 2px solid #18bb9a;
+      color: #18BB9A;
+      background: #2D384A;
+      border-top: 2px solid #18BB9A;
     }
     li {
       float: left;
-      border-top: 2px solid #2d384a;
+      border-top: 2px solid #2D384A;
       cursor: pointer;
       list-style: none;
-      width: 126px;
-      height: 46px;
-      background: rgba(38, 49, 67, 1);
+      width:126px;
+      height:46px;
+      background:rgba(38,49,67,1);
       line-height: 46px;
-      text-align: center;
-      margin-right: 3px;
+      text-align: center  ;
+      margin-right: 3px;   
     }
+    
   }
 }
 .search {

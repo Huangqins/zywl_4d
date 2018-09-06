@@ -133,8 +133,12 @@
 }
  .el-scrollbar__wrap {
    overflow-x: hidden;
-   padding-bottom: 15px;
+   //padding-bottom: 15px;
    border: none;
+ }
+ .el-scrollbar__view {
+   height: 100%;
+
  }
  .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
    background-color: #232B36;
@@ -164,4 +168,7 @@
  }
  .el-select-dropdown {
    border-color: #18bb9a;
+ }
+ .el-textarea__inner{
+   background-color: #263143;
  }
