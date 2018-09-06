@@ -133,8 +133,19 @@
 }
  .el-scrollbar__wrap {
    overflow-x: hidden;
+   padding-bottom: 15px;
+   border: none;
  }
  .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
    background-color: #232B36;
-   border: 1px solid rgba(68,75,90,1);
+
+ }
+ .el-select-dropdown__item {
+   color: #A5AFB6;
+ }
+ .el-select-dropdown__item.selected {
+   color: #D1FFFF;
+ }
+ .el-select-dropdown {
+   border-color: #18bb9a;
  }
