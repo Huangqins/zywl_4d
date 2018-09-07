@@ -79,7 +79,7 @@ const ApiSchema = {
     assetsInfo: {
         url: `${path}asset/assetsInfo`,
         method: 'post',
-        keys: ['is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
+        keys: ['start_time','id','end_time','is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
     },
     // (添加)更新资产
     assetsUpdate: {
@@ -99,6 +99,36 @@ const ApiSchema = {
             'assets_os_type', 'assets_manger','assets_creatuser','assets_desc','assets_detail','assets_hostname','assets_numbering',
             'assets_zone'
         ]
+    },
+    //资产删除
+    deleteAssets: {
+        url: `${path}asset/deleteAssets`,
+        method: 'post',
+        keys: 'assets_ids'
+    },
+    //端口号
+    getPort: {
+        url: `${path}asset/getPort`,
+        method: 'post',
+        keys: ''
+    },
+    //操作系统
+    getOSType: {
+        url: `${path}asset/getOSType`,
+        method: 'post',
+        keys: ''
+    },
+    //设备类型
+    assetsType: {
+        url: `${path}asset/assetsType`,
+        method: 'post',
+        keys: ''
+    },
+     //资产区域
+     getArea: {
+        url: `${path}asset/getArea`,
+        method: 'post',
+        keys: ''
     },
 }
 // filter keys

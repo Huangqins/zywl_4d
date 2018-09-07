@@ -182,6 +182,7 @@ export default {
   &-secTwo{
     display: flex;
     width: 100%;
+    margin-bottom: 10px;
     & > div{
         flex: 1;
 

@@ -22,7 +22,7 @@
                 </el-select>
                 <el-select v-model="osystem" filterable placeholder="操作系统" class="select">
                     <el-option
-                    v-for="item in osystemS"
+                    v-for="item in OSsystemS"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -36,9 +36,10 @@
                     :value="item.value">
                     </el-option>
                 </el-select>
-                <el-date-picker class="selectDate" v-model="assetdate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-                 </el-date-picker>
-                <el-button class="btn">查询</el-button>
+               <el-date-picker v-model="start_time" type="datetime" placeholder="选择日期" style="margin-right:15px;"></el-date-picker>
+                
+               <el-date-picker v-model="end_time" type="datetime" placeholder="选择日期" style="margin-right:30px;"></el-date-picker>
+                <el-button class="btn" @click="searchAsset">查询</el-button>
             </div>
             
         </panel>
@@ -172,6 +173,15 @@
             </el-upload>
             
       </el-dialog>
+      <!-- 确认删除 -->
+    <el-dialog title="删除确认" :visible.sync="deleteAssetVisible" width="30%">
+      <p style="font-size:18px;overflow:hidden;">
+        <i class="el-icon-warning" style="color:#FFCC33;font-size:30px;display:inline-block;vertical-align:middle;margin-right:5px;"></i>该操作不可撤回,是否确认删除该条数据?</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteAssetVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteItem">确 定</el-button>
+      </span>
+    </el-dialog>
         <!--分页-->
         <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
@@ -179,8 +189,8 @@
 
 <script>
 import Panel from "@/components/panel";
-import  Pages from "@/components/Pages";
-import { getUserName,getToken, } from "@/utils/auth";
+import Pages from "@/components/Pages";
+import { getUserName, getToken } from "@/utils/auth";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 
 const assetTypestruts = {
@@ -204,7 +214,7 @@ const titlestruts = {
 export default {
   components: {
     Panel,
-      Pages
+    Pages
   },
   data() {
     var checkIp = (rule, value, callback) => {
@@ -228,26 +238,34 @@ export default {
       }
     };
     return {
+      pageObj: {},
+      defaultPage: {
+        rows: 10,
+        page: 1
+      },
       fomatterTime: fomatterTime,
       formatTime: formatTime,
-      areaImportVisible:false,
+      areaImportVisible: false,
       tableData: [],
       assetTypestruts: assetTypestruts,
       titlestruts: titlestruts,
+      deleteAssetVisible: false,
       tableLoading: false,
       dialogFormVisible: false,
       addPending: false,
       state: "1",
       status: "edit",
-      assetsAreaS:[],
-      assetsArea:'',
-      equipmentTypeS:[],
-      equipmentType:'',
-      osystemS:[],
-      osystem:'',
-      portS:[],
-      port:'',
-      assetdate:[],
+      assetsAreaS: [],
+      assetsArea: "",
+      equipmentTypeS: [],
+      equipmentType: "",
+      OSsystemS: [],
+      start_time:'',
+      end_time:'',
+      osystem: "",
+      portS: [],
+      port: "",
+      assetdate: [],
       form: {
         assets_name: "",
         assets_url: "",
@@ -315,18 +333,91 @@ export default {
       },
       page: "",
       rows: "",
-     pageTotal: 0,
-     headers: {
+      pageTotal: 0,
+      headers: {
         token: getToken(),
         userName: getUserName(),
         menuCode: vm._route.meta.menuCode
       },
+      params: {
+        is_page: 0,
+        page: "1",
+        rows: "10"
+      }
     };
   },
   created() {
-    this.assetsInfo({ is_page: 0, page: "1", rows: "10" });
+    this.assetsInfo(this.params);
+    this.getPort();
+    this.getOSType();
+    this.assetsType();
+    this.getArea();
   },
   methods: {
+    searchAsset() {
+      let data = Object.assign({}, this.params, {
+        assets_name:this.assetsArea,
+        id: this.equipmentType,
+        os_type:this.osystem,
+        port: this.port,
+        start_time:fomatterTime(this.start_time),
+        end_time:fomatterTime(this.end_time)
+      });
+      this.assetsInfo(data);
+    },
+    //端口号
+    async getPort() {
+      let res = await this.$api.getPort();
+      if (res.data.result == "0") {
+        let data = res.data.assets;
+        this.portS = data.map(item => {
+          return {
+            lable: item.port,
+            value: item.port
+          };
+        });
+      }
+    },
+    //操作系统
+    async getOSType() {
+      let res = await this.$api.getOSType();
+      if (res.data.result == "0") {
+        let data = res.data.assets;
+        this.OSsystemS = data.map(item => {
+          return {
+            lable: item.assets_os_type,
+            value: item.assets_os_type
+          };
+        });
+      }
+    },
+    //设备类型
+    async assetsType() {
+      let res = await this.$api.assetsType();
+      if (res.data.result == "0") {
+        let data = res.data.assetsType;
+        this.equipmentTypeS = data.map(item => {
+          return {
+            lable: item.id,
+            value: item.name
+          };
+        });
+      }
+    },
+    //设备类型
+    async getArea() {
+      let res = await this.$api.getArea();
+      if (res.data.result == "0") {
+        let data = res.data.areas;
+        this.assetsAreaS = data.map(item => {
+          return {
+            lable: item.area_id,
+            value: item.area_name
+          };
+        });
+      }
+    },
+
     // 导入回调
     fileUpload(res) {
       this.file = res;
@@ -343,12 +434,14 @@ export default {
         }
       });
     },
-      // 触发分页
-      pageChange(pageObj) {
-          let { page, rows } = pageObj,
-               params  = { page, rows,  is_page: 0}
-          this.assetsInfo(params);
-      },
+    // 触发分页
+    pageChange(pageObj) {
+      this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0 };
+      this.params = params;
+      this.assetsInfo(params);
+    },
     // 资产列表
     async assetsInfo(params) {
       this.tableLoading = true;
@@ -362,6 +455,27 @@ export default {
         });
         this.tableData = res.data.rows;
       }
+    },
+    // 选中删除项并且打开提示框
+    assetsDeleteSelect(row) {
+      this.assetItem = Object.assign({}, row);
+      this.deleteAssetVisible = true;
+    },
+    // 确定删除
+    deleteItem() {
+      this.assetsDelete(this.assetItem);
+    },
+    // 资产删除
+    assetsDelete(row) {
+      this.$api.deleteAssets({ assets_ids: [row.assets_id] }).then(res => {
+        this.deleteAssetVisible = false;
+        if (res.data.result === 0) {
+          this.$message.success(`删除成功`);
+          this.assetsInfo(this.params);
+        } else {
+          this.$message.error(`删除失败`);
+        }
+      });
     },
     //添加弹框
     addAssets() {
@@ -470,25 +584,23 @@ export default {
 .assets {
   /*margin: 0 20px;*/
 }
-.assets-header{
-    &-search{   
-      padding:20px 10px;
-      span{
-          color: #D1FFFF;
-          margin-right: 10px;
-      }
+.assets-header {
+  &-search {
+    padding: 20px 10px;
+    span {
+      color: #d1ffff;
+      margin-right: 10px;
     }
-     margin-bottom: 25px;
+  }
+  margin-bottom: 25px;
 }
-.assets-content-btn{
-    margin: 15px 0px 10px 7px;
-    
+.assets-content-btn {
+  margin: 15px 0px 10px 7px;
 }
-.select{
-    margin-right: 15px;
+.select {
+  margin-right: 15px;
 }
-.selectDate{
-     margin-right: 30px;
+.selectDate {
+  margin-right: 30px;
 }
-
 </style>
