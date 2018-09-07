@@ -101,7 +101,7 @@ export default new Router({
             ]
         },
         {
-            path: '/',
+            path: '/taskManage',
             component: Layout,
             children: [
                 {
