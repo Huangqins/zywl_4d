@@ -2,10 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4acdef1e-10b2-4532-9655-a2ad03221cc3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/customTestGroup/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/customTestGroup/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/precache-manifest.52e5b54131297ecb70ad616f717dfb60.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/service-worker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/about.39717d30.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/app.a219d980.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/chunk-0a2c.c01f40c7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/chunk-4ae2.dbf40aea.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/css/chunk-d66c.174cc43c.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/404.05bc1f70.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/bug.efb92b31.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/chart.640d0898.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/clipboard.219a5473.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/component.9dd65a74.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/dashboard.39d0cf7e.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/documentation.0c1e7956.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/drag.4a0647ce.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/edit.8cfc4274.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/email.edc3f32c.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/example.3270aaf6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/excel.39e4de78.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/eye.18959d71.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/form.19f38a9c.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/guide.b5e7a0e1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/icon.c74f27ab.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/international.adedfffe.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/language.834be2aa.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/list.4de8a70f.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/lock.eb1e0587.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/message.f3b1e037.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/money.c41aeea3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/nested.9de67396.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/password.582ce01b.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/people.cc88ce5e.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/peoples.5ae2043c.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/qq.dffe57d7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/shoppingCard.577d7367.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/star.efb446b2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/tab.bb876173.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/table.cc16a106.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/theme.a049098f.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/user.77b72bf2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/wechat.1f26375e.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/zip.86cd26e4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/about.84ac7e00.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.989a6300.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/chunk-0a2c.9b2c49b9.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/chunk-4ae2.f518d3dd.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/chunk-d66c.1e9123dc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/chunk-vendors.0232e969.js" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -86,23 +133,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/taskInfo/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="444" column="20" selection-start-line="444" selection-start-column="20" selection-end-line="444" selection-end-column="20" />
+            <state relative-caret-position="1202">
+              <caret line="474" column="20" selection-start-line="474" selection-start-column="20" selection-end-line="474" selection-end-column="20" />
               <folding>
                 <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table-column#1;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#3;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table-column#4;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#5;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#6;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-select#0;n#el-form-item#2;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-date-picker#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-select#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-select#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-button#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#9237#9280#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,8 +172,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vue.config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="977">
-              <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
+            <state relative-caret-position="240">
+              <caret line="10" column="52" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -165,8 +199,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="58" column="10" selection-start-line="58" selection-start-column="10" selection-end-line="58" selection-end-column="10" />
+            <state relative-caret-position="96">
+              <caret line="7" column="41" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -339,6 +373,17 @@
               <item name="zywl_5D" type="b2602c69:ProjectViewProjectNode" />
               <item name="zywl_5D" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="zywl_5D" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zywl_5D" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zywl_5D" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zywl_5D" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -410,12 +455,12 @@
       <workItem from="1536183666886" duration="2000" />
       <workItem from="1536198552355" duration="7830000" />
       <workItem from="1536208263615" duration="16622000" />
-      <workItem from="1536286015928" duration="4601000" />
+      <workItem from="1536286015928" duration="5381000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104520000" />
+    <option name="totallyTimeSpent" value="105300000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1680" height="971" extended-state="6" />
@@ -720,23 +765,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/taskInfo/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="444" column="20" selection-start-line="444" selection-start-column="20" selection-end-line="444" selection-end-column="20" />
+        <state relative-caret-position="1202">
+          <caret line="474" column="20" selection-start-line="474" selection-start-column="20" selection-end-line="474" selection-end-column="20" />
           <folding>
             <element signature="n#style#0;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table-column#1;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#template#0;n#el-table-column#3;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table-column#4;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#5;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#template#0;n#el-table-column#6;n#el-table#0;n#panel#0;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-select#0;n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-select#0;n#el-form-item#2;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-date-picker#0;n#el-form-item#3;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-select#0;n#el-form-item#4;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-select#0;n#el-form-item#5;n#el-form#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#1;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#9237#9280#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -752,20 +784,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2208">
           <caret line="92" column="42" lean-forward="true" selection-start-line="92" selection-start-column="42" selection-end-line="92" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue.config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="977">
-          <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="58" column="10" selection-start-line="58" selection-start-column="10" selection-end-line="58" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -804,6 +822,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret selection-end-line="2" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="52" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="7" column="41" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="41" />
         </state>
       </provider>
     </entry>
