@@ -42,18 +42,23 @@
               <div>
                 <panel>
                    <el-table :data="tableData" style="width: 100%;" >
-                        <el-table-column  type="index"  > </el-table-column>      
+                        <el-table-column  type="index" label="序号"> </el-table-column>      
                         <el-table-column prop="target_name" label="任务名称" align="center" :show-overflow-tooltip="true" style="color:#f6f6f6"></el-table-column>
                         <el-table-column prop="target_url" label="任务目标" align="center" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="target_cycle_time" label="任务周期" align="center" :show-overflow-tooltip="true">
-                          <template slot-scope="scope">
-                            <div v-if="scope.row.target_endtime && scope.row.target_endtime.time" style="color:#f6f6f6">
-                              {{ formatTime(scope.row.target_endtime.time - scope.row.target_starttime.time) }}
-                            </div>
-                            <div v-else>
-                              {{ formatTime(Date.now()-scope.row.target_starttime.time) }}
-                            </div>
-                          </template>
+                        
+                         <el-table-column prop="target_cycle_time" label="任务已执行时间" align="center" :show-overflow-tooltip="true">
+                            <template slot-scope="scope">
+                              <div v-if="scope.row.target_endtime && scope.row.target_endtime.time" style="color:#f6f6f6">
+                                {{ formatTime(scope.row.target_endtime.time - scope.row.target_starttime.time) }}
+                              </div>
+                              <div v-else-if="scope.row.target_struts === '2'">
+                                任务待执行中...
+                              </div>
+                              <div v-else style="color:#f6f6f6">
+                                {{ formatTime(Date.now()-scope.row.target_starttime.time) }}
+                              </div>
+                            </template>
+
                         </el-table-column>
                         <el-table-column prop="target_teststra" label="策略" align="center" width="100" style="color:#f6f6f6">
                           <template slot-scope="scope">
@@ -117,7 +122,7 @@
                       </el-table>
               
                 </panel>
-
+              
               </div>
         </div>
          <!-- 添加任务 -->
@@ -125,6 +130,11 @@
         <el-form :model="form" label-width="100px" ref="form" :rules="rules">
           <el-form-item label="任务名称" prop="target_name">
             <el-input v-model="form.target_name" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="任务类型" prop="task_type_id">
+            <el-select v-model="form.task_type_id" placeholder="请选择任务类型" style="width:100%">
+              <el-option v-for="(item,index) in taskType" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="任务策略" prop="target_teststra">
             <el-select v-model="form.target_teststra" placeholder="请选择任务测试" style="width:100%">
@@ -140,16 +150,21 @@
             <el-date-picker v-model="form.target_starttime" type="datetime" placeholder="选择开始时间" style="width:100%">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="测试类型" prop="type_id">
-            <el-select v-model="form.type_id" placeholder="请选择测试类型" style="width:100%">
+          <el-form-item label="测试类型" prop="type_name">
+            <el-select v-model="form.type_name" placeholder="请选择测试类型" style="width:100%">
               <el-option v-for="(item,index) in typeArr" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>        
         
-          <el-form-item label="资产URL/IP" prop="target_url">           
-             <el-select v-model="form.target_url" filterable placeholder="资产url" style="width:100%">
-              <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value"></el-option>
+          <el-form-item label="资产链接" prop="asset_ids">
+          <div v-if="form.task_type_id ==0 ">
+            <el-select  v-model="form.asset_ids" multiple  filterable  default-first-option  placeholder="" style="width:100%">
+                <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
             </el-select>
+            </div>
+            <div v-if="form.task_type_id ==1 ">
+              <el-input type="textarea" v-model="form.target_url" auto-complete="off" placeholder="例：192.168.1.1或192.168.1.1-192.168.1.255或192.168.1.1/24或www.xxx.com.cn"></el-input>
+            </div>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -160,49 +175,63 @@
         <!--分页-->
         <pages :total="pageTotal" @pageChange="pageChange" ref="page"></pages>
     </div>
+  
 </template>
 <script>
 import { getUserName } from "@/utils/auth";
 import Panel from '@/components/panel'
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
-import Pages from "@/components/Pages"
+import Pages from "@/components/Pages";
 const strage = {
   medium: "常规策略",
   high: "深度策略"
 };
 export default {
-  components:{
+  components: {
     Panel,
-      Pages
+    Pages
   },
   data() {
     return {
-        pageObj: {},
-        defaultPage: {
-            rows: 10,
-            page: 1
-        },
-        pageTotal: 0,
+      pageObj: {},
+      defaultPage: {
+        rows: 10,
+        page: 1
+      },
+      pageTotal: 0,
       dialogFormVisible: false,
       fomatterTime: fomatterTime,
-      strage:strage,
-      formatTime:formatTime,
-        activeIndex: 0,
-      tasknameS:[],
-      tableData:[],
-      taskname:'',
-      scanTargetS:[],
-      scanTarget:'',
-      executionmodeS:[],
-      executionmode:'',
+      strage: strage,
+      formatTime: formatTime,
+      activeIndex: 0,
+      tasknameS: [],
+      tableData: [],
+      taskname: "",
+      scanTargetS: [],
+      scanTarget: "",
+      executionmodeS: [],
+      executionmode: "",
+      taskType: [
+        {
+          label: "常规任务",
+          value: 0
+        },
+        {
+          label: "紧急任务",
+          value: 1
+        }
+      ],
       form: {
         target_name: "渗透测试+" + fomatterTime(new Date()),
         target_teststra: "",
         target_starttime: new Date(),
         target_cycle: "",
         target_url: "",
+        asset_ids: "",
         target_ip: "",
         type_id: 1,
+        type_name: "",
+        task_type_id: "",
         userName: getUserName()
       },
       strageArr: [],
@@ -274,37 +303,37 @@ export default {
     this.getAssetURL();
 
   },
-    mounted() {
-        this.switchSource(0)
-    },
+  mounted() {
+    this.switchSource(0);
+  },
   methods: {
-      pageChange(pageObj) {
-          this.pageObj = pageObj;
-          let { page, rows } = pageObj,
-              params = {};
-          if (this.activeIndex === 0) {
-              params = Object.assign({},{page, rows});
-              this.targetInfo(params)
-          } else if (this.activeIndex === 1) {
-              params = Object.assign({},{page, rows, target_struts: 0});
-              this.targetInfo(params)
-          } else {
-              params = Object.assign({},{page, rows, target_struts: 1});
-              this.targetInfo(params)
-          }
-      },
+    pageChange(pageObj) {
+      this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+        params = {};
+      if (this.activeIndex === 0) {
+        params = Object.assign({}, { page, rows });
+        this.targetInfo(params);
+      } else if (this.activeIndex === 1) {
+        params = Object.assign({}, { page, rows, target_struts: 0 });
+        this.targetInfo(params);
+      } else {
+        params = Object.assign({}, { page, rows, target_struts: 1 });
+        this.targetInfo(params);
+      }
+    },
     switchSource(index) {
       this.activeIndex = index;
       this.$refs.page.reset();
       if (index === 0) {
-          let params = Object.assign({}, this.defaultPage);
+        let params = Object.assign({}, this.defaultPage);
         this.targetInfo(params);
       } else if (index === 1) {
-          let params = Object.assign({}, this.defaultPage, {target_struts: 0});
-          this.targetInfo(params);
+        let params = Object.assign({}, this.defaultPage, { target_struts: 0 });
+        this.targetInfo(params);
       } else {
-          let params = Object.assign({}, this.defaultPage, {target_struts: 1});
-          this.targetInfo(params);
+        let params = Object.assign({}, this.defaultPage, { target_struts: 1 });
+        this.targetInfo(params);
       }
     },
     //   任务列表
@@ -378,7 +407,8 @@ export default {
     },    
     // 添加任务
     addTask(params) {
-      console.log(params)
+      params.asset_ids = params.asset_ids.join(",");
+
       if (
         params.target_starttime - Date.now() > 0 &&
         params.target_cycle === "now"
@@ -391,10 +421,10 @@ export default {
         this.addPending = true;
         this.$api.addTarget(obj).then(res => {
           this.addPending = false;
-          if (res.result === 0) {
+          if (res.data.result === 0) {
             this.dialogFormVisible = false;
             this.$message.success("任务添加成功");
-            // this._taskList(this.params);
+            this.targetInfo(this.params);
           } else if (res.result === 1) {
             this.$message.error("任务添加失败");
           } else if (res.result === 2) {
@@ -466,6 +496,64 @@ export default {
       margin-right: 3px;   
     }
     
+  }
+}
+.search {
+  margin-right: 15px;
+  display: inline-block;
+  cursor: pointer;
+}
+.detailLook {
+  width: 18px;
+  height: 18px;
+  background: url("../../../public/img/png/search.png") center center no-repeat;
+  background-size: 100% 100%;
+  &:hover {
+    background: url("../../../public/img/png/searchActive.png") center center
+      no-repeat;
+    background-size: 100% 100%;
+  }
+}
+.birth {
+  width: 18px;
+  height: 18px;
+  background: url("../../../public/img/png/birthm.png") center center no-repeat;
+  background-size: 100% 100%;
+  &:hover {
+    background: url("../../../public/img/png/birth.png") center center no-repeat;
+    background-size: 100% 100%;
+  }
+}
+.downLoad {
+  width: 18px;
+  height: 18px;
+  background: url("../../../public/img/png/downw.png") center center no-repeat;
+  background-size: 100% 100%;
+  &:hover {
+    background: url("../../../public/img/png/down.png") center center no-repeat;
+    background-size: 100% 100%;
+  }
+}
+.stop {
+  width: 18px;
+  height: 18px;
+  background: url("../../../public/img/png/stop.png") center center no-repeat;
+  background-size: 100% 100%;
+  &:hover {
+    background: url("../../../public/img/png/stopSure.png") center center
+      no-repeat;
+    background-size: 100% 100%;
+  }
+}
+.start {
+  width: 18px;
+  height: 18px;
+  background: url("../../../public/img/png/strat.png") center center no-repeat;
+  background-size: 100% 100%;
+  &:hover {
+    background: url("../../../public/img/png/startSure.png") center center
+      no-repeat;
+    background-size: 100% 100%;
   }
 }
 </style>

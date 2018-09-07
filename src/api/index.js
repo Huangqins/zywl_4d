@@ -72,7 +72,7 @@ const ApiSchema = {
     addTarget: {
         url: `${path}task/addTarget`,
         method: 'post',
-        keys: ['task_type_id','target_name', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
+        keys: ['type_name','task_type_id','target_name','asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
     
     // 资产列表
