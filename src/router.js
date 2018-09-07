@@ -81,11 +81,21 @@ export default new Router({
                     },
                     component: () =>
                         import('@/views/assetsInfo')
+                },
+                {
+                    path: 'assetDetail',
+                    name: 'AssetDetail',
+                    meta: {
+                        title: '资产详情',
+                        menuCode: '02-02'
+                    },
+                    component: () =>
+                        import('@/views/assetsInfo/assetDetail')
                 }
             ]
         },
         {
-            path: '/',
+            path: '/assetsManage',
             component: Layout,
             children: [
                 {

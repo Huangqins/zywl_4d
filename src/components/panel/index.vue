@@ -34,6 +34,7 @@ export default {
         font-size:16px;
         margin-bottom: 8px;
         margin-left: 12px;
+        margin-top: 0;
     }
 }
 .panel-content{

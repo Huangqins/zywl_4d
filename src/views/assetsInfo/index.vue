@@ -48,7 +48,7 @@
             <panel>
                  <div class="assets-content-btn">
                     <el-button type="primary" @click='addAssets'>添加资产</el-button>
-                    <el-button type="primary" >导入资产</el-button>
+                    <el-button type="primary" @click="areaImportVisible=true">导入资产</el-button>
                     <el-button type="primary" >导出资产</el-button>
                 </div>
                <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
@@ -161,6 +161,17 @@
         <el-button type="primary" @click="addAsset('form')" :loading="addPending">确 定</el-button>
       </div>
     </el-dialog>
+     <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="30%">
+       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;">下载资产模板</p>
+       <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
+            <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或
+                <em>点击上传</em>
+                </div>
+            </el-upload>
+            
+      </el-dialog>
         <!--分页-->
         <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
@@ -169,8 +180,9 @@
 <script>
 import Panel from "@/components/panel";
 import  Pages from "@/components/Pages";
-import { getUserName } from "@/utils/auth";
+import { getUserName,getToken, } from "@/utils/auth";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+
 const assetTypestruts = {
   "1": "服务器",
   "2": "打印机",
@@ -218,6 +230,7 @@ export default {
     return {
       fomatterTime: fomatterTime,
       formatTime: formatTime,
+      areaImportVisible:false,
       tableData: [],
       assetTypestruts: assetTypestruts,
       titlestruts: titlestruts,
@@ -302,13 +315,34 @@ export default {
       },
       page: "",
       rows: "",
-        pageTotal: 0
+     pageTotal: 0,
+     headers: {
+        token: getToken(),
+        userName: getUserName(),
+        menuCode: vm._route.meta.menuCode
+      },
     };
   },
   created() {
     this.assetsInfo({ is_page: 0, page: "1", rows: "10" });
   },
   methods: {
+    // 导入回调
+    fileUpload(res) {
+      this.file = res;
+    },
+    upload() {
+      let formData = new FormData();
+      formData.append("excelFile", this.file.raw);
+      this.$api.assetImport(formData).then(res => {
+        this.areaImportVisible = false;
+        if (res.result === 0) {
+          this.$message.success("文件导入成功");
+        } else {
+          this.$message.error("文件导入失败，请查看文件项填写是否完整或正确");
+        }
+      });
+    },
       // 触发分页
       pageChange(pageObj) {
           let { page, rows } = pageObj,
@@ -351,6 +385,16 @@ export default {
       setTimeout(() => {
         this.form = Object.assign({}, this.formCopy);
       }, 200);
+    },
+    // 详情
+    detailAsset(row) {
+      this.$router.push({
+        name: "AssetDetail",
+        params: {
+          assets_id: row.assets_id,
+          row: row
+        }
+      });
     },
     // 添加资产
     addAsset(params) {
