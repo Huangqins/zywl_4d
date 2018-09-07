@@ -1,15 +1,23 @@
 <template>
-    <el-scrollbar class="app-main">
-    <section>
-        <transition name="fade-transform" mode="out-in">
-        <router-view :key="key"></router-view>
-    </transition>
-    </section>
-    </el-scrollbar>
+    <div class="app-main">
+        <Breadcrumb />
+        <el-scrollbar class="scrollbar-container">
+            <section>
+                <transition name="fade-transform" mode="out-in">
+                    <router-view :key="key"></router-view>
+                </transition>
+            </section>
+        </el-scrollbar>
+    </div>
+
 </template>
 
 <script>
+    import Breadcrumb from './Breadcrumb'
 export default {
+        components: {
+            Breadcrumb
+        },
   computed: {
     key() {
       return this.$route.fullPath;
@@ -23,7 +31,7 @@ export default {
 <style lang="scss">
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
-  height: calc(100vh - 90px);
+  height: calc(100vh - 105px);
   position: relative;
   margin-left: 170px;
     margin-top:20px;
@@ -38,5 +46,9 @@ export default {
         /*height: calc(100% - 40px);*/
     /*}*/
 }
+    .scrollbar-container {
+        width: 100%;
+        height: calc(100vh - 128px);;
+    }
 </style>
 

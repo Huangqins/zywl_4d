@@ -472,7 +472,7 @@ export default {
 }
 .task-tab {
   display: inline-block;
-    margin-left: -40px;
+    margin: 15px 0;
   // border: 1px solid #24536f;
   /*height: 46px;*/
   ul {

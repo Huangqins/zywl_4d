@@ -5,6 +5,7 @@
                <sidebar></sidebar>
             <div class="main-container">
                 <!-- 主界面 -->
+                <!--  面包屑 -->
                 <app-main></app-main>
             </div>
     </div>
@@ -14,6 +15,7 @@ import { mapGetters } from 'vuex'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import AppMain from './components/AppMain'
+
 
 export default {
     components: {
