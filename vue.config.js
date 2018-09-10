@@ -1,5 +1,5 @@
 const path = require('path')
-const host = 'http://192.168.10.104'
+const host = 'http://192.168.10.104:8080'
 
 function resolve(dir) {
     return path.join(__dirname, './', dir)
@@ -8,7 +8,7 @@ module.exports = {
     baseUrl: '',
     devServer: {
         proxy: {
-            '/ZR': {
+            '/ZR/': {
                 target: host,
                 changeOrigin: true
             }

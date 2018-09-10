@@ -5,7 +5,7 @@
 import _axios from '../plugins/axios'
 // define one map Obj
 const Api = {};
-const path = '/ZR'; // 暂时写死
+const path = '/ZR/'; // 暂时写死
 //
 const ApiSchema = {
     login: {
