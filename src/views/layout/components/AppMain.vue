@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import Breadcrumb from './Breadcrumb'
+    import Breadcrumb from '@/components/Breadcrumb'
 export default {
         components: {
             Breadcrumb

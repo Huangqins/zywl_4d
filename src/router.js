@@ -9,6 +9,7 @@ export default new Router({
     routes: [
         {
             path: '/',
+            redirect: '/dashboard',
             component: Layout
         },
         {
@@ -71,6 +72,11 @@ export default new Router({
         {
             path: '/assetsManage',
             component: Layout,
+            name: 'assetsManage',
+            redirect: 'noredirect',
+            meta: {
+                title: '资产管理'
+            },
             children: [
                 {
                     path: 'assetsInfo',
@@ -81,6 +87,16 @@ export default new Router({
                     },
                     component: () =>
                         import('@/views/assetsInfo')
+                },
+                {
+                    path: 'assetsCount',
+                    name: 'assetsCount',
+                    meta: {
+                        title: '资产统计',
+                        menuCode: '02-02'
+                    },
+                    component: () =>
+                        import('@/views/assetsCount')
                 },
                 {
                     path: 'assetDetail',
@@ -95,41 +111,23 @@ export default new Router({
             ]
         },
         {
-            path: '/assetsManage',
-            component: Layout,
-            children: [
-                {
-                    path: 'assetsCount',
-                    name: 'assetsCount',
-                    meta: {
-                        title: '资产统计',
-                        menuCode: '02-02'
-                    },
-                    component: () =>
-                        import('@/views/assetsCount')
-                }
-            ]
-        },
-        {
             path: '/taskManage',
             component: Layout,
+            redirect: 'noredirect',
+            meta: {
+                title: '任务管理'
+            },
             children: [
                 {
                     path: 'customTestGroup',
                     name: 'customTestGroup',
                     meta: {
                         title: '自定义测试组',
-                        menuCode: '02-02'
+                        menuCode: '02-01'
                     },
                     component: () =>
                         import('@/views/customTestGroup')
-                }
-            ]
-        },
-        {
-            path: '/taskManage',
-            component: Layout,
-            children: [
+                },
                 {
                     path: 'taskInfo',
                     name: 'taskInfo',
