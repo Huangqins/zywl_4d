@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import Breadcrumb from '@/components/Breadcrumb'
+import Breadcrumb from '@/components/Breadcrumb'
 export default {
         components: {
             Breadcrumb
@@ -31,7 +31,7 @@ export default {
 <style lang="scss">
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
-  height: calc(100vh - 105px);
+  height: calc(100vh - 90px);
   position: relative;
   margin-left: 170px;
     margin-top:20px;
@@ -48,7 +48,8 @@ export default {
 }
     .scrollbar-container {
         width: 100%;
-        height: calc(100vh - 128px);;
+        margin-top: 20px;
+        height: calc(100vh - 132px);;
     }
 </style>
 

@@ -13,6 +13,11 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
+    userExit: {
+        url: `${path}/user/userExit`,
+        method: 'post',
+        keys: ''
+    },
     getInformation: {
         url: `${path}kb/getInformation`,
         method: 'post',

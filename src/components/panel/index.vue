@@ -1,7 +1,7 @@
 <template>
     <div class="panel">
     <div class="panel-title" v-if="title">
-      <p class="panel-title-text">{{title}}</p>
+      <p class="panel-title-text" :style="{height: titleStyle}">{{title}}</p>
     </div>
     <div class="panel-content">
        <slot />
@@ -12,10 +12,10 @@
 export default {
     computed: {
     titleStyle() {
-      if (!this.showTitle) {
-        return "height:100%";
+      if (!this.title) {
+        return "100%";
       } else {
-        return "calc(100% - 30px)";
+        return "calc(100% - 31px)";
       }
     }
   },
@@ -32,15 +32,13 @@ export default {
     color:rgba(209,255,255,1);
     &-text{
         font-size:16px;
-        margin-bottom: 8px;
-        margin-left: 12px;
-        margin-top: 0;
+        margin: 22px 0 8px 12px;
     }
 }
 .panel-content{
     background: $main-bg;
     width: auto;
-    height: calc(100% - 31px);
+    // height: calc(100% - 31px);
     box-shadow: 4px 0px 4px rgba(29,36,46,1)
 }
 </style>

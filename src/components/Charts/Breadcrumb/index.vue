@@ -2,7 +2,7 @@
 	<div class="breadcrumb">
 		<el-breadcrumb separator="/">
       <template v-if="menuList.length === 1">
-        <el-breadcrumb-item>{{menuList[0].meta.title}}</el-breadcrumb-item>
+        <el-breadcrumb-item><span class="no-path">{{menuList[0].meta.title}}</span></el-breadcrumb-item>
       </template>
       <template v-else>
         <el-breadcrumb-item v-for="(item, index) in menuList" :key="item.path">
@@ -34,7 +34,11 @@ export default {
 
 <style lang="scss" scoped>
 .breadcrumb {
-  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(107,119,138,1);
+}
+.no-path {
+  color: #CAD5DB;
 }
 
 </style>

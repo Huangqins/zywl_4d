@@ -181,6 +181,51 @@ export default new Router({
                          import('@/views/holeCount')
                 }
             ]
+        },
+        {
+           path: '/workManage',
+           name: 'workManage',
+           component: Layout,
+           redirect: 'noredirect',
+           meta: {
+                title: '工单管理'           
+            },
+            children: [
+                {
+                    path: 'workInfo',
+                    name: 'workInfo',
+                    meta: {
+                        title: '工单信息',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/workInfo')
+                },
+                {
+                    path: 'workPending',
+                    name: 'workPending',
+                    meta: {
+                        title: '待办工单',
+                        menuCode: '05-02'
+                    },
+                    component: () =>
+                         import('@/views/workPending')
+                }
+            ]
         }
+        // {
+            // path: '/reportManagement',
+            // component: Layout,
+            // redirect: 'noredirect',
+            // meta: {
+            //     title: '报告管理',
+            //     menuCode: ''
+            // },
+            // children: [
+            //     {
+            //         path: ''
+            //     }
+            // ]
+        // }
     ]
 })

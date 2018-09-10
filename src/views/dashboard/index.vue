@@ -442,7 +442,7 @@ export default {
   display: flex;
   overflow: hidden;
   & div {
-    height: 238px;
+    height: 270px;
   }
   &-left {
     flex: 1;

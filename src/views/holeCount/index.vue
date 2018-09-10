@@ -69,9 +69,7 @@ export default {
         margin-right: 20px;
     }
 }
-.trendChart {
-    margin: 15px 0;
-}
+
 .spread {
     display: flex;
     & > div:not(:last-child) {
@@ -84,7 +82,5 @@ export default {
         flex: 1
     }
 }
-.spreadChart {
-    margin: 15px 0;
-}
+
 </style>

@@ -21,8 +21,7 @@
 <script>
 import Hamburger from '@/components/Hamburger'
 import { removeAll, getUserName } from '@/utils/auth'
-import { mapMutations } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapMutations, mapGetters,  mapActions} from 'vuex'
 
 export default {
     components: {
@@ -35,10 +34,9 @@ export default {
     },
     methods: {
         ...mapMutations(['TOGGLE_OPEN']),
+        ...mapActions(['UserExit']),
         loginOut() {
-            console.log('退出')
-            removeAll()
-            this.$router.push('/login')
+            this.UserExit();
         }
     },
     computed: {

@@ -3,11 +3,10 @@
             <navbar></navbar>     
             <!-- 布局容器 侧边栏-->
                <sidebar></sidebar>
-            <div class="main-container">
+          
                 <!-- 主界面 -->
                 <!--  面包屑 -->
                 <app-main></app-main>
-            </div>
     </div>
 </template>
 <script>
