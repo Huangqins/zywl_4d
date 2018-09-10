@@ -7,6 +7,7 @@ import './plugins/element.js'
 import Api from './api/index'
 import '@/icons' // icon
 import '@/styles/index.scss'
+import './permission'
 
 Vue.prototype.$api = Api;
 Vue.config.productionTip = false

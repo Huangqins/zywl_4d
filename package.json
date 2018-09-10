@@ -11,6 +11,7 @@
     "echarts": "^4.1.0",
     "element-ui": "^2.4.5",
     "md5-js": "0.0.3",
+    "nprogress": "^0.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
