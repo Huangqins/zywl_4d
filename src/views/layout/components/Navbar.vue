@@ -7,11 +7,11 @@
            <div class="drop-menu">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                    王姣姣<i class="el-icon-arrow-down el-icon--right"></i>
+                    {{getUserName}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>个人信息</el-dropdown-item>
-                    <el-dropdown-item>退出登录</el-dropdown-item>
+                    <el-dropdown-item @click.native="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
             </el-dropdown>
            </div>
@@ -20,6 +20,7 @@
 </template>
 <script>
 import Hamburger from '@/components/Hamburger'
+import { removeAll, getUserName } from '@/utils/auth'
 import { mapMutations } from 'vuex'
 import { mapGetters } from 'vuex'
 
@@ -27,8 +28,18 @@ export default {
     components: {
         Hamburger
     },
+    data() {
+        return {
+            getUserName: getUserName()
+        }
+    },
     methods: {
-        ...mapMutations(['TOGGLE_OPEN'])
+        ...mapMutations(['TOGGLE_OPEN']),
+        loginOut() {
+            console.log('退出')
+            removeAll()
+            this.$router.push('/login')
+        }
     },
     computed: {
         ...mapGetters(['isCollapse'])

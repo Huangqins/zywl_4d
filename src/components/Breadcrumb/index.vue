@@ -19,7 +19,6 @@ export default {
     '$route': {
       handler(to)  {
           this.menuList = to.matched.filter(item => item.name);
-            console.log( this.menuList)
       },
       immediate: true
     }

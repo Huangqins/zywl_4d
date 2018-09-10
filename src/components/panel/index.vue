@@ -40,7 +40,7 @@ export default {
 .panel-content{
     background: $main-bg;
     width: auto;
-    height: calc(100% - 21px);
+    height: calc(100% - 31px);
     box-shadow: 4px 0px 4px rgba(29,36,46,1)
 }
 </style>

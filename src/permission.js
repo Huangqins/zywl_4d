@@ -20,6 +20,7 @@ router.beforeEach((to, from, next) => {
             NProgress.done()
         }
     } else { 
+        console.log('嗨')
         if (whiteList.indexOf(to.path) !== -1) {
             next()
           } else {

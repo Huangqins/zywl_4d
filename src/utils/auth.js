@@ -14,3 +14,7 @@ export function setUserName(userName) {
 export function getUserName() {
     return appStore.getItem('userName')
 }
+
+export function removeAll() {
+    return appStore.clear()
+}
