@@ -135,6 +135,37 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
+    //任务名称
+    taskname: {
+        url: `${path}task/getTargetName`,
+        method: 'post',
+        keys: ''
+    },
+    //风险类型
+    vulnType: {
+        url: `${path}vuln/vulnType`,
+        method: 'post',
+        keys: ''
+    },
+    //风险列表
+    vulnSearch: {
+        url: `${path}vuln/vulnSearch`,
+        method: 'post',
+        keys: ['is_page','page','rows','target_id','vuln_level','vuln_type','assets_id','vuln_name','vuln_time','start_time','end_time']
+    },
+    //资产
+    getAssetURL: {
+        url: `${path}asset/getAssetURL`,
+        method: 'post',
+        keys: ''
+    },
+    //风险处理
+    vulnManage: {
+        url: `${path}vuln/vulnManage`,
+        method: 'post',
+        keys: ['vuln_id']
+    },
+
 }
 // filter keys
 const filterKey = (obj, keys) => {

@@ -179,6 +179,16 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/holeCount')
+                },
+                {
+                    path: 'vulnDetail',
+                    name: 'vulnDetail',
+                    meta: {
+                        title: '风险详情',
+                        menuCode: '04-03'
+                    },
+                    component: () =>
+                         import('@/views/holeInfo/vulnDetail')
                 }
             ]
         },

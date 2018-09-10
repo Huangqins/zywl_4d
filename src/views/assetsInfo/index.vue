@@ -4,7 +4,7 @@
         <panel>
             <div class="assets-header-search">
                 <span>筛选条件:</span>
-                <el-select v-model="assetsArea" filterable placeholder="资产区域" class="select">
+                <el-select v-model="assetsArea" filterable placeholder="" class="select">
                     <el-option
                     v-for="item in assetsAreaS"
                     :key="item.value"
