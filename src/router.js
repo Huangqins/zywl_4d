@@ -112,6 +112,7 @@ export default new Router({
         },
         {
             path: '/taskManage',
+            name: 'taskManage',
             component: Layout,
             redirect: 'noredirect',
             meta: {
@@ -137,6 +138,47 @@ export default new Router({
                     },
                     component: () =>
                         import('@/views/taskInfo')
+                }
+            ]
+        },
+        {
+            path: '/holeManage',
+            name: 'holeManage',
+            component: Layout,
+            redirect: 'noredirect',
+            meta: {
+                title: '风险管理'
+            },
+            children: [
+                {
+                    path: 'holeInfo',
+                    name: 'holeInfo',
+                    meta: {
+                        title: '风险信息',
+                        menuCode: '04-01'
+                    },
+                    component: () =>
+                         import('@/views/holeInfo')
+                },
+                {
+                    path: 'holeFollow',
+                    name: 'holeFollow',
+                    meta: {
+                        title: '风险跟踪',
+                        menuCode: '04-02'
+                    },
+                    component: () =>
+                         import('@/views/holeFollow')
+                },
+                {
+                    path: 'holeCount',
+                    name: 'holeCount',
+                    meta: {
+                        title: '风险统计',
+                        menuCode: '04-03'
+                    },
+                    component: () =>
+                         import('@/views/holeCount')
                 }
             ]
         }
