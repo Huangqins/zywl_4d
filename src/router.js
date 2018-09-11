@@ -222,20 +222,197 @@ export default new Router({
                          import('@/views/workPending')
                 }
             ]
+        },
+        {
+            path: '/statisticalAnalysis',
+            name: 'statisticalAnalysis',
+            component: Layout,
+            redirect: 'noredirect',
+            meta: {
+                title: '统计分析'
+            },
+            children: [
+                {
+                    path: 'LoopholeRatioReport',
+                    name: 'LoopholeRatioReport',
+                    meta: {
+                        title: '漏洞环比统计报表',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/LoopholeRatioReport')
+                },
+                {
+                    path: 'NetworkSecurityReport',
+                    name: 'NetworkSecurityReport',
+                    meta: {
+                        title: '网络安全整改报表',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/NetworkSecurityReport')
+                }
+            ]
+        },
+        {
+            path: '/knowledgeManagement',
+            name: 'knowledgeManagement',
+            component: Layout,
+            redirect: 'noredirect',
+            meta: {
+                title: '知识管理'
+            },
+            children: [
+                {
+                    path: 'vulnDatabase',
+                    name: 'vulnDatabase',
+                    meta: {
+                        title: '漏洞库信息',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/vulnDatabase')
+                },
+                {
+                    path: 'ComplianceLibrary',
+                    name: 'ComplianceLibrary',
+                    meta: {
+                        title: '合规库信息',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/ComplianceLibrary')
+                },
+                {
+                    path: 'information',
+                    name: 'information',
+                    meta: {
+                        title: '资讯信息',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/information')
+                }
+            ]
+        },
+        {
+            path: '/',
+            component: Layout,
+            redirect: 'noredirect',
+            children: [
+                {
+                    path: 'reportManagement',
+                    name: 'reportManagement',
+                    meta: {
+                        title: '报告管理',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/reportManagement')
+                }
+            ]
+        },
+        {
+            path: '/userManagement',
+            component: Layout,
+            redirect: 'noredirect',
+            name: 'userManagement',
+            meta: {
+                title: '用户管理'
+            },
+            children: [
+                {
+                    path: 'propertyManagement',
+                    name: 'propertyManagement',
+                    meta: {
+                        title: '权限管理',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/propertyManagement')
+                },
+                {
+                    path: 'userLists',
+                    name: 'userLists',
+                    meta: {
+                        title: '用户列表',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/userLists')
+                }
+            ]
+        },
+        {
+            path: '/systemManagement',
+            name: 'systemManagement',
+            redirect: 'noredirect',
+            component: Layout,
+            meta: {
+                title: '系统管理'
+            },
+            children: [
+                {
+                    path: 'interfaces',
+                    name: 'interfaces',
+                    meta: {
+                        title: '接口配置',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/interfaces') 
+                },
+                {
+                    path: 'configurations',
+                    name: 'configurations',
+                    meta: {
+                        title: '参数配置',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/configurations') 
+                },
+                {
+                    path: 'logsManagement',
+                    name: 'logsManagement',
+                    meta: {
+                        title: '日志管理',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/logsManagement') 
+                },
+                {
+                    path: 'systemState',
+                    name: 'systemState',
+                    meta: {
+                        title: '系统状态',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/systemState') 
+                },
+                {
+                    path: 'dataDictionary',
+                    name: 'dataDictionary',
+                    meta: {
+                        title: '数据字典配置',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/dataDictionary') 
+                },
+                {
+                    path: 'PolicySettings',
+                    name: 'PolicySettings',
+                    meta: {
+                        title: '策略配置',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/PolicySettings') 
+                }
+            ]
         }
-        // {
-            // path: '/reportManagement',
-            // component: Layout,
-            // redirect: 'noredirect',
-            // meta: {
-            //     title: '报告管理',
-            //     menuCode: ''
-            // },
-            // children: [
-            //     {
-            //         path: ''
-            //     }
-            // ]
-        // }
     ]
 })

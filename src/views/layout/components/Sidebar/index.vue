@@ -178,7 +178,7 @@
                                 title: '系统状态'
                             },
                             {
-                                path: ' dataDictionary',
+                                path: 'dataDictionary',
                                 title: '数据字典配置'
                             },
                             {
