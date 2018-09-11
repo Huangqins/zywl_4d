@@ -166,7 +166,48 @@ const ApiSchema = {
         method: 'post',
         keys: ['vuln_id']
     },
-
+    // 用户列表
+    userList: {
+        url: `${path}user/userList`,
+        method: 'post',
+        menuCode:'09-02-08',
+        keys: ['user_name']
+    },
+    //添加用户
+    addUser: {
+        url: `${path}user/addUser`,
+        method: 'post',
+        menuCode: '09-02-01',
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
+    },
+    // 修改用户
+    updateUser: {
+        url: `${path}user/updateUser`,
+        method: 'post',
+        menuCode: '09-02-07',
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
+    },
+    // 批量启用
+    enabledBatchUser: {
+        url: `${path}user/batchUpdateUser`,
+        method: 'post',
+        menuCode: '09-02-03',
+        keys: ['user_id', 'user_name', 'enabled']
+    },
+    // 批量禁用
+    disabledBatchUser: {
+        url: `${path}user/batchUpdateUser`,
+        method: 'post',
+        menuCode: '09-02-04',
+        keys: ['user_id', 'user_name', 'enabled']
+    },
+    // 批量删除用户
+    batchDeleteUser: {
+        url: `${path}user/batchDeleteUser`,
+        method: 'post',
+        menuCode: '09-02-05',
+        keys: ['user_id', 'user_name']
+    }
 }
 // filter keys
 const filterKey = (obj, keys) => {

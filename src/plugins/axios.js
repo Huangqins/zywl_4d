@@ -3,7 +3,7 @@ import axios from "axios";
 import CryptoJs from 'crypto-js';
 import { getToken, getUserName, removeAll } from '@/utils/auth'
 import { Message } from 'element-ui'
-
+import router from '../router'
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout

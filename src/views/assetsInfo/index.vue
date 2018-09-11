@@ -37,7 +37,6 @@
                     </el-option>
                 </el-select>
                <el-date-picker v-model="start_time" type="datetime" placeholder="选择日期" style="margin-right:15px;"></el-date-picker>
-                
                <el-date-picker v-model="end_time" type="datetime" placeholder="选择日期" style="margin-right:30px;"></el-date-picker>
                 <el-button class="btn" @click="searchAsset">查询</el-button>
             </div>
@@ -355,14 +354,14 @@ export default {
   },
   methods: {
     searchAsset() {
-      // let data = Object.assign({}, this.params, {
-      //   assets_name:this.assetsArea,
-      //   id: this.equipmentType,
-      //   os_type:this.osystem,
-      //   port: this.port,
-      //   start_time:fomatterTime(this.start_time),
-      //   end_time:fomatterTime(this.end_time)
-      // });
+      let data = Object.assign({}, this.params, {
+        assets_name:this.assetsArea,
+        id: this.equipmentType,
+        os_type:this.osystem,
+        port: this.port,
+        start_time:fomatterTime(this.start_time),
+        end_time:fomatterTime(this.end_time)
+      });
       this.assetsInfo();
     },
     //端口号

@@ -1,4 +1,4 @@
-
+import { getMenu } from '@/utils/auth'
 /**
  * 节流
  */
@@ -110,4 +110,11 @@ export function debounce(func, wait, immediate) {
       for (let k in o)
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
       return fmt;
+  }
+
+  // 判断是否存在于当前权限中
+  export function authJudge(string = '') {
+    let authList = JSON.parse(getMenu()).map(item => item.menu_code),
+        res = authList.includes(string);
+        return res
   }
