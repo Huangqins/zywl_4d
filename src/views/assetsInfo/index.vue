@@ -355,15 +355,15 @@ export default {
   },
   methods: {
     searchAsset() {
-      let data = Object.assign({}, this.params, {
-        assets_name:this.assetsArea,
-        id: this.equipmentType,
-        os_type:this.osystem,
-        port: this.port,
-        start_time:fomatterTime(this.start_time),
-        end_time:fomatterTime(this.end_time)
-      });
-      this.assetsInfo(data);
+      // let data = Object.assign({}, this.params, {
+      //   assets_name:this.assetsArea,
+      //   id: this.equipmentType,
+      //   os_type:this.osystem,
+      //   port: this.port,
+      //   start_time:fomatterTime(this.start_time),
+      //   end_time:fomatterTime(this.end_time)
+      // });
+      this.assetsInfo();
     },
     //端口号
     async getPort() {

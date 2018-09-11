@@ -15,6 +15,10 @@ export function getUserName() {
     return appStore.getItem('userName')
 }
 
+export function setMenu(menu) {
+    return appStore.setItem('menu', JSON.stringify(menu))
+}
+
 export function removeAll() {
     return appStore.clear()
 }

@@ -1,12 +1,8 @@
 "use strict";
 import axios from "axios";
 import CryptoJs from 'crypto-js';
-import { getToken, getUserName } from '@/utils/auth'
-// import { mapGetters } from 'vuex'
-// Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+import { getToken, getUserName, removeAll } from '@/utils/auth'
+import { Message } from 'element-ui'
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
@@ -15,10 +11,9 @@ let config = {
 };
 
 const _axios = axios.create(config);
-
 _axios.interceptors.request.use(config => {
-    let menuCode = vm._route.meta.menuCode,
-      token = getToken(),
+    let menuCode = config.menuCode ? config.menuCode : vm._route.meta.menuCode;
+    let token = getToken(),
       userName = getUserName(),
       _key = `${menuCode};${token};${userName}`,
       _sis = 'c1cc0f3684aa06f64846cca29fcab0524621D373CADE4E83',
@@ -38,6 +33,41 @@ _axios.interceptors.request.use(config => {
 
 // Add a response interceptor
 _axios.interceptors.response.use(response => {
+  if (vm._route.fullPath === '/login') {
+    return response
+  } else {
+    if (response.data.result !== 0) {
+      switch (response.data.result) {
+        case  3 :
+         Message.error(`已在其他点登陆,请重新登录`)
+         removeAll()
+         router.push({ path: '/login' })
+         break;
+        case  1 :
+         Message.error(`登录已过期请重新登录`)
+         removeAll()
+         router.push({ path: '/login' })
+         break;
+        case -2:
+         Message.error(`尚无访问权限请联系管理员`)
+         removeAll()
+         break;
+        case 5:
+         Message.error(`授权文件丢失,请重新导入授权文件`)
+         removeAll()
+         router.push({ path: '/login' })
+         break;
+        case 6:
+         Message.error(`授权文件已过期,请导入授权文件`)
+         removeAll()
+         router.push({ path: '/login' })
+         break;
+        default:
+          return response
+         break;
+      }
+    }
+  }
     // Do something with response data
     return response;
   },

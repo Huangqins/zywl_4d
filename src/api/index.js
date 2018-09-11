@@ -84,6 +84,7 @@ const ApiSchema = {
     assetsInfo: {
         url: `${path}asset/assetsInfo`,
         method: 'post',
+        menuCode:'02-01-04',
         keys: ['start_time','id','end_time','is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
     },
     // (添加)更新资产
@@ -187,6 +188,7 @@ const gernerater = () => {
                 return _axios({
                     method: ApiSchema[key].method,
                     url: ApiSchema[key].url,
+                    menuCode: ApiSchema[key].menuCode,
                     [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
                 })
             }
