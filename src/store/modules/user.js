@@ -1,5 +1,5 @@
 import Api from '../../api'
-import { setUserName, setToken, removeAll } from '@/utils/auth'
+import { setUserName, setToken, removeAll, setMenu } from '@/utils/auth'
 import { Message } from 'element-ui'
 import router from '@/router'
 const user = {
@@ -8,6 +8,7 @@ const user = {
         password: '',
         userId: 0,
         token: '',
+        menu: []
     },
     mutations: {
         'SET_USER_NAME': (state, userName) => {
@@ -23,6 +24,10 @@ const user = {
         },
         'REMOVE_ALL': (state) => {
             removeAll()
+        },
+        'SET_USER_MENU': (state, menu) => {
+            state.menu = menu
+            setMenu(menu)
         }
     },
     actions: {
@@ -32,6 +37,7 @@ const user = {
                 commit('SET_USER_NAME', res.data.userName)
                 commit('SET_USERID', res.data.userId)
                 commit('SET_TOKEN', res.data.token)
+                commit('SET_USER_MENU',res.data.model)
             }
             return res //返回登录结果给登录页
         },

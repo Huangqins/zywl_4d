@@ -257,7 +257,7 @@ export default new Router({
                     name: 'LoopholeRatioReport',
                     meta: {
                         title: '漏洞环比统计报表',
-                        menuCode: '05-01'
+                        menuCode: '06-01'
                     },
                     component: () =>
                          import('@/views/LoopholeRatioReport')
@@ -267,7 +267,7 @@ export default new Router({
                     name: 'NetworkSecurityReport',
                     meta: {
                         title: '网络安全整改报表',
-                        menuCode: '05-01'
+                        menuCode: '05-02'
                     },
                     component: () =>
                          import('@/views/NetworkSecurityReport')
@@ -288,7 +288,7 @@ export default new Router({
                     name: 'vulnDatabase',
                     meta: {
                         title: '漏洞库信息',
-                        menuCode: '05-01'
+                        menuCode: '07-01'
                     },
                     component: () =>
                          import('@/views/vulnDatabase')
@@ -298,7 +298,7 @@ export default new Router({
                     name: 'ComplianceLibrary',
                     meta: {
                         title: '合规库信息',
-                        menuCode: '05-01'
+                        menuCode: '07-02'
                     },
                     component: () =>
                          import('@/views/ComplianceLibrary')
@@ -308,7 +308,7 @@ export default new Router({
                     name: 'information',
                     meta: {
                         title: '资讯信息',
-                        menuCode: '05-01'
+                        menuCode: '07-03'
                     },
                     component: () =>
                          import('@/views/information')
@@ -325,7 +325,7 @@ export default new Router({
                     name: 'reportManagement',
                     meta: {
                         title: '报告管理',
-                        menuCode: '05-01'
+                        menuCode: '08'
                     },
                     component: () =>
                          import('@/views/reportManagement')
@@ -356,7 +356,7 @@ export default new Router({
                     name: 'propertyManagement',
                     meta: {
                         title: '权限管理',
-                        menuCode: '05-01'
+                        menuCode: '09-01'
                     },
                     component: () =>
                          import('@/views/propertyManagement')
@@ -366,7 +366,7 @@ export default new Router({
                     name: 'userLists',
                     meta: {
                         title: '用户列表',
-                        menuCode: '05-01'
+                        menuCode: '09-02'
                     },
                     component: () =>
                          import('@/views/userLists')
@@ -387,7 +387,7 @@ export default new Router({
                     name: 'interfaces',
                     meta: {
                         title: '接口配置',
-                        menuCode: '05-01'
+                        menuCode: '10-01'
                     },
                     component: () =>
                          import('@/views/interfaces') 
@@ -397,7 +397,7 @@ export default new Router({
                     name: 'configurations',
                     meta: {
                         title: '参数配置',
-                        menuCode: '05-01'
+                        menuCode: '10-02'
                     },
                     component: () =>
                          import('@/views/configurations') 
@@ -407,7 +407,7 @@ export default new Router({
                     name: 'logsManagement',
                     meta: {
                         title: '日志管理',
-                        menuCode: '05-01'
+                        menuCode: '10-03'
                     },
                     component: () =>
                          import('@/views/logsManagement') 
@@ -417,7 +417,7 @@ export default new Router({
                     name: 'systemState',
                     meta: {
                         title: '系统状态',
-                        menuCode: '05-01'
+                        menuCode: '10-04'
                     },
                     component: () =>
                          import('@/views/systemState') 
@@ -427,7 +427,7 @@ export default new Router({
                     name: 'dataDictionary',
                     meta: {
                         title: '数据字典配置',
-                        menuCode: '05-01'
+                        menuCode: '10-05'
                     },
                     component: () =>
                          import('@/views/dataDictionary') 
@@ -437,7 +437,7 @@ export default new Router({
                     name: 'PolicySettings',
                     meta: {
                         title: '策略配置',
-                        menuCode: '05-01'
+                        menuCode: '10-06'
                     },
                     component: () =>
                          import('@/views/PolicySettings') 
