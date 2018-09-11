@@ -220,6 +220,26 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/workPending')
+                },
+                {
+                    path: 'workAdd',
+                    name: 'workAdd',
+                    meta: {
+                        title: '创建工单',
+                        menuCode: '05-02'
+                    },
+                    component: () =>
+                         import('@/views/workInfo/workAdd')
+                },
+                {
+                    path: 'workDetail',
+                    name: 'workDetail',
+                    meta: {
+                        title: '工单详情',
+                        menuCode: '05-02'
+                    },
+                    component: () =>
+                         import('@/views/workInfo/workDetail')
                 }
             ]
         },
@@ -309,6 +329,16 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/reportManagement')
+                },
+                {
+                    path: 'addReport',
+                    name: 'addReport',
+                    meta: {
+                        title: '报告管理',
+                        menuCode: '05-01'
+                    },
+                    component: () =>
+                         import('@/views/reportManagement/addReport')
                 }
             ]
         },
