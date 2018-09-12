@@ -65,7 +65,7 @@ const ApiSchema = {
     targetInfo: {
         url: `${path}task/targetInfo`,
         method: 'post',
-        keys: ['target_name', 'rule_id', 'assrts_url', "target_struts","rows", "page"]
+        keys: ['target_name', 'rule_id', 'assrts_url', "target_struts", "rows", "page"]
     },
     //检测资产是否存在在执行任务
     checkAsset: {
@@ -77,23 +77,23 @@ const ApiSchema = {
     addTarget: {
         url: `${path}task/addTarget`,
         method: 'post',
-        keys: ['type_name','task_type_id','target_name','asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
+        keys: ['type_name', 'task_type_id', 'target_name', 'asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
-    
+
     // 资产列表
     assetsInfo: {
         url: `${path}asset/assetsInfo`,
         method: 'post',
-        menuCode:'02-01-04',
-        keys: ['start_time','id','end_time','is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
+        menuCode: '02-01-04',
+        keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
     },
     // (添加)更新资产
     assetsUpdate: {
         url: `${path}asset/updateAssets`,
         method: 'post',
         keys: [
-            'assets_id', 'assets_name','assets_url', 'assets_ip','assets_network_ports','assets_network_type','assets_type','assets_important',
-            'assets_os_type', 'assets_manger','assets_creatuser','assets_desc','assets_detail','assets_hostname','assets_numbering',
+            'assets_id', 'assets_name', 'assets_url', 'assets_ip', 'assets_network_ports', 'assets_network_type', 'assets_type', 'assets_important',
+            'assets_os_type', 'assets_manger', 'assets_creatuser', 'assets_desc', 'assets_detail', 'assets_hostname', 'assets_numbering',
             'assets_zone'
         ]
     },
@@ -101,8 +101,8 @@ const ApiSchema = {
     assetsAdd: {
         url: `${path}asset/addAssets`,
         method: 'post',
-        keys: [ 'assets_name','assets_url', 'assets_ip','assets_network_ports','assets_network_type','assets_type','assets_important',
-            'assets_os_type', 'assets_manger','assets_creatuser','assets_desc','assets_detail','assets_hostname','assets_numbering',
+        keys: ['assets_name', 'assets_url', 'assets_ip', 'assets_network_ports', 'assets_network_type', 'assets_type', 'assets_important',
+            'assets_os_type', 'assets_manger', 'assets_creatuser', 'assets_desc', 'assets_detail', 'assets_hostname', 'assets_numbering',
             'assets_zone'
         ]
     },
@@ -130,8 +130,8 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
-     //资产区域
-     getArea: {
+    //资产区域
+    getArea: {
         url: `${path}asset/getArea`,
         method: 'post',
         keys: ''
@@ -152,7 +152,7 @@ const ApiSchema = {
     vulnSearch: {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
-        keys: ['is_page','page','rows','target_id','vuln_level','vuln_type','assets_id','vuln_name','vuln_time','start_time','end_time']
+        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time']
     },
     //资产
     getAssetURL: {
@@ -170,8 +170,8 @@ const ApiSchema = {
     userList: {
         url: `${path}user/userList`,
         method: 'post',
-        menuCode:'09-02-08',
-        keys: ['user_name','page','rows']
+        menuCode: '09-02-08',
+        keys: ['user_name', 'page', 'rows']
     },
     //添加用户
     addUser: {
@@ -213,7 +213,14 @@ const ApiSchema = {
         url: `${path}log/loginLogSearch`,
         method: 'post',
         menuCode: '10-03-01',
-        keys: ['username','rows','page']
+        keys: ['username', 'rows', 'page']
+    },
+    //操作日志
+    optLogSearch:{
+        url: `${path}log/optLogSearch`,
+        method: 'post',
+        menuCode: '10-03-02',
+        keys: []
     },
     //授权管理
     getSystemInfo: {
@@ -223,7 +230,7 @@ const ApiSchema = {
         keys: []
     },
     //
-   
+
     getRolePermission: {
         url: `${path}user/getRolePermission`,
         method: 'post',
