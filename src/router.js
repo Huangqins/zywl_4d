@@ -370,6 +370,16 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/userLists')
+                },
+                {
+                    path: 'authority',
+                    name: 'authority',
+                    meta: {
+                        title: '用户权限',
+                        menuCode: '09-01'
+                    },
+                    component: () => 
+                    import('@/views/authority')
                 }
             ]
         },

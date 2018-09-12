@@ -15,12 +15,12 @@
         <panel style="margin-top:28px;">
             <div>
                 <p class="btn-banner">
-                    <el-button type="primary" v-if="$auth('09-02-01')">添加用户</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-03')">批量启用</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-04')">批量禁用</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-05')">批量删除</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-01')" @click="addUser">添加用户</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-03')" @click="enable">批量启用</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-04')" @click="disable">批量禁用</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-05')" @click="delet">批量删除</el-button>
                 </p>
-             <el-table :data="tableData" style="width: 100%">
+             <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="35"></el-table-column>
                 <el-table-column prop="userName" label="用户名" align="center"></el-table-column>
                 <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
@@ -36,7 +36,7 @@
                          <el-button  type="text" size="small">权限设置</el-button>
                          <el-button  type="text" size="small">详情</el-button>
                          <el-button  type="text" size="small">删除</el-button>
-                         <el-button  type="text" size="small">修改</el-button>
+                         <el-button  type="text" size="small" @click="delet(scope.row)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -91,6 +91,21 @@ export default {
        pageChange(params) {
            this.params = Object.assign({},this.params,params)
             this.userList(this.params)
+       },
+       addUser() {
+
+       },
+       delet(row) {
+
+       },
+       enable() {
+
+       },
+       disable() {
+           
+       },
+       handleSelectionChange(row) {
+           console.log(row)
        }
     }
 }

@@ -212,6 +212,17 @@ const ApiSchema = {
         url: `${path}user/getRolePermission`,
         method: 'post',
         keys: ''
+    },
+    getPermissionByRole: {
+        url: `${path}user/getPermissionByRole`,
+        method: 'post',
+        keys: ['role_id']
+    },
+    addRolePermission: {
+        url: `${path}user/addRolePermission`,
+        method: 'post',
+        menuCode: '09-01-01',
+        keys: ['role_name', 'role_level', 'role_id', 'menu_id']
     }
 }
 // filter keys
