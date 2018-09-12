@@ -11,8 +11,10 @@
             </el-form>
         </div>
         <!-- list -->
+        <div>
         <panel style="margin-top:28px;">
-            <p class="btn-banner">
+            <div>
+                <p class="btn-banner">
                     <el-button type="primary" v-if="$auth('09-02-01')">添加用户</el-button>
                     <el-button type="primary" v-if="$auth('09-02-03')">批量启用</el-button>
                     <el-button type="primary" v-if="$auth('09-02-04')">批量禁用</el-button>
@@ -38,16 +40,23 @@
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
         </panel>
+        </div>
+            
+        <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
 </template>
 
 <script>
 import panel from '@/components/panel'
 import { getUserName } from '@/utils/auth'
+import Pages from "@/components/Pages";
+
 export default {
     components: {
-        panel
+        panel,
+        Pages
     },
     data() {
         return {
@@ -55,21 +64,33 @@ export default {
                 user_name: ''
             },
             tableData: [],
-            user_name: ''
+            user_name: '',
+            pageTotal: 0,
+            defaultPage: {
+                page: 1,
+                rows: 10
+            },
+            params: {}
         }
     },
     created() {
-        this.userList();
+        this.params = Object.assign({},this.defaultPage,{user_name:  ''})
+        this.userList( this.params);
     },
     methods: {
        async userList(params) {
-           let res = await this.$api.userList({user_name: params});
+           let res = await this.$api.userList(params);
            if (res.data.result === 0) {
                this.tableData = res.data.rows;
+               this.pageTotal = res.data.total;
            }
        },
        getList(params) {
-           this.userList(params);
+           this.userList(Object.assign({},this.params, {user_name: params}));
+       },
+       pageChange(params) {
+           this.params = Object.assign({},this.params,params)
+            this.userList(this.params)
        }
     }
 }
