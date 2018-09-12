@@ -171,7 +171,7 @@ const ApiSchema = {
         url: `${path}user/userList`,
         method: 'post',
         menuCode:'09-02-08',
-        keys: ['user_name']
+        keys: ['user_name','page','rows']
     },
     //添加用户
     addUser: {
@@ -207,6 +207,11 @@ const ApiSchema = {
         method: 'post',
         menuCode: '09-02-05',
         keys: ['user_id', 'user_name']
+    },
+    getRolePermission: {
+        url: `${path}user/getRolePermission`,
+        method: 'post',
+        keys: ''
     }
 }
 // filter keys
