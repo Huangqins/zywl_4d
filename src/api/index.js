@@ -207,7 +207,23 @@ const ApiSchema = {
         method: 'post',
         menuCode: '09-02-05',
         keys: ['user_id', 'user_name']
-    }
+    },
+    //登录日志
+    loginLogSearch: {
+        url: `${path}log/loginLogSearch`,
+        method: 'post',
+        menuCode: '10-03-01',
+        keys: ['username','rows','page']
+    },
+    //授权管理
+    getSystemInfo: {
+        url: `${path}system/getSystemInfo`,
+        method: 'post',
+        menuCode: '10-04',
+        keys: []
+    },
+    //
+   
 }
 // filter keys
 const filterKey = (obj, keys) => {
