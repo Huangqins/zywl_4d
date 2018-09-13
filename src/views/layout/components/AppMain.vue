@@ -2,7 +2,7 @@
     <div class="app-main">
         <Breadcrumb />
         <el-scrollbar class="scrollbar-container">
-            <section>
+            <section style="height:100%;">
                 <transition name="fade-transform" mode="out-in">
                     <router-view :key="key"></router-view>
                 </transition>

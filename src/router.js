@@ -334,11 +334,11 @@ export default new Router({
                     path: 'addReport',
                     name: 'addReport',
                     meta: {
-                        title: '报告管理',
-                        menuCode: '05-01'
+                        title: '创建报告',
+                        menuCode: '08-01'
                     },
                     component: () =>
-                         import('@/views/reportManagement/addReport')
+                         import('@/views/createReport')
                 }
             ]
         },
@@ -380,6 +380,16 @@ export default new Router({
                     },
                     component: () => 
                     import('@/views/authority')
+                },
+                {
+                    path: 'addUser',
+                    name: 'addUser',
+                    meta: {
+                        title: '添加用户',
+                        menuCode: '09-02-01'
+                    },
+                    component: () => 
+                    import('@/views/addUser')
                 }
             ]
         },

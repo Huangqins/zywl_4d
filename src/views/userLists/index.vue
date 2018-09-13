@@ -16,9 +16,9 @@
             <div>
                 <p class="btn-banner">
                     <el-button type="primary" v-if="$auth('09-02-01')" @click="addUser">添加用户</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-03')" @click="enable">批量启用</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-04')" @click="disable">批量禁用</el-button>
-                    <el-button type="primary" v-if="$auth('09-02-05')" @click="delet">批量删除</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-03')" @click="enabledBatchUser">批量启用</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-04')" @click="disabledBatchUser">批量禁用</el-button>
+                    <el-button type="primary" v-if="$auth('09-02-05')" @click="batchDeleteUser">批量删除</el-button>
                 </p>
              <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="35"></el-table-column>
@@ -26,17 +26,17 @@
                 <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
                 <el-table-column prop="company" label="公司/部门" align="center"></el-table-column>
                 <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
-                <el-table-column prop="fStatus" label="状态" align="center">
+                <el-table-column prop="enabled" label="状态" align="center">
                     <template slot-scope="scope">
-                        {{ scope.row.fStatus === 0 ? '启用中': '禁用中' }}
+                        {{ scope.row.enabled === 0 ? '启用中': '禁用中' }}
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                          <el-button  type="text" size="small">权限设置</el-button>
                          <el-button  type="text" size="small">详情</el-button>
-                         <el-button  type="text" size="small">删除</el-button>
-                         <el-button  type="text" size="small" @click="delet(scope.row)">修改</el-button>
+                         <el-button  type="text" size="small" @click="delet(scope.row)">删除</el-button>
+                         <el-button  type="text" size="small">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -66,6 +66,8 @@ export default {
             tableData: [],
             user_name: '',
             pageTotal: 0,
+            user_id: [],
+            user_name: [],
             defaultPage: {
                 page: 1,
                 rows: 10
@@ -93,19 +95,45 @@ export default {
             this.userList(this.params)
        },
        addUser() {
-
+           this.$router.push('/userManagement/addUser');
        },
        delet(row) {
-
+           let user_id = [row.userId],
+               user_name = [row.userName]
+               this.$api.batchDeleteUser({user_id,user_name}).then(res => {
+                   if (res.data.result === 0) {
+                       this.userList(this.params)
+                   }
+               })
        },
-       enable() {
-
+      async batchDeleteUser() {
+          let params = {user_id: this.user_id, user_name: this.user_name}
+          let res  = await this.$api.batchDeleteUser(params);
+          if (res.data.result === 0) {
+              this.userList(this.params)
+          }
+      },
+      async enabledBatchUser() {
+          let params = {user_id: this.user_id, user_name: this.user_name,enabled: 0}
+          let res  = await this.$api.enabledBatchUser(params);
+          if (res.data.result === 0) {
+              this.userList(this.params)
+          }
        },
-       disable() {
-           
+      async disabledBatchUser() {
+          let params = {user_id: this.user_id, user_name: this.user_name,enabled: 1}
+          let res  = await this.$api.disabledBatchUser(params);
+          if (res.data.result === 0) {
+              this.userList(this.params)
+          }
        },
        handleSelectionChange(row) {
-           console.log(row)
+           this.user_id = row.map(item => {
+               return Number(item.userId)
+           })
+           this.user_name = row.map(item => {
+               return item.userName
+           })
        }
     }
 }
