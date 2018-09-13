@@ -49,12 +49,12 @@
                             <div>
                                 <p><span></span></p>
                                 <p>激活授权</p>
-                                <h5>试用于首次导入授权文件</h5>
+                                <h5><el-button type="text" >试用于首次导入授权文件</el-button></h5>
                             </div>
                             <div>
                                 <p><span class="update"></span></p>
                                 <p>更新授权</p>
-                                <h5>适用于激活后更新授权</h5>
+                                <h5><el-button type="text" >适用于激活后更新授权</el-button></h5>
                             </div>
                             
                         </div>
@@ -80,8 +80,8 @@
                             <li style="color:#A5FDD5">www.xxx.com</li>
                             <li style="color:#CAD5DB">#无人8329744678</li>
                             <li style="color:#CAD5DB">2018-09-24</li>
-                            <li style="color:#18BB9A">查看维护升级包文件</li>
-                            <li style="color:#18BB9A">查看历史升级的版本于升级时间</li>
+                            <li style="color:#18BB9A"><el-button type="text" style="padding:0;">查看维护升级包文件</el-button></li>
+                            <li style="color:#18BB9A"><el-button type="text" style="padding:0;">查看历史升级的版本于升级时间</el-button></li>
                         </ul>
                     </div>
                     <div class="updateManage-btn">
@@ -174,7 +174,7 @@ export default {
             center: ["50%", "55%"], // 默认全局居中
             radius: "95%",
             detail: { formatter: "{value}%", fontSize: "16" },
-            data: [{ value: 50, name: "" }],
+            data: [{ value: 0, name: "" }],
             axisLine: {
               // 坐标轴线
               lineStyle: {
@@ -267,8 +267,8 @@ export default {
                 shadowColor: "rgba(0, 0, 0, 0.5)"
               }
             },
-            label:{
-                show:false
+            label: {
+              show: false
             },
             labelLine: {
               show: false,
@@ -282,6 +282,7 @@ export default {
   },
   created() {
     this.getSystemInfo();
+    
   },
   methods: {
     getSystemInfo() {
@@ -293,9 +294,8 @@ export default {
         this.endTime = data.endTime;
         this.HDoption.series[0].data[0].value = res.data.usableSpace;
         this.HDoption.series[0].data[1].value = res.data.freeSpace;
-        this.EMSoption.series[0].data[0].value =
-          res.data.memoryUse.toFixed(1) - 0;
-        this.CPUoption.series[0].data[0].value = res.data.cpuUse.toFixed(1) - 0;
+        this.EMSoption.series[0].data[0].value = res.data.memoryUse.toFixed(1);
+        this.CPUoption.series[0].data[0].value = res.data.cpuUse.toFixed(1);
       });
     }
   }

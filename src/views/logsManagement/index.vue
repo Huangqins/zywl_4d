@@ -24,7 +24,7 @@
                     </el-table>
               </div>
           </panel>
-          <pages :total="pageTotals" @pageChange="pageChanges"></pages>
+          <pages :total="pageTotal" @pageChange="pageChange"></pages>
         </div>
         <div class="secTwo">
           <panel title="操作日志">
@@ -46,8 +46,9 @@
                     </el-table>
               </div>
           </panel>
+          <pages :total="pageTotals" @pageChange="pageChangeS"></pages>
         </div>
-        <pages :total="pageTotal" @pageChange="pageChange"></pages>
+        
     </div>
 </template>
 
@@ -71,23 +72,14 @@ export default {
       loginLog: "",
       handleLog: "",
       pageObj: {},
-      pageObjs: {},
       pageTotal:0,
       pageTotals:0,
       defaultPage: {
         rows: 10,
         page: 1
       },
-       params: {
-        is_page: 0,
-        page: "1",
-        rows: "10"
-      },
-      param: {
-        is_page: 0,
-        page: "1",
-        rows: "10"
-      }
+       params: { },
+       param:{}
     };
   },
   created() {
@@ -100,42 +92,40 @@ export default {
       let res = await this.$api.loginLogSearch(params);
       if (res.data.result == 0) {
         this.loginData = res.data.rows;
-        this.pageTotals=res.data.total
+        this.pageTotal=res.data.total
       }
     },
     async optLogSearch(params) {
       let res = await this.$api.optLogSearch(params);
       if (res.data.result == 0) {
         this.handleLogData = res.data.rows;
-        this.pageTotal= res.data.total
+        this.pageTotals= res.data.total
         
       }
-    },
-    
+    },  
+    //登陆日志查询  
     loginSearch() {
          let data=Object.assign({},this.defaultPage,{username:this.loginLog})
         this.loginLogSearch(data)
     },
+     //操作日志查询  
     searchhandleLog() {
         let data=Object.assign({},this.defaultPage,{username:this.handleLog})
         this.optLogSearch(data)
     },
-    // 触发分页
-    pageChange(pageObj) {
-      this.pageObj = pageObj;
-      let { page, rows } = pageObj,
-        params = { page, rows, is_page: 0 };
-      this.params = params;
-      this.loginLogSearch(params);
+    // 登陆日志触发分页
+    pageChange(params) {
+
+          this.params = Object.assign({},this.params,params)
+          console.log(this.params)
+          this.loginLogSearch(this.params)
     },
-    // 触发分页
-    pageChanges(pageObj) {
-      this.pageObjs = pageObj;
-      let { page, rows } = pageObjs,
-        param = { page, rows, is_page: 0 };
-      this.param = params;
-      this.loginLogSearch(params);
-    },
+    // 操作日志触发分页
+    pageChangeS(param) {
+          this.param = Object.assign({},this.param,param)
+          console.log(this.param)
+          this.optLogSearch(this.param)
+    }
   }
 };
 </script>

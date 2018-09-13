@@ -451,6 +451,16 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/PolicySettings') 
+                },
+                {
+                    path: 'addPolicySetting',
+                    name: 'addPolicySetting',
+                    meta: {
+                        title: '新增策略',
+                        menuCode: '10-06'
+                    },
+                    component: () =>
+                         import('@/views/PolicySettings/addPolicySetting') 
                 }
             ]
         }

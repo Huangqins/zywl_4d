@@ -220,7 +220,7 @@ const ApiSchema = {
         url: `${path}log/optLogSearch`,
         method: 'post',
         menuCode: '10-03-02',
-        keys: []
+        keys: ['username', 'rows', 'page']
     },
     //授权管理
     getSystemInfo: {
