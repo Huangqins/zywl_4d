@@ -1,7 +1,9 @@
 <template>
     <div class="authority">
         <div class="form">
-            <el-form ref="form" :model="form" label-width="80px">
+          <div class="title">{{$route.params.role_id ? '修改用户': '添加用户'}}</div>
+            <div class="form-content">
+              <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="角色名称">
                     <el-input v-model="form.role_name"></el-input>
                 </el-form-item>
@@ -13,14 +15,18 @@
                 </el-form-item>
                 <el-form-item style="margin-top:50px;">
                     <el-button type="primary" @click="onSubmit">保存提交</el-button>
-                    <el-button>取消</el-button>
+                    <el-button style="margin-left:129px;">取消</el-button>
                 </el-form-item>
             </el-form>
+            </div>
         </div>
 
         <div class="tree">
-            <el-tree :data="treeList" show-checkbox node-key="id" :props="defaultProps" ref="tree">
+          <div class="title">权限选择</div>
+            <el-scrollbar style="height:100%">
+               <el-tree :data="treeList" show-checkbox node-key="id" :props="defaultProps" ref="tree">
             </el-tree>
+            </el-scrollbar>
         </div>
     </div>
 </template>
@@ -62,6 +68,7 @@ export default {
         role_level: ""
       },
       treeList: [],
+      rolePerList: [],
       defaultProps: {
         children: "children",
         label: "label"
@@ -71,6 +78,11 @@ export default {
   created() {
     let params = { role_id: "" };
     this.getPermissionByRole(params);
+    if (this.$route.params.role_id) {
+      this.getPermissionByRole({ role_id: this.$route.params.role_id })
+      this.form.role_name = this.$route.params.role_name
+      this.form.role_level = this.$route.params.role_level + ''
+    }
   },
   methods: {
     onSubmit() {
@@ -78,7 +90,7 @@ export default {
       let params = {
         role_name,
         role_level,
-        role_id: "",
+        role_id: this.$route.params.role_id ? this.$route.params.role_id : '',
         menu_id: this.$refs.tree.getCheckedKeys()
       };
       this.addRolePermission(params);
@@ -86,13 +98,19 @@ export default {
     async getPermissionByRole(params) {
       let res = await this.$api.getPermissionByRole(params);
       if (res.data.result === 0) {
-        this.treeList = setTree(res.data.menus);
+        if(!params.role_id) {
+          this.treeList = setTree(res.data.menus);
+        } else {
+          this.rolePerList = res.data.role.map(item => item.menu_id)
+          this.$refs.tree.setCheckedKeys(this.rolePerList);
+        }
       }
     },
     async addRolePermission(params) {
       let res = await this.$api.addRolePermission(params);
       if (res.data.result === 0) {
-        this.$message.success(`添加成功`);
+        this.$message.success(`操作成功`);
+        this.$router.push('/userManagement/propertyManagement');
       } else if (res.data.result === 4) {
         this.$message.error(`角色等级不能高于当前用户的角色等级`);
       }
@@ -104,19 +122,35 @@ export default {
 <style lang="scss" scoped>
 .authority {
   display: flex;
+  height: 100%;
+  .title {
+    text-align: center;
+    margin: 0 0 21px 0;
+    color: #D1FFFF;
+  }
   .form {
     width: 492px;
     height: 454px;
+    // margin-top: 43px;
     margin-right: 26px;
-    background: rgba(38, 49, 67, 1);
-    box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
-    padding: 17px 57px 0 57px;
+    
+    
+    // padding: 0 57px;
+    .form-content {
+      width: 492px;
+      background: rgba(38, 49, 67, 1);
+      box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
+      height: 412px;
+      padding: 50px 57px 0 57px;
+    }
     .el-select {
       display: block;
     }
   }
   .tree {
     flex: 1;
+    height:100%;
+    box-shadow:4px 0px 4px rgba(29,36,46,1);
   }
   .el-tree {
     background-color: #171f2b;
@@ -126,6 +160,9 @@ export default {
 </style>
 
 <style lang="scss">
+.el-tree-node {
+  background-color: #2d384a;
+}
 .el-tree-node__content {
   padding: 15px 0;
 }

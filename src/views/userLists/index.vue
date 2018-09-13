@@ -93,7 +93,7 @@ export default {
             this.userList(this.params)
        },
        addUser() {
-
+           this.$router.push('/userManagement/addUser');
        },
        delet(row) {
 

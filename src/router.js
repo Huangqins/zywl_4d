@@ -380,6 +380,16 @@ export default new Router({
                     },
                     component: () => 
                     import('@/views/authority')
+                },
+                {
+                    path: 'addUser',
+                    name: 'addUser',
+                    meta: {
+                        title: '添加用户',
+                        menuCode: '09-02-01'
+                    },
+                    component: () => 
+                    import('@/views/addUser')
                 }
             ]
         },

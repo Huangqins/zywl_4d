@@ -178,7 +178,7 @@ const ApiSchema = {
         url: `${path}user/addUser`,
         method: 'post',
         menuCode: '09-02-01',
-        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId']
     },
     // 修改用户
     updateUser: {
@@ -239,6 +239,12 @@ const ApiSchema = {
         method: 'post',
         menuCode: '09-01-01',
         keys: ['role_name', 'role_level', 'role_id', 'menu_id']
+    },
+    // 获取角色名称
+    getRoleName: {
+        url: `${path}user/getRoleName`,
+        method: 'post',
+        keys: ''
     }
 }
 // filter keys

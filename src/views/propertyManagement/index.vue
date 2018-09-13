@@ -42,7 +42,14 @@ export default {
             }
         },
         edit(row) {
-
+            this.$router.push({
+                name: 'authority',
+                params: {
+                    role_name: row.role_name,
+                    role_id: row.role_id,
+                    role_level: row.role_level
+                }
+            })
         },
         addActor() {
             this.$router.push('/userManagement/authority')
