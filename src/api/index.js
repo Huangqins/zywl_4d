@@ -264,7 +264,92 @@ const ApiSchema = {
         url: `${path}user/getPermission`,
         method: 'post',
         keys: ['user_id']
+    },
+    //资产区域列表
+    getArea: {
+        url: `${path}asset/getArea`,
+        method: 'post',
+        keys: ''
+    },
+    //资产类型列表
+    assetsType: {
+        url: `${path}asset/assetsType`,
+        method: 'post',
+        keys: ''
+    },
+    //风险类型列表
+    vulnTypeSearch: {
+        url: `${path}vuln/vulnTypeSearch`,
+        method: 'post',
+        keys: ''
+    },
+    //风险、工单数据配置
+    getDataDict: {
+        url: `${path}dataDict/getDataDict`,
+        method: 'post',
+        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_High','work_middle','work_low','work_vlow']
+    },
+    updateDataDict: {
+        url: `${path} dataDict/updateDataDict`,
+        method: 'post',
+        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_High','work_middle','work_low','work_vlow']
+    },
+   
+    //删除资产区域
+    deleteArea: {
+        url: `${path}asset/deleteArea`,
+        method: 'post',
+        keys: ['area_id']
+    },
+    //添加资产区域
+    addArea: {
+        url: `${path}asset/addArea`,
+        method: 'post',
+        keys: ['area_name']
+    },
+    //修改资产区域
+    updateArea: {
+        url: `${path}asset/updateArea`,
+        method: 'post',
+        keys: ['area_name','area_id']
+    },
+    //添加资产区域
+    addAssetsType: {
+        url: `${path}asset/addAssetsType`,
+        method: 'post',
+        keys: ['name','desc']
+    },
+    //修改资产区域
+    updateAssetsType: {
+        url: `${path}asset/updateAssetsType`,
+        method: 'post',
+        keys: ['name','desc','id']
+    },
+    //修改资产区域
+    deleteAssetsType: {
+        url: `${path}asset/deleteAssetsType`,
+        method: 'post',
+        keys: ['id']
+    },
+    //风险类型删除
+    deleteVulnType: {
+        url: `${path}vuln/deleteVulnType`,
+        method: 'post',
+        keys: ['vuln_type_keyword','vuln_type_name']
+    },
+    //风险类型添加
+    addVulnType: {
+        url: `${path}vuln/addVulnType`,
+        method: 'post',
+        keys: ['vuln_type_keyword','vuln_type_name']
+    },
+    //风险类型修改
+    updateVulnType: {
+        url: `${path}vuln/updateVulnType`,
+        method: 'post',
+        keys: ['vuln_type_keyword','vuln_type_name']
     }
+    
 }
 // filter keys
 const filterKey = (obj, keys) => {

@@ -322,7 +322,17 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/information')
-                }
+                },
+                {
+                    path: 'addDatabase',
+                    name: 'addDatabase',
+                    meta: {
+                        title: '漏洞编辑',
+                        menuCode: '07-03'
+                    },
+                    component: () =>
+                         import('@/views/vulnDatabase/addDatabase')
+                },
             ]
         },
         {
