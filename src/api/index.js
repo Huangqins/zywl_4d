@@ -171,7 +171,7 @@ const ApiSchema = {
         url: `${path}user/userList`,
         method: 'post',
         menuCode: '09-02-08',
-        keys: ['user_name', 'page', 'rows']
+        keys: ['user_name', 'page', 'rows', 'user_id']
     },
     //添加用户
     addUser: {
@@ -185,7 +185,7 @@ const ApiSchema = {
         url: `${path}user/updateUser`,
         method: 'post',
         menuCode: '09-02-07',
-        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId']
     },
     // 批量启用
     enabledBatchUser: {
@@ -252,6 +252,18 @@ const ApiSchema = {
         url: `${path}user/getRoleName`,
         method: 'post',
         keys: ''
+    },
+    // 用户修改权限
+    addPermission: {
+        url: `${path}user/addPermission`,
+        method: 'post',
+        keys: ['user_ids', 'menu_ids']
+    },
+    // 获取当前用户权限
+    getPermission: {
+        url: `${path}user/getPermission`,
+        method: 'post',
+        keys: ['user_id']
     }
 }
 // filter keys

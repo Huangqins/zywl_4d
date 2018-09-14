@@ -1,13 +1,15 @@
 <template>
     <div class="authority">
         <div class="form">
-          <div class="title">{{$route.params.role_id ? '修改用户': '添加用户'}}</div>
+          
+          <div class="title" v-if="$route.params.user_id">修改用户权限</div>
+          <div class="title" v-else>{{$route.params.role_id ? '修改角色': '添加角色'}}</div>
             <div class="form-content">
               <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="角色名称">
+                <el-form-item :label="!$route.params.user_id?'角色名称':'用户名'">
                     <el-input v-model="form.role_name"></el-input>
                 </el-form-item>
-                <el-form-item label="角色等级">
+                <el-form-item label="角色等级" v-if="!$route.params.user_id">
                     <el-select v-model="form.role_level" placeholder="请选择角色等级">
                         <el-option label="一级" value="2"></el-option>
                         <el-option label="二级" value="3"></el-option>
@@ -77,24 +79,48 @@ export default {
   },
   created() {
     let params = { role_id: "" };
-    this.getPermissionByRole(params);
-    if (this.$route.params.role_id) {
+    this.getPermissionByRole(params); // 获取所有权限列表
+    if (this.$route.params.role_id) { // 角色时候情况
       this.getPermissionByRole({ role_id: this.$route.params.role_id })
       this.form.role_name = this.$route.params.role_name
       this.form.role_level = this.$route.params.role_level + ''
+    } else if (this.$route.params.user_id) { // 用户设置权限时候情况
+      this.form.role_name = this.$route.params.user_name;
+      this.getPermission({user_id: this.$route.params.user_id[0]})
     }
   },
   methods: {
     onSubmit() {
       let { role_name, role_level } = this.form;
-      let params = {
-        role_name,
-        role_level,
-        role_id: this.$route.params.role_id ? this.$route.params.role_id : '',
-        menu_id: this.$refs.tree.getCheckedKeys()
-      };
-      this.addRolePermission(params);
+       let params = {};
+      if(this.$route.params.user_id) {
+          params = { user_ids: this.$route.params.user_id,menu_ids: this.$refs.tree.getCheckedKeys()}
+          this.addPermission(params)
+      } else {
+          params = {role_name, role_level,
+          role_id: this.$route.params.role_id ? this.$route.params.role_id : '',
+          menu_id: this.$refs.tree.getCheckedKeys()
+        };
+        this.addRolePermission(params);
+      }
+       
     },
+    async addPermission(params) {
+      let res = await this.$api.addPermission(params);
+      if (res.data.result === 0) {
+         this.$message.success(`操作成功`);
+         this.$router.push('/userManagement/userLists');
+      }
+    },
+    // 获取用户权限
+    async getPermission(params) {
+      let res = await this.$api.getPermission(params);
+      if (res.data.result === 0) {
+        let menus = res.data.menus.map(item => item.menu_id)
+        this.$refs.tree.setCheckedKeys(menus);
+      }
+    },
+    // 获取角色权限
     async getPermissionByRole(params) {
       let res = await this.$api.getPermissionByRole(params);
       if (res.data.result === 0) {
