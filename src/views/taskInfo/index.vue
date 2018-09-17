@@ -448,7 +448,7 @@ export default {
   font-weight: 400;
   display: flex;
   & > div:first-child {
-    width: 69px;
+    // width: 69px;
     color: rgba(209, 255, 255, 1);
     font-size: 16px;
   }

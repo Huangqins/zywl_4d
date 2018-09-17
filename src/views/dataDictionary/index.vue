@@ -4,7 +4,7 @@
            <section >
                <panel title="资产区域配置">
               <el-button type="text" style="float:right;margin-right:20px" @click="addAssetareas"><i class="el-icon-plus"></i>新增</el-button>
-              <el-table :data="assetData" style="width: 100%;height:259px;overflow:auto;" >
+              <el-table :data="assetData" style="width: 100%;height:219px;overflow:auto;" >
                 <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
                 <el-table-column prop="area_name" label="区域名称" align="center"></el-table-column>
                 <el-table-column prop="create_time" label="创建时间" align="center">
@@ -23,12 +23,16 @@
                     </template>
                 </el-table-column>
               </el-table>
+              <div style="padding-bottom:5px;">
+                <pages :total="assetpageTotal" @pageChange="assetpageChange"></pages>
+              </div>
+               
                </panel>
            </section>
            <section>
                <panel title="资产类型配置">
-                   <el-button type="text" style="float:right;margin-right:20px" @click="addAssettypes"><i class="el-icon-plus"></i>新增</el-button>
-                   <el-table :data="assetTypeData" style="width: 100%" >
+                   <el-button type="text" style="float:right;margin-right:50px" @click="addAssettypes"><i class="el-icon-plus"></i>新增</el-button>
+                   <el-table :data="assetTypeData" style="width: 100%;height:219px;overflow:auto;" >
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column prop="name" label="资产类型" align="center"></el-table-column>
                     <el-table-column prop="desc" label="描述" align="center"></el-table-column>
@@ -40,6 +44,9 @@
                         </template>
                     </el-table-column>
                    </el-table>
+                   <div style="padding-bottom:5px;margin-right:35px;">
+                    <pages :total="asTypepageTotal" @pageChange="astypageChange"></pages>
+                   </div>
                </panel>
            </section>
       </div>
@@ -47,7 +54,7 @@
           <section>
            <panel title="风险类型配置">
                 <el-button type="text" style="float:right;margin-right:20px" @click="addvulntype"><i class="el-icon-plus" ></i>新增</el-button>
-                   <el-table :data="vulnTypeData" style="width: 100%" >
+                   <el-table :data="vulnTypeData" style="width: 100%;height:214px;overflow:auto;" >
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column prop="vuln_type_name" label="风险名称" align="center"></el-table-column>
                     <el-table-column prop="vuln_type_keyword" label="类型编码" align="center"></el-table-column>
@@ -59,31 +66,34 @@
                         </template>
                     </el-table-column>
                    </el-table>
+                   <div style="padding-bottom:5px;">
+                    <pages :total="vulnTypepageTotal" @pageChange="vulnTypepageChange"></pages>
+                   </div>
             </panel>
           </section>
            <section>
                <panel title="风险数据配置">
-                       <div style="overflow:hidden;padding:20px">  
-                        <el-form :model="vulnData" :rules="rules" ref="ruleForm" label-width="185px" class="form" >                   
-                            <el-form-item label="极高风险处理提醒时间(天)" prop="vuln_vHigh" style="width:45%;float:left">
-                                <el-input v-model="ruleForm.vuln_vHigh"></el-input>
+                       <div style="overflow:hidden;padding:20px;height:302px;">  
+                        <el-form :model="vulndata" :rules="rules" ref="vulndata" label-width="185px" class="form" >                   
+                            <el-form-item label="极高风险处理提醒时间(天)" prop="vuln_vHigh" style="width:45%;display:inline-block">
+                                <el-input v-model="vulndata.vuln_vHigh"></el-input>
                             </el-form-item>
-                            <el-form-item label="高风险处理时间(天)" prop="vuln_high" style="width:45%;float:right">
-                                <el-input v-model="ruleForm.vuln_high"></el-input>
+                            <el-form-item label="高风险处理时间(天)" prop="vuln_high" style="width:45%;display:inline-block">
+                                <el-input v-model="vulndata.vuln_high"></el-input>
                             </el-form-item> 
-                            <el-form-item label="中风险处理提醒时间(天)" prop="vuln_middle" style="width:45%;float:left">
-                                <el-input v-model="ruleForm.vuln_middle"></el-input>
+                            <el-form-item label="中风险处理提醒时间(天)" prop="vuln_middle" style="width:45%;display:inline-block">
+                                <el-input v-model="vulndata.vuln_middle"></el-input>
                             </el-form-item>
-                            <el-form-item label="低风险处理时间(天)" prop="vuln_low" style="width:45%;float:right">
-                                <el-input v-model="ruleForm.vuln_low"></el-input>
+                            <el-form-item label="低风险处理时间(天)" prop="vuln_low" style="width:45%;display:inline-block">
+                                <el-input v-model="vulndata.vuln_low"></el-input>
                             </el-form-item> 
-                            <el-form-item label="极低风险处理时间(天)" prop="vuln_vLow" style="width:45%;">
-                                <el-input v-model="ruleForm.vuln_vLow"></el-input>
+                            <el-form-item label="极低风险处理时间(天)" prop="vuln_vLow" style="width:45%;display:inline-block">
+                                <el-input v-model="vulndata.vuln_vLow"></el-input>
                             </el-form-item>
-                            <!-- <el-form-item style="width:50%;margin:0 auto;">                                
+                            <el-form-item style="width:50%;margin:0 auto;">                                
                                 <el-button type="primary" >重置</el-button>
-                                <el-button type="primary"  style="margin-right:20px;" @click="keepvuln">保存</el-button>
-                            </el-form-item> -->
+                                <el-button type="primary"  style="margin-right:20px;" @click="keepvuln('vulndata')">保存</el-button>
+                            </el-form-item>
                         </el-form>                      
                     </div>
                </panel>
@@ -92,38 +102,44 @@
       <div class="workManage">
           <section>
                <panel title="工单管理配置">
-                  <div style="padding:20px">
-                    <el-form :model="workManage" :rules="rules" ref="ruleForm" label-width="185px" class="form" >    
+                  <div style="padding:20px;height:266px">
+                    <!-- <el-form :model="workManage" :rules="rules" ref="ruleForm" label-width="185px" class="form" >    
                        <el-form-item label="工单到期邮件提醒" prop=" " style="width:100%;">
                          <el-radio v-model="workManage.is_email" label="0">是</el-radio>
                          <el-radio v-model="workManage.is_email" label="1">否</el-radio>
                       </el-form-item>
-                    </el-form>
+                    </el-form> -->
+                    <span style="margin-right:15px">工单到期邮件提醒:</span>
+                     <el-radio-group v-model="is_email" @change='workmeail()'>
+                      <el-radio  :label="0" >是</el-radio>
+                    <el-radio :label="1" >否</el-radio>
+                    </el-radio-group>
+                    
                   </div>
                </panel>
           </section>
            <section>
                <panel title="工单数据配置">
                    <div style="overflow:hidden;padding:20px">  
-                        <el-form :model="workData" :rules="rules" ref="ruleForm" label-width="185px" class="form" >                   
-                            <el-form-item label="极高风险整改提醒时间(天)" prop="work_vHigh" style="width:45%;float:left">
-                                <el-input v-model="ruleForm.work_vHigh"></el-input>
+                        <el-form :model="workData" :rules="rules" ref="workData" label-width="185px" class="form" >                   
+                            <el-form-item label="极高风险整改提醒时间(天)" prop="work_vHigh" style="width:45%;display:inline-block;">
+                                <el-input v-model="workData.work_vHigh"></el-input>
                             </el-form-item>
-                            <el-form-item label="高风险整改时间(天)" prop="work_high" style="width:45%;float:right">
-                                <el-input v-model="ruleForm.work_high"></el-input>
+                            <el-form-item label="高风险整改时间(天)" prop="work_high" style="width:45%;display:inline-block;">
+                                <el-input v-model="workData.work_high"></el-input>
                             </el-form-item> 
-                            <el-form-item label="中风险整改提醒时间(天)" prop="work_middle" style="width:45%;float:left">
-                                <el-input v-model="ruleForm.work_middle"></el-input>
+                            <el-form-item label="中风险整改提醒时间(天)" prop="work_middle" style="width:45%;display:inline-block;">
+                                <el-input v-model="workData.work_middle"></el-input>
                             </el-form-item>
-                            <el-form-item label="低风险整改时间(天)" prop="work_low" style="width:45%;float:right">
-                                <el-input v-model="ruleForm.work_low"></el-input>
+                            <el-form-item label="低风险整改时间(天)" prop="work_low" style="width:45%;display:inline-block;">
+                                <el-input v-model="workData.work_low"></el-input>
                             </el-form-item> 
-                            <el-form-item label="极低风险整改时间(天)" prop="work_vLow" style="width:45%;">
-                                <el-input v-model="ruleForm.work_vLow"></el-input>
+                            <el-form-item label="极低风险整改时间(天)" prop="work_vLow" style="width:45%;display:inline-block;">
+                                <el-input v-model="workData.work_vLow"></el-input>
                             </el-form-item>
                              <el-form-item style="width:50%;margin:0 auto;">                                
                                 <el-button type="primary" >重置</el-button>
-                                <el-button type="primary"  style="margin-right:20px;">保存</el-button>
+                                <el-button type="primary"  style="margin-right:20px;" @click="keepwork('workData')">保存</el-button>
                             </el-form-item>
                         </el-form>                      
                     </div>
@@ -209,10 +225,12 @@
 
 <script>
 import Panel from "@/components/panel";
+import Pages from "@/components/Pages";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 export default {
   components: {
-    Panel
+    Panel,
+    Pages
   },
   data() {
     const titlestruts = {
@@ -228,6 +246,7 @@ export default {
       "2": "风险区域修改"
     };
     return {
+      is_email:1,
       deleteAssetVisible: false,
       fomatterTime: fomatterTime,
       vulntitlestruts:vulntitlestruts,
@@ -262,7 +281,7 @@ export default {
       workManage: {
         is_email: ""
       },
-      vulnData: {
+      vulndata: {
         vuln_vHigh: "",
         vuln_high: "",
         vuln_middle: "",
@@ -281,8 +300,12 @@ export default {
       formassettypeCopy:{},
       assettypeItem:{},
       vulnItem:{},
-      formvulnCopy:{}
+      formvulnCopy:{},
+      assetpageTotal:0,
+      asTypepageTotal:0,
+      vulnTypepageTotal:0,
     };
+   
   },
   created() {
     this._getArea();
@@ -291,13 +314,52 @@ export default {
     this._getDataDict();
   },
   methods: {
+    // 资产区域分页
+    assetpageChange(params) {
+          this.params = Object.assign({},this.params,params)
+          this._getArea(this.params)
+    },
+    astypageChange(){
+      this.params = Object.assign({},this.params,params)
+      this._assetsType(this.params)
+    },
+    vulnTypepageChange(){
+       this.params = Object.assign({},this.params,params)
+      this._vulnTypeSearch(this.params)
+    },
+    workmeail(){
+     let data=this.is_email
+            this.$api.updateDataDict({is_email:data}).then(res =>{
+                if(res.data.result==0){
+                    
+                }else{
+                    this.$message.error(`修改失败`)
+                }
+            })
+    },
       //
-    keepvuln(){
-      this.$api.addVulnType(this.vulnData).then(res =>{
-          if(res.data.reslut==0){
-              this.$message('保存成功')
-          }
-      })
+    keepvuln(params){     
+      if (this.$refs.vulndata) {        
+        this.$refs.vulndata.validate(valid => {
+          this.$api.updateDataDict(this.vulndata).then(res =>{    
+            if(res.data.result==0){        
+               this.$message.success(`保存成功`);
+            }
+          })
+        })
+      }
+    },
+    keepwork(params){
+       if (this.$refs.workData) {        
+        this.$refs.workData.validate(valid => {
+          this.$api.updateDataDict(this.workData).then(res =>{    
+            if(res.data.result==0){ 
+              console.log('12')       
+                this.$message.success(`保存成功`)
+            }
+          })
+        })
+      }
     },
       // 清空表单
     resetForm() {
@@ -327,6 +389,7 @@ export default {
       this.$api.getArea(params).then(res => {
         let data = res.data.areas;
         this.assetData = data;
+        this.assetpageTotal=res.data.total
       });
     },
     _assetsType() {
@@ -342,9 +405,12 @@ export default {
         this.vulnTypeData = data;
       });
     },
+    //风险/工单数据获取
     _getDataDict() {
       this.$api.getDataDict().then(res => {
         let data = res.data.dataDict;
+        this.vulndata=data;
+        this.workData=data;
       });
     },
     // 选中删除项并且打开提示框

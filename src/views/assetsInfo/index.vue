@@ -511,6 +511,7 @@ export default {
     },
     // 添加资产
     addAsset(params) {
+      console.log(params)
       if (this.$refs.form) {
         this.$refs.form.validate(valid => {
           if (this.status === "check") {

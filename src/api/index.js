@@ -275,12 +275,12 @@ const ApiSchema = {
     getDataDict: {
         url: `${path}dataDict/getDataDict`,
         method: 'post',
-        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_High','work_middle','work_low','work_vlow']
+        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_high','work_middle','work_low','work_vLow']
     },
     updateDataDict: {
-        url: `${path} dataDict/updateDataDict`,
+        url: `${path}dataDict/updateDataDict`,
         method: 'post',
-        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_High','work_middle','work_low','work_vlow']
+        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_high','work_middle','work_low','work_vLow']
     },
    
     //删除资产区域

@@ -58,10 +58,6 @@
                             {
                                 path: 'taskInfo',
                                 title: '任务信息'
-                            },
-                            {
-                                path: 'historyTask',
-                                title: '历史任务'
                             }
                         ]
                     },

@@ -381,7 +381,6 @@ export default {
   box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
   display: flex;
   & > div:first-child {
-    width: 69px;
     color: rgba(209, 255, 255, 1);
     font-size: 16px;
   }
