@@ -85,6 +85,7 @@ const ApiSchema = {
         url: `${path}asset/assetsInfo`,
         method: 'post',
         menuCode: '02-01-04',
+        title: '资产列表',
         keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
     },
     // (添加)更新资产
@@ -372,6 +373,7 @@ const gernerater = () => {
                     method: ApiSchema[key].method,
                     url: ApiSchema[key].url,
                     menuCode: ApiSchema[key].menuCode,
+                    title: ApiSchema[key].title,
                     [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
                 })
             }

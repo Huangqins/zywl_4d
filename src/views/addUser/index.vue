@@ -76,7 +76,7 @@ export default {
                let data = res.data.rows[0];
                let {trueName,phone, email,company, IDCard } = data;
                this.form = { trueName,phone, email,company, IDCard };
-               this.form.roleId = data.role;
+            //    this.form.roleId = data.role;
            }
        },
         onSubmit() {
