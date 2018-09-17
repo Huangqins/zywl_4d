@@ -1,6 +1,7 @@
 const appStore = window.sessionStorage
 
 export function setToken(token) {
+    console.log(token)
     return appStore.setItem('token', token)
 }
 

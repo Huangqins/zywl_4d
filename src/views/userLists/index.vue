@@ -33,10 +33,9 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                         <el-button  type="text" size="small">权限设置</el-button>
-                         <el-button  type="text" size="small">详情</el-button>
+                         <el-button  type="text" size="small" @click="setPerMission(scope.row)">权限设置</el-button>
                          <el-button  type="text" size="small" @click="delet(scope.row)">删除</el-button>
-                         <el-button  type="text" size="small">修改</el-button>
+                         <el-button  type="text" size="small" @click="edit(scope.row)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -87,6 +86,15 @@ export default {
                this.pageTotal = res.data.total;
            }
        },
+       setPerMission(params) {
+           this.$router.push({
+               name: 'authority',
+               params: {
+                   user_id: [Number(params.userId)],
+                   user_name: params.userName
+               }
+           })
+       }, 
        getList(params) {
            this.userList(Object.assign({},this.params, {user_name: params}));
        },
@@ -105,6 +113,15 @@ export default {
                        this.userList(this.params)
                    }
                })
+       },
+       edit(row) {
+           this.$router.push({
+               name: 'addUser',
+               params: {
+                   user_id: Number(row.userId),
+                   user_name: row.userName
+               }
+           })
        },
       async batchDeleteUser() {
           let params = {user_id: this.user_id, user_name: this.user_name}

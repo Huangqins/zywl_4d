@@ -124,7 +124,7 @@ export default new Router({
                     name: 'customTestGroup',
                     meta: {
                         title: '自定义测试组',
-                        menuCode: '02-01'
+                        menuCode: '03-03'
                     },
                     component: () =>
                         import('@/views/customTestGroup')
@@ -134,10 +134,20 @@ export default new Router({
                     name: 'taskInfo',
                     meta: {
                         title: '任务信息',
-                        menuCode: '02-02'
+                        menuCode: '03-01'
                     },
                     component: () =>
                         import('@/views/taskInfo')
+                },
+                {
+                    path: 'taskExec',
+                    name: 'taskExec',
+                    meta: {
+                        title: '任务进度',
+                        menuCode: '03-01'
+                    },
+                    component: () =>
+                        import('@/views/taskExec')
                 }
             ]
         },
@@ -348,7 +358,7 @@ export default new Router({
                         menuCode: '08-01'
                     },
                     component: () =>
-                         import('@/views/createReport')
+                         import('@/views/reportManagement/addReport')
                 }
             ]
         },
@@ -395,7 +405,7 @@ export default new Router({
                     path: 'addUser',
                     name: 'addUser',
                     meta: {
-                        title: '添加用户',
+                        title: '用户操作',
                         menuCode: '09-02-01'
                     },
                     component: () => 

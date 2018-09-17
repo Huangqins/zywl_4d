@@ -77,6 +77,7 @@ const ApiSchema = {
     addTarget: {
         url: `${path}task/addTarget`,
         method: 'post',
+        title: '添加任务',
         keys: ['type_name', 'task_type_id', 'target_name', 'asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
 
@@ -85,6 +86,7 @@ const ApiSchema = {
         url: `${path}asset/assetsInfo`,
         method: 'post',
         menuCode: '02-01-04',
+        title: '资产列表',
         keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
     },
     // (添加)更新资产
@@ -171,7 +173,7 @@ const ApiSchema = {
         url: `${path}user/userList`,
         method: 'post',
         menuCode: '09-02-08',
-        keys: ['user_name', 'page', 'rows']
+        keys: ['user_name', 'page', 'rows', 'user_id']
     },
     //添加用户
     addUser: {
@@ -185,7 +187,7 @@ const ApiSchema = {
         url: `${path}user/updateUser`,
         method: 'post',
         menuCode: '09-02-07',
-        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId']
     },
     // 批量启用
     enabledBatchUser: {
@@ -252,6 +254,18 @@ const ApiSchema = {
         url: `${path}user/getRoleName`,
         method: 'post',
         keys: ''
+    },
+    // 用户修改权限
+    addPermission: {
+        url: `${path}user/addPermission`,
+        method: 'post',
+        keys: ['user_ids', 'menu_ids']
+    },
+    // 获取当前用户权限
+    getPermission: {
+        url: `${path}user/getPermission`,
+        method: 'post',
+        keys: ['user_id']
     },
     //资产区域列表
     getArea: {
@@ -360,6 +374,7 @@ const gernerater = () => {
                     method: ApiSchema[key].method,
                     url: ApiSchema[key].url,
                     menuCode: ApiSchema[key].menuCode,
+                    title: ApiSchema[key].title,
                     [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
                 })
             }

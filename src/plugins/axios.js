@@ -48,9 +48,11 @@ _axios.interceptors.response.use(response => {
          removeAll()
          router.push({ path: '/login' })
          break;
+         case  -1 :
+         Message.error(`${response.config.title}操作失败`)
+         break;
         case -2:
-         Message.error(`尚无访问权限请联系管理员`)
-         removeAll()
+         Message.error(`${response.config.title}尚无访问权限`)
          break;
         case 5:
          Message.error(`授权文件丢失,请重新导入授权文件`)
