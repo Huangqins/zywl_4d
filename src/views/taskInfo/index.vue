@@ -428,6 +428,7 @@ export default {
           if (res.data.result === 0) {
             this.dialogFormVisible = false;
             this.$message.success("任务添加成功");
+            this.$router.push('/taskManage/taskExec')
             this.targetInfo(this.params);
           } else if (res.result === 1) {
             this.$message.error("任务添加失败");

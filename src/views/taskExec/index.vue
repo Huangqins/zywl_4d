@@ -59,20 +59,74 @@
                          <li>
                              <div class="title">目标确立</div>
                              <div class="des">
-                                 
+                                 <div class="des-num">
+                                     <div class="title">目标数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">完成数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                             </div>
+                             <div class="res">
+                                 检测完成
                              </div>
                          </li>
                          <li>
                              <div class="title">业务功能识别</div>
-                             <div class="des"></div>
+                             <div class="des">
+                                 <div class="des-num">
+                                     <div class="title">系统数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">完成数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                             </div>
+                             <div class="res">
+                                 检测完成
+                             </div>
                          </li>
                          <li>
                              <div class="title">安全测试</div>
-                             <div class="des"></div>
+                             <div class="des">
+                                 <div class="des-num">
+                                     <div class="title">业务功能数</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">完成测试数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                             </div>
+                             <div class="res">
+                                 检测完成
+                             </div>
                          </li>
                          <li>
                              <div class="title">风险利用取证</div>
-                             <div class="des"></div>
+                             <div class="des">
+                                 <div class="des-num">
+                                     <div class="title">风险数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">利用成功</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">利用失败</div>
+                                     <div class="num">100</div>
+                                 </div>
+                                 <div class="des-num">
+                                     <div class="title">取证数量</div>
+                                     <div class="num">100</div>
+                                 </div>
+                             </div>
+                             <div class="res">
+                                 检测完成
+                             </div>
                          </li>
                      </ul>
                  </div>
@@ -218,9 +272,6 @@ export default {
           box-shadow:4px 0px 4px rgba(29,36,46,1);
       }
   }
-  .degree {
-      height: 118px;
-  }
   .charts {
       display: flex;
       .logic {
@@ -229,6 +280,31 @@ export default {
       }
       .timeline {
           width: 30%;
+      }
+  }
+  .degree {
+      height: 118px;
+      display: flex;
+      font-size: 14px;
+      .title {
+          margin-top:6px;
+      }
+      ul {
+          width: 100%;
+      }
+      .des {
+          margin: 5px 0;
+          .title {
+              padding: 5px 0;
+          }
+          display: flex;
+          .des-num {
+              flex: 1;
+          }
+      }
+        li:not(:last-child) {
+            flex: 1;
+            border-right: 1px solid rgba(50,63,84,1);
       }
   }
 }
