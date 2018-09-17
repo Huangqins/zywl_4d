@@ -156,13 +156,13 @@
             </el-select>
           </el-form-item>        
         
-          <el-form-item label="资产链接" prop="asset_ids">
-          <div v-if="form.task_type_id ==0 ">
-            <el-select  v-model="form.asset_ids" multiple  filterable  default-first-option  placeholder="" style="width:100%">
+          <el-form-item label="资产链接" prop="_asset_ids">
+          <div v-if="form.task_type_id == 0 ">
+            <el-select  v-model="form._asset_ids" multiple  filterable   placeholder="" style="width:100%">
                 <el-option v-for="(item, index) in urlArr" :key="index + 'b'" :label="item.label" :value="item.value" ></el-option>
             </el-select>
             </div>
-            <div v-if="form.task_type_id ==1 ">
+            <div v-if="form.task_type_id == 1 ">
               <el-input type="textarea" v-model="form.target_url" auto-complete="off" placeholder="例：192.168.1.1或192.168.1.1-192.168.1.255或192.168.1.1/24或www.xxx.com.cn"></el-input>
             </div>
           </el-form-item>
@@ -228,10 +228,11 @@ export default {
         target_cycle: "",
         target_url: "",
         asset_ids: "",
+        _asset_ids: "",
         target_ip: "",
         type_id: 1,
         type_name: "",
-        task_type_id: "",
+        task_type_id: 0,
         userName: getUserName()
       },
       strageArr: [],
@@ -266,12 +267,12 @@ export default {
           {
             required: true,
             message: "策略类型不能为空",
-              trigger: 'change'
+            trigger: 'change'
           }
         ],
         target_starttime: [
           {
-            type: "string",
+            type: "object",
             required: true,
             message: "开始时间不能为空",
             trigger: "change"
@@ -279,10 +280,9 @@ export default {
         ],
         target_cycle: [
           {
-            type: "string",
             required: true,
             message: "测试周期不能为空",
-            trigger: "blur"
+            trigger: 'change'
           }
         ],
         type_id: [
@@ -368,6 +368,7 @@ export default {
               value: item.rule_id
             };
           });
+          this.form.target_teststra = this.strageArr[0].value
         } else {
           //周期
           this.cycleArr = res.data.rules.map(item => {
@@ -376,6 +377,7 @@ export default {
               value: item.rule_id
             };
           });
+          this.form.target_cycle = this.cycleArr[0].value;
         }
       }
     },
@@ -390,6 +392,7 @@ export default {
             value: item.type_id,
             label: item.type_name
           });
+          this.form.type_name = this.typeArr[0].value
         });
       }
     },
@@ -407,8 +410,9 @@ export default {
     },    
     // 添加任务
     addTask(params) {
-      params.asset_ids = params.asset_ids.join(",");
-
+       this.$refs.form.validate(valid => {
+         if (valid) {
+              params.asset_ids = params._asset_ids.join(",");
       if (
         params.target_starttime - Date.now() > 0 &&
         params.target_cycle === "now"
@@ -432,6 +436,8 @@ export default {
           }
         });
       }
+         }
+       })
     }
   }
 };

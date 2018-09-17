@@ -33,7 +33,6 @@ _axios.interceptors.request.use(config => {
 
 // Add a response interceptor
 _axios.interceptors.response.use(response => {
-   console.log(response)
   if (vm._route.fullPath === '/login') {
     return response
   } else {
@@ -50,7 +49,7 @@ _axios.interceptors.response.use(response => {
          router.push({ path: '/login' })
          break;
          case  -1 :
-         Message.error(`${response.config.title}访问不正确`)
+         Message.error(`${response.config.title}操作失败`)
          break;
         case -2:
          Message.error(`${response.config.title}尚无访问权限`)

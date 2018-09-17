@@ -77,6 +77,7 @@ const ApiSchema = {
     addTarget: {
         url: `${path}task/addTarget`,
         method: 'post',
+        title: '添加任务',
         keys: ['type_name', 'task_type_id', 'target_name', 'asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
 
