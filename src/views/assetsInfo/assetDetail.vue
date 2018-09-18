@@ -138,6 +138,7 @@
 <script>
 import Panel from "@/components/panel";
 import { fomatterTime, deepClone } from "@/utils";
+
 const vulnLevel = {
   "4": "极高风险",
   "3": "高风险",
