@@ -177,8 +177,10 @@
 <script>
 
 import panel from '@/components/panel'
+import route from 'mixins/route'
 
 export default {
+    mixins: ['route'],
     components: {
         panel
     },

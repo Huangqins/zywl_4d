@@ -27,8 +27,9 @@ module.exports = {
         }
     },
     chainWebpack: config => {
-        // config.resolve.alias
-        //     .set('public', resolve('public'))
+        config.resolve.alias
+            .set('public', resolve('public'))
+            .set('mixins', resolve('src/mixins'));
         config.module
             .rule('svg')
             .exclude
