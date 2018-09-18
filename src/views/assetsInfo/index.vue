@@ -161,7 +161,7 @@
         <el-button type="primary" @click="addAsset('form')" :loading="addPending">确 定</el-button>
       </div>
     </el-dialog>
-     <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="30%">
+     <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="21%">
        <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;"  @click="importTem">下载资产模板</p>
        <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
             <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
