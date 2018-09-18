@@ -350,7 +350,14 @@ const ApiSchema = {
         url: `${path}vuln/updateVulnType`,
         method: 'post',
         keys: ['vuln_type_keyword','vuln_type_name']
-    }
+    },
+    //资产信息端口服务
+    getServiceList: {
+        url: `${path}asset/getServiceList`,
+        method: 'post',
+        keys: ['assets_id']
+    },
+    
     
 }
 // filter keys

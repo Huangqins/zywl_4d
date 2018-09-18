@@ -153,9 +153,44 @@
                             <el-table-column prop="target_name" label="任务名称" ></el-table-column>
                             <el-table-column prop="target_url" label="任务目标" ></el-table-column>
                             <el-table-column prop="target_teststra" label="策略" ></el-table-column>
-                            <el-table-column prop="target_starttime" label="开始时间" ></el-table-column>
-                            <el-table-column prop="target_endtime" label="结束时间" ></el-table-column>
-                            <el-table-column prop="target_struts" label="任务状态" ></el-table-column>
+                            <el-table-column prop="target_starttime" label="开始时间" >
+                               <!-- <template slot-scope="scope">
+                                 <span> {{ fomatterTime(new Date(scope.row.target_starttime.time)) }}</span>
+                                </template> -->
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.target_starttime != null">
+                                    {{ fomatterTime(new Date(scope.row.target_starttime.time)) }}
+                                  </span>
+                                  <span v-else>
+                                    {{scope.row.target_starttime}}
+                                  </span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="target_endtime" label="结束时间" >
+                               <template slot-scope="scope">
+                                  <el-button type="text" size="mini" style="border:none;" v-if="scope.row.target_endtime != null">
+                                    {{ fomatterTime(new Date(scope.row.target_endtime.time))  }}
+                                  </el-button>
+                                  <span v-else>
+                                    {{scope.row.target_endtime}}
+                                  </span>
+                                </template>
+                         <!-- <template slot-scope="scope">
+                                <span v-if="scope.row.target_endtime != 'null'">{{ fomatterTime(new Date(scope.row.target_endtime.time))  }}</span>
+                                <span v-else> {{scope.row.target_endtime}}</span>
+                              </template>
+                              <template slot-scope="scope">
+                                <span v-if="scope.row.target_endtime != 'null'">{{ fomatterTime(new Date(scope.row.target_endtime.time))  }}</span>
+                                <span v-else> {{scope.row.target_endtime}}</span>
+                              </template> -->
+                            </el-table-column>
+                            <el-table-column prop="target_struts" label="任务状态" >
+                              <template slot-scope="scope">                                  
+                                  <span>
+                                    {{targetState[scope.row.target_struts]}}
+                                  </span>
+                                </template>
+                            </el-table-column>
                             <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <el-button  type="text" size="small">详情</el-button>
@@ -199,6 +234,7 @@
 <script>
 import Panel from "@/components/panel";
 import Charts from "@/components/Charts";
+import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 const levelSchema = {
   "4": { name: "极高风险", color: "red" },
   "3": { name: "高风险", color: "#DD7C35" },
@@ -206,6 +242,13 @@ const levelSchema = {
   "1": { name: "低风险", color: "#51B323" },
   "0": { name: "极低风险", color: "#46A5C0" }
 };
+const targetState={
+  "2": '待执行',
+  "-2": '目标确立失败',
+  "-1": '取消',
+  "1": '已完成',
+  "0": '执行中'
+}
 export default {
   components: {
     Panel,
@@ -213,6 +256,8 @@ export default {
   },
   data() {
     return {
+      targetState:targetState,
+      fomatterTime:fomatterTime,
       assetsList: [],
       latestRisk: [],
       TasksInExecution: [],
