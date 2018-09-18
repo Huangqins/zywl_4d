@@ -2,14 +2,14 @@
     <div class="authority">
         <div class="form">
           
-          <div class="title" v-if="$route.params.user_id">修改用户权限</div>
-          <div class="title" v-else>{{$route.params.role_id ? '修改角色': '添加角色'}}</div>
+          <div class="title" v-if="pageInfo.user_id">修改用户权限</div>
+          <div class="title" v-else>{{pageInfo.role_id ? '修改角色': '添加角色'}}</div>
             <div class="form-content">
               <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item :label="!$route.params.user_id?'角色名称':'用户名'">
+                <el-form-item :label="!pageInfo.user_id?'角色名称':'用户名'">
                     <el-input v-model="form.role_name"></el-input>
                 </el-form-item>
-                <el-form-item label="角色等级" v-if="!$route.params.user_id">
+                <el-form-item label="角色等级" v-if="!pageInfo.user_id">
                     <el-select v-model="form.role_level" placeholder="请选择角色等级">
                         <el-option label="一级" value="2"></el-option>
                         <el-option label="二级" value="3"></el-option>
@@ -33,6 +33,7 @@
     </div>
 </template>
 <script>
+import route from 'mixins/route'
 function setTree(list) {
   let res = [];
   let firstFloor = [];
@@ -63,6 +64,7 @@ function findMenu(list, menu_id) {
 }
 
 export default {
+  mixins: [route],
   data() {
     return {
       form: {
@@ -80,25 +82,25 @@ export default {
   created() {
     let params = { role_id: "" };
     this.getPermissionByRole(params); // 获取所有权限列表
-    if (this.$route.params.role_id) { // 角色时候情况
-      this.getPermissionByRole({ role_id: this.$route.params.role_id })
-      this.form.role_name = this.$route.params.role_name
-      this.form.role_level = this.$route.params.role_level + ''
-    } else if (this.$route.params.user_id) { // 用户设置权限时候情况
-      this.form.role_name = this.$route.params.user_name;
-      this.getPermission({user_id: this.$route.params.user_id[0]})
+    if (this.pageInfo.role_id) { // 角色时候情况
+      this.getPermissionByRole({ role_id: this.pageInfo.role_id })
+      this.form.role_name = this.pageInfo.role_name
+      this.form.role_level = this.pageInfo.role_level + ''
+    } else if (this.pageInfo.user_id) { // 用户设置权限时候情况
+      this.form.role_name = this.pageInfo.user_name;
+      this.getPermission({user_id: this.pageInfo.user_id[0]})
     }
   },
   methods: {
     onSubmit() {
       let { role_name, role_level } = this.form;
        let params = {};
-      if(this.$route.params.user_id) {
-          params = { user_ids: this.$route.params.user_id,menu_ids: this.$refs.tree.getCheckedKeys()}
+      if(this.pageInfo.user_id) {
+          params = { user_ids: this.pageInfo.user_id,menu_ids: this.$refs.tree.getCheckedKeys()}
           this.addPermission(params)
       } else {
           params = {role_name, role_level,
-          role_id: this.$route.params.role_id ? this.$route.params.role_id : '',
+          role_id: this.pageInfo.role_id ? this.pageInfo.role_id : '',
           menu_id: this.$refs.tree.getCheckedKeys()
         };
         this.addRolePermission(params);
