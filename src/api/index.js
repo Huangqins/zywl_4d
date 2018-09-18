@@ -126,18 +126,6 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
-    //设备类型
-    assetsType: {
-        url: `${path}asset/assetsType`,
-        method: 'post',
-        keys: ''
-    },
-    //资产区域
-    getArea: {
-        url: `${path}asset/getArea`,
-        method: 'post',
-        keys: ''
-    },
     //任务名称
     taskname: {
         url: `${path}task/getTargetName`,
@@ -356,8 +344,7 @@ const ApiSchema = {
         url: `${path}asset/getServiceList`,
         method: 'post',
         keys: ['assets_id']
-    },
-    
+    }
     
 }
 // filter keys
