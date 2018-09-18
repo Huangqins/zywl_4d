@@ -3,7 +3,6 @@
  */
 
  const pageStore = window.sessionStorage;
-
  module.exports = {
      data() {
          return {

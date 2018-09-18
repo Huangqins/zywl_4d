@@ -138,7 +138,7 @@
 <script>
 import Panel from "@/components/panel";
 import { fomatterTime, deepClone } from "@/utils";
-
+import route from 'mixins/route';
 const vulnLevel = {
   "4": "极高风险",
   "3": "高风险",
@@ -173,6 +173,7 @@ const vulnLevelS = {
   "0": `../../${path}static/png/0.png`
 };
 export default {
+  mixins:[route],
   components: {
     Panel
   },
@@ -210,13 +211,14 @@ export default {
   },
   created() {
     let assetDetail = this.$route.params.row;
-    (this.assets_name = assetDetail.assets_name),
-      (this.assets_url = assetDetail.assets_url),
-      (this.assets_ip = assetDetail.assets_ip),
-      (this.area_name = assetDetail.area_name),
-      (this.assets_type = assetTypestruts[assetDetail.assets_type]),
-      (this.assets_important =
-        assetImportantruts[assetDetail.assets_important]);
+    console.log(this.pageInfo)
+    // (this.assets_name = assetDetail.assets_name),
+    //   (this.assets_url = assetDetail.assets_url),
+    //   (this.assets_ip = assetDetail.assets_ip),
+    //   (this.area_name = assetDetail.area_name),
+    //   (this.assets_type = assetTypestruts[assetDetail.assets_type]),
+    //   (this.assets_important =
+    //     assetImportantruts[assetDetail.assets_important]);
     this.assets_manger = assetDetail.assets_manger;
     this.serviceList();
     this.vulnList();

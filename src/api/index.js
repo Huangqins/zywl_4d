@@ -357,7 +357,23 @@ const ApiSchema = {
         method: 'post',
         keys: ['assets_id']
     },
-    
+    // 文件下载
+    exportFile: {
+        type: 'file',
+        method: 'get'
+    },
+    //资产导入
+    assetsImport: {
+        url: `${path}asset/assetsImport`,
+        method: 'post',
+        type: 'upload'
+    },
+    //资产导出
+    exportExcel: {
+        url: `${path}asset/exportExcel`,
+        method: 'post',
+        keys: ['']
+    },
     
 }
 // filter keys
@@ -373,33 +389,70 @@ const filterKey = (obj, keys) => {
 }
 
 // create api function
-const gernerater = () => {
+// const gernerater = () => {
+//     for (let key in ApiSchema) {
+//         if (!ApiSchema[key].type) {
+//             Api[key] = (params) => {
+//                 return _axios({
+//                     method: ApiSchema[key].method,
+//                     url: ApiSchema[key].url,
+//                     menuCode: ApiSchema[key].menuCode,
+//                     title: ApiSchema[key].title,
+//                     [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
+//                 })
+//             }
+//         } else {
+//             Api[key] = (url) => {
+//                 return _axios({
+//                     method: 'get',
+//                     url: url,
+//                     baseURL: location.origin,
+//                     headers: {
+//                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+//                     },
+//                     responseType: 'blob'
+//                 })
+//             }
+//         }
+//     }
+// }
+
+function gernerater() {
     for (let key in ApiSchema) {
-        if (!ApiSchema[key].type) {
-            Api[key] = (params) => {
-                return _axios({
-                    method: ApiSchema[key].method,
-                    url: ApiSchema[key].url,
-                    menuCode: ApiSchema[key].menuCode,
-                    title: ApiSchema[key].title,
-                    [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
-                })
-            }
-        } else {
-            Api[key] = (url) => {
-                return _axios({
-                    method: 'get',
-                    url: url,
-                    baseURL: location.origin,
-                    headers: {
-                        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-                    },
-                    responseType: 'blob'
-                })
-            }
+      if (!ApiSchema[key].type) {
+        Api[key] = (params) => {
+            return _axios({
+                method: ApiSchema[key].method,
+                url: ApiSchema[key].url,
+                menuCode: ApiSchema[key].menuCode,
+                title: ApiSchema[key].title,
+                [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
+            })
         }
+      } else if (ApiSchema[key].type === 'file') {
+        Api[key] = (url) => {
+          return _axios({
+            method: 'get',
+            url: url,
+            baseURL: location.origin,
+            headers: {
+              accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+            },
+            responseType: 'blob'
+          })
+        }
+      } else {
+        Api[key] = (data) => {
+          return _axios({
+            method: ApiSchema[key].method,
+            url: ApiSchema[key].url,
+            data: data
+          })
+        }
+      }
     }
-}
+  }
+
 gernerater()
 
 export default Api
