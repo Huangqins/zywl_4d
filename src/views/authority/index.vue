@@ -1,7 +1,6 @@
 <template>
     <div class="authority">
         <div class="form">
-          
           <div class="title" v-if="pageInfo.user_id">修改用户权限</div>
           <div class="title" v-else>{{pageInfo.role_id ? '修改角色': '添加角色'}}</div>
             <div class="form-content">
@@ -34,6 +33,7 @@
 </template>
 <script>
 import route from 'mixins/route'
+
 function setTree(list) {
   let res = [];
   let firstFloor = [];

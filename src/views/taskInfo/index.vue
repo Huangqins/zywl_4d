@@ -114,7 +114,7 @@
                             </template>
                             
                                 <el-tooltip class="item" effect="dark" content="查看任务进度" placement="top">
-                                <div @click.native="taskDetail(scope.row)" class="search detailLook">  </div>
+                                <div @click="taskDetail(scope.row)" class="search detailLook">  </div>
                                 </el-tooltip>
                             <!-- 删除按钮暂定不用 -->
                           </template>
@@ -307,6 +307,12 @@ export default {
     this.switchSource(0);
   },
   methods: {
+    // 查看任务进度
+    taskDetail(row) {
+      this.$router.push({
+        name: 'taskExec'
+      })
+    },
     pageChange(pageObj) {
       this.pageObj = pageObj;
       let { page, rows } = pageObj,
