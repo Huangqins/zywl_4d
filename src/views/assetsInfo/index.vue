@@ -49,7 +49,7 @@
                  <div class="assets-content-btn">
                     <el-button type="primary" @click='addAssets'>添加资产</el-button>
                     <el-button type="primary" @click="areaImportVisible=true">导入资产</el-button>
-                    <el-button type="primary" >导出资产</el-button>
+                    <el-button type="primary" @click="exportAssets">导出资产</el-button>
                 </div>
                <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
                     <el-table-column type="selection" width="35"></el-table-column>
@@ -162,7 +162,7 @@
       </div>
     </el-dialog>
      <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="30%">
-       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;">下载资产模板</p>
+       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;"  @click="importTem">下载资产模板</p>
        <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
             <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
                 <i class="el-icon-upload"></i>
@@ -191,7 +191,7 @@ import Panel from "@/components/panel";
 import Pages from "@/components/Pages";
 import { getUserName, getToken } from "@/utils/auth";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
-
+import route from 'mixins/route'
 const assetTypestruts = {
   "1": "服务器",
   "2": "打印机",
@@ -215,6 +215,7 @@ export default {
     Panel,
     Pages
   },
+
   data() {
     var checkIp = (rule, value, callback) => {
       let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
@@ -237,6 +238,7 @@ export default {
       }
     };
     return {
+      file: {},
       pageObj: {},
       defaultPage: {
         rows: 10,
@@ -353,6 +355,32 @@ export default {
     this.getArea();
   },
   methods: {
+     async exportAssets() {
+      let res = await this.$api.exportExcel({});
+      if (res.data.result === 0) {
+        console.log(res.data.path)
+        let result = await this.$api.exportFile(res.data.path);
+        console.log(result)
+        createDownload(result, '导出', '.xls')
+      }
+    },
+    // 资产导入文件模板下载
+    async importTem() {
+      let assetUrl = "/ZR/excel/asset.xls";
+      let res = await this.$api.exportFile(assetUrl);
+      if (res.data.size) {
+        let url = window.URL.createObjectURL(new Blob([res.data]));
+        let link = document.createElement("a");
+        link.style.display = "none";
+        link.href = url;
+        link.setAttribute("download", " 资产导入模板" + ".xls");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        this.$message.error(`模板文件下载失败`);
+      }
+    },
     searchAsset() {
       let data = Object.assign({}, this.params, {
         assets_name:this.assetsArea,
@@ -418,15 +446,16 @@ export default {
     },
 
     // 导入回调
-    fileUpload(res) {
-      this.file = res;
+    fileUpload(res) {  
+      // console.log(res)   
+      this.file = res;      
     },
     upload() {
       let formData = new FormData();
       formData.append("excelFile", this.file.raw);
-      this.$api.assetImport(formData).then(res => {
+      this.$api.assetsImport(formData).then(res => {
         this.areaImportVisible = false;
-        if (res.result === 0) {
+        if (res.data.result === 0) {
           this.$message.success("文件导入成功");
         } else {
           this.$message.error("文件导入失败，请查看文件项填写是否完整或正确");
