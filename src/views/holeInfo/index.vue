@@ -47,6 +47,11 @@
         </div>
         <div>
             <panel>
+                <div class="assets-content-btn">
+                    <el-button type="primary" @click="addvuln">添加风险</el-button>
+                    <el-button type="primary" >导入风险</el-button>
+                    <el-button type="primary">导出风险</el-button>
+                </div>
                    <div class="vulnConent">                        
                         <el-table :data="vulnData" style="width: 100%;"  v-loading="tableLoading">
                             <el-table-column type="selection" width="35"></el-table-column>
@@ -150,6 +155,9 @@ export default {
         this._getAssetURL()
     },
     methods:{
+        addvuln(){
+            this.$router.push('./vulnAdd')
+        },
         async taskname(){
             let res =await this.$api.taskname();
             if(res.data.result=='0'){

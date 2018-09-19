@@ -91,7 +91,7 @@
             </panel>
         </div>
         <!-- 添加框 -->
-    <el-dialog :title="titlestruts[state]" :visible.sync="dialogFormVisible" width="28%" @close="resetForm('form')">
+    <el-dialog :title="titlestruts[state]" :visible.sync="dialogFormVisible" width="28%" @close="resetForm('form')" :close-on-click-modal="false">
       <el-form :model="form" label-width="90px" ref="form" :rules="rules">
         <el-form-item label="资产名称" prop="assets_name">
           <template v-if="status === 'edit'">

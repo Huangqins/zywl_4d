@@ -126,7 +126,7 @@
               </div>
         </div>
          <!-- 添加任务 -->
-      <el-dialog title="添加测试任务" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog title="添加测试任务" :visible.sync="dialogFormVisible" width="30%" :close-on-click-modal="false">
         <el-form :model="form" label-width="100px" ref="form" :rules="rules">
           <el-form-item label="任务名称" prop="target_name">
             <el-input v-model="form.target_name" auto-complete="off"></el-input>
