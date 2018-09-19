@@ -2,7 +2,7 @@
     <div class="assetPanel-container">
         <ul class="clearfix assetList">
             <li class="assetPanel first">
-                <div>
+                <div @click="setGroup">
                     <i class="el-icon-plus" style="font-size: 40px"></i>
                     <p>自定义测试组</p>
                 </div>
@@ -47,6 +47,11 @@
         data() {
             return {
 
+            }
+        },
+        methods: {
+            setGroup() {
+                this.$router.push('/taskManage/assetsGroup')
             }
         }
     }

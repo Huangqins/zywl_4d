@@ -126,18 +126,6 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
-    //设备类型
-    assetsType: {
-        url: `${path}asset/assetsType`,
-        method: 'post',
-        keys: ''
-    },
-    //资产区域
-    getArea: {
-        url: `${path}asset/getArea`,
-        method: 'post',
-        keys: ''
-    },
     //任务名称
     taskname: {
         url: `${path}task/getTargetName`,
@@ -412,11 +400,7 @@ const ApiSchema = {
         method: 'post',
         keys: ['flag','rows','page'],
         title:'新发现应用信息'
-    },
-    
-    
-    
-    
+    }
     
 }
 // filter keys

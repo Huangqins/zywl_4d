@@ -148,6 +148,16 @@ export default new Router({
                     },
                     component: () =>
                         import('@/views/taskExec')
+                },
+                {
+                    path: 'assetsGroup',
+                    name: 'assetsGroup',
+                    meta: {
+                        title: '测试组',
+                        menuCode: '03-03'
+                    },
+                    component: () =>
+                        import('@/views/assetsGroup')
                 }
             ]
         },
