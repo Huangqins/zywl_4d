@@ -20,6 +20,7 @@
                      <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
                     <el-table-column type="selection" width="35"></el-table-column>
                     <el-table-column prop="assets_name" label="报告名称" align="center" :show-overflow-tooltip="true"></el-table-column>
+                     <el-table-column prop="assets_name" label="报告类型" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="assets_url" label="创建人" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="assets_ip" label="所属部门" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="assets_os_type" label="创建时间" align="center" :show-overflow-tooltip="true"></el-table-column>

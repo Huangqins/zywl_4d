@@ -3,10 +3,9 @@
      <div class="assetscount-secOne">
          <div>
              <p style="margin:0 0 7px 0;color:#D1FFFF;font-size:16px;">资产数量统计</p>
-             <div class="assetNumCount">
-                 
+             <div class="assetNumCount">                 
                  <section>
-                     <p>1212</p>
+                     <p>{{assetsNum}}</p>
                      <p>总资产</p>
                  </section>
                  <section>
@@ -56,7 +55,7 @@
              <div>
                     <panel title="新发现域名信息">
                         <div class="doMainName">
-                            <el-table :data="doMainName" style="width: 100%">
+                            <el-table :data="doMainName" style="width: 100%" height="333">
                                 <el-table-column prop="date" label="域名" ></el-table-column>
                                  <el-table-column prop="name" label="发现时间" ></el-table-column>
                                 <el-table-column prop="date" label="发现方式" ></el-table-column>
@@ -72,7 +71,7 @@
              </div>
              <div>
                    <panel title="新发现IP信息">
-                        <el-table :data="doMainName" style="width: 100%">
+                        <el-table :data="ipInfo" style="width: 100%" height="333">
                                 <el-table-column prop="date" label="IP地址" ></el-table-column>
                                  <el-table-column prop="name" label="发现时间" ></el-table-column>
                                 <el-table-column prop="date" label="发现方式" ></el-table-column>
@@ -89,11 +88,20 @@
          <div class="assetscount-secThree">
               <div>
                     <panel title="新发现应用信息">
-                        <el-table :data="doMainName" style="width: 100%">
-                                <el-table-column prop="date" label="域名" ></el-table-column>
-                                 <el-table-column prop="name" label="发现时间" ></el-table-column>
+                        <el-table :data="newapplicmessage" style="width: 100%;" height="330">
+                                <el-table-column prop="application" label="应用名称" ></el-table-column>
+                                 <el-table-column prop="assets_modify_time" label="发现时间" >
+                                     <template slot-scope="scope">
+                                        <span v-if="scope.row.assets_modify_time != null">
+                                            {{ fomatterTime(new Date(scope.row.assets_modify_time.time)) }}
+                                        </span>
+                                        <span v-else>
+                                            {{scope.row.assets_modify_time}}
+                                        </span>
+                                    </template>
+                                 </el-table-column>
                                 <el-table-column prop="date" label="发现方式" ></el-table-column>
-                                <el-table-column prop="date" label="发现人" ></el-table-column>
+                                <el-table-column prop="assets_creatuser" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
                                     <el-button  type="text" size="small">修改</el-button>                                                                 
@@ -101,14 +109,15 @@
                                 </el-table-column>
                         </el-table>
                     </panel>
+                <pages :total="pageTotal" @pageChange="pageChange"></pages>
              </div>
              <div>
                    <panel title="新发现服务信息">
-                       <el-table :data="doMainName" style="width: 100%">
-                                <el-table-column prop="date" label="域名" ></el-table-column>
-                                 <el-table-column prop="name" label="发现时间" ></el-table-column>
+                       <el-table :data="newserviceInfo" style="width: 100%" height="330">
+                                <el-table-column prop="service_name" label="服务名称" ></el-table-column>
+                                 <el-table-column prop="create_time" label="发现时间" ></el-table-column>
                                 <el-table-column prop="date" label="发现方式" ></el-table-column>
-                                <el-table-column prop="date" label="发现人" ></el-table-column>
+                                <el-table-column prop="create_user" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
                                     <el-button  type="text" size="small">修改</el-button>                                                                 
@@ -125,42 +134,116 @@
 <script>
 import Panel from "@/components/panel";
 import Charts from "@/components/Charts";
+import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import Pages from "@/components/Pages";
 export default {
   components: {
     Panel,
-    Charts
+    Charts,
+    Pages
   },
   data() {
     return {
-    doMainName:[],  
-    ipInfo:[], 
+        newData:[],
+      fomatterTime:fomatterTime,
+      formatTime:formatTime,
+      params: {},
+      defaultPage: {
+        page: 1,
+        rows: 10
+      },
+      assetsNum: "",
+      pageTotal: 0,
+      doMainName: [],
+      ipInfo: [],
+      newapplicmessage: [],
+      newserviceInfo: [],
       option: {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: [],
           axisLabel: {
-              textStyle: {
-                color: "#CCCCCC"
-              }
-            },
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          }
         },
         yAxis: {
           type: "value",
-         axisLabel: {
-              textStyle: {
-                color: "#CCCCCC"
-              }
-            },
+          axisLabel: {
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          }
         },
         series: [
           {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            data: [],
             type: "line",
             smooth: true
           }
         ]
       }
     };
+  },
+  created() {
+    this.getAssetsNum();
+    this.getAssetsClass();
+    this.getNewAssets();
+    this.getServiceList();
+    this.getAssetsTrend();
+    this.getAssetsApplication();
+  },
+  methods: {
+    pageChange(params) {
+      this.params = Object.assign({}, this.params, params);
+      this.getAssetsApplication(this.params);
+    },
+    getAssetsNum() {
+      this.$api.getAssetsNum().then(res => {
+        this.assetsNum = res.data.assetsNum;
+      });
+    },
+    getAssetsClass() {
+      this.$api.getAssetsClass({ flag: 2 }).then(res => {
+        let data = res.data.lists;
+      });
+    },
+    //域名信息
+    getNewAssets() {
+      this.$api.getNewAssets({ flag: 1 }).then(res => {
+        this.doMainName = res.data.assets;
+      });
+      //IP信息
+      this.$api.getNewAssets({ flag: 2 }).then(res => {
+        this.ipInfo = res.data.assets;
+      });
+    },
+    getServiceList() {
+      this.$api.getServiceList({ is_new: 1 }).then(res => {
+        this.newserviceInfo = res.data.lists;
+      });
+    },
+    getAssetsTrend() {
+      this.$api.getAssetsTrend().then(res => {
+        let data = res.data.assets;
+        data.forEach(item => {
+            //  console.log(fomatterTime[item.assets_create_time.time])
+        this.option.series[0].data.push({
+            value: item.assets_os_type,
+            name: item.name
+         });
+          this.option.xAxis.data.push(fomatterTime(new Date(item.assets_create_time.time)));
+         });
+      });
+    },
+    getAssetsApplication() {
+    let data=Object.assign({},this.defaultPage,{ flag: 3})
+      this.$api.getAssetsApplication(data).then(res => {
+        this.newapplicmessage = res.data.rows;
+        this.pageTotal=res.data.total;
+      });
+    }
   }
 };
 </script>
@@ -179,34 +262,32 @@ export default {
       flex: 1;
     }
   }
-  &-secTwo{
+  &-secTwo {
     display: flex;
     width: 100%;
     margin-bottom: 10px;
-    & > div{
-        flex: 1;
-
+    & > div {
+      flex: 1;
     }
-     & > div:first-child{
-        margin-right: 10px;
-        
+    & > div:first-child {
+      margin-right: 10px;
     }
-}
-&-secThree{
+  }
+  &-secThree {
     display: flex;
     width: 100%;
-    & > div{
-        flex: 1;
+    & > div {
+      flex: 1;
     }
-    & > div:first-child{
-        margin-right: 10px;
+    & > div:first-child {
+      margin-right: 10px;
     }
-}
+  }
 }
 
 .assetNumCount {
   width: 100%;
-  display: flex;  
+  display: flex;
   margin-bottom: 20px;
   section {
     width: 141px;
@@ -227,15 +308,15 @@ export default {
     text-align: center;
   }
 }
-.assetAdd{
-    height:423px ;
-    // margin-right: 10px;
-    width: 1216px;
+.assetAdd {
+  height: 423px;
+  // margin-right: 10px;
+  width: 1216px;
 }
-.areaAssetNum{
-    height:558px ;
+.areaAssetNum {
+  height: 537px;
 }
-.assetAddtrend{
-    margin-right: 10px;
+.assetAddtrend {
+  margin-right: 10px;
 }
 </style>

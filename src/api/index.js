@@ -31,7 +31,7 @@ const ApiSchema = {
     vulnTotal: {
         url: `${path}vuln/vulnTotal`,
         method: 'post',
-        keys: ['target_id']
+        keys: ['target_id','assets_id']
     },
     serviceTotal: {
         url: `${path}asset/serviceTotal`,
@@ -371,7 +371,7 @@ const ApiSchema = {
     getServiceList: {
         url: `${path}asset/getServiceList`,
         method: 'post',
-        keys: ['assets_id']
+        keys: ['assets_id','is_new']
     },
     // 文件下载
     exportFile: {
@@ -390,7 +390,45 @@ const ApiSchema = {
         method: 'post',
         keys: ['']
     },
-
+    //业务功能
+    getLogicByAsset: {
+        url: `${path}logic/getLogicByAsset`,
+        method: 'post',
+        keys: ['assets_id']
+    },
+    //资产总数
+    getAssetsNum: {
+        url: `${path}asset/getAssetsNum`,
+        method: 'post',
+        keys: ['target_id']
+    },
+    //设备类型统计
+    getAssetsClass: {
+        url: `${path}asset/getAssetsClass`,
+        method: 'post',
+        keys: ['flag']
+    },
+    //新发现域名信息
+    getNewAssets: {
+        url: `${path}asset/getNewAssets`,
+        method: 'post',
+        keys: ['flag'],
+        title:'新发现域名信息'
+    },
+    //资产增加趋势
+    getAssetsTrend: {
+        url: `${path}asset/getAssetsTrend`,
+        method: 'post',
+        keys: [''],
+        title:'资产增加趋势'
+    },
+    //新发现应用信息
+    getAssetsApplication: {
+        url: `${path}asset/getAssetsApplication`,
+        method: 'post',
+        keys: ['flag','rows','page'],
+        title:'新发现应用信息'
+    }
     
 }
 // filter keys

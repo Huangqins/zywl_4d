@@ -209,7 +209,17 @@ export default new Router({
                     },
                     component: () =>
                          import('@/views/holeInfo/vulnDetail')
+                },{
+                    path: 'vulnAdd',
+                    name: 'vulnAdd',
+                    meta: {
+                        title: '风险添加',
+                        menuCode: '04-03'
+                    },
+                    component: () =>
+                         import('@/views/holeInfo/vulnAdd')
                 }
+
             ]
         },
         {

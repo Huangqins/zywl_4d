@@ -105,10 +105,15 @@
                              </el-table-column>
                             <el-table-column prop="kb_vuln_cnvd" label="CNVD"  align="center"></el-table-column>
                             <el-table-column prop="kb_vuln_cve" label="CVE"  align="center"></el-table-column>                                    
-                            <el-table-column prop="vuln_URL" label="风险链接"  align="center" :show-overflow-tooltip="true"></el-table-column>          
+                            <el-table-column prop="vuln_url" label="风险链接"  align="center" :show-overflow-tooltip="true"></el-table-column>          
                             <el-table-column prop="vuln_ftime" label="发现时间"  align="center" :show-overflow-tooltip="true">
                               <template slot-scope="scope">
                                   {{ fomatterTime(new Date(scope.row.vuln_ftime.time)) }}
+                              </template>
+                            </el-table-column>
+                             <el-table-column prop="vuln_modifytime" label="利用时间"  align="center" :show-overflow-tooltip="true">
+                              <template slot-scope="scope">
+                                  {{ fomatterTime(new Date(scope.row.vuln_modifytime.time)) }}
                               </template>
                             </el-table-column>
                             <el-table-column prop="vuln_oper" label="操作人"  align="center"></el-table-column>  
@@ -120,7 +125,7 @@
                     <el-tab-pane label="业务功能" name="three" style="height:100%;color:#d8d8d8;">
                         <panel  style="height:100%">
                        <div>
-                         <el-table :data="vulnData"  style="width: 100%" > 
+                         <el-table :data="bussfunction"  style="width: 100%" > 
                             <el-table-column prop="vuln_name" label="业务功能名称"  align="center" :show-overflow-tooltip="true"></el-table-column>                          
                             <el-table-column prop="vuln_type" label="业务链接"  align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="vuln_IP" label="可用性"  align="center"></el-table-column>              
@@ -184,6 +189,7 @@ export default {
       vulnLevel: vulnLevel,
       serviceData: [],
       vulnData: [],
+      bussfunction:[],
       activeName: "first",
       // 服务数里面的资产详情
       assets_name: "",
@@ -210,37 +216,59 @@ export default {
     };
   },
   created() {
-    let assetDetail = this.$route.params.row;
-    console.log(this.pageInfo)
-    // (this.assets_name = assetDetail.assets_name),
-    //   (this.assets_url = assetDetail.assets_url),
-    //   (this.assets_ip = assetDetail.assets_ip),
-    //   (this.area_name = assetDetail.area_name),
-    //   (this.assets_type = assetTypestruts[assetDetail.assets_type]),
-    //   (this.assets_important =
-    //     assetImportantruts[assetDetail.assets_important]);
-    this.assets_manger = assetDetail.assets_manger;
+    (this.assets_name = this.pageInfo.row.assets_name),
+      (this.assets_url =this.pageInfo.row.assets_url),
+      (this.assets_ip = this.pageInfo.row.assets_ip),
+      (this.area_name = this.pageInfo.row.area_name),
+      (this.assets_type = assetTypestruts[this.pageInfo.row.assets_type]),
+      (this.assets_important =
+        assetImportantruts[this.pageInfo.row.assets_important]);
+    this.assets_manger = this.pageInfo.row.assets_manger;
     this.serviceList();
     this.vulnList();
-    this.vuln_tips = assetDetail.vuln_tips;
-    this.vuln_high = assetDetail.vuln_high;
-    this.vuln_medium = assetDetail.vuln_medium;
-    this.vuln_low = assetDetail.vuln_low;
-    this.vuln_urgent = assetDetail.vuln_urgent;
+    this.getLogicByAsset();
+    this.vulnTotal();
   },
   methods: {
+    //端口服务
     serviceList() {
-      let assets_id = this.$route.params.assets_id;
-      this.$api.getServiceList({ assets_id: assets_id }).then(res => {
-        let data = res.lists;
+      let assets_id = this.pageInfo.assets_id;
+      this.$api.getServiceList({ assets_id: assets_id ,is_new:-1}).then(res => {
+        let data = res.data.lists;
         this.serviceData = data;
       });
     },
     vulnList() {
-      let assets_id = this.$route.params.assets_id;
-      this.$api.leaksInfo({ assets_id: assets_id }).then(res => {
-        let data = res.rows;
+      let assets_id = this.pageInfo.assets_id;
+      this.$api.vulnSearch({ assets_id: assets_id }).then(res => {
+        let data = res.data.rows;
         this.vulnData = data;
+      });
+    },
+    getLogicByAsset(){
+      let assets_id = this.pageInfo.assets_id;
+      this.$api.getLogicByAsset({ assets_id: assets_id }).then(res => {
+        let data = res.data.logics;
+        this.vulnData = data;
+      });
+    },
+    vulnTotal(){
+        let assets_id = this.pageInfo.assets_id;
+      this.$api.vulnTotal({ assets_id: assets_id }).then(res => {
+        let data = res.data.vulns;
+         data.forEach(item => {
+           if(item.vuln_level==0){
+              this.vuln_urgent=item.vuln_total
+           }else if(item.vuln_level==1){
+              this.vuln_low=item.vuln_total
+           }else if(item.vuln_level==2){
+              this.vuln_medium=item.vuln_total
+           }else if(item.vuln_level==3){
+              this.vuln_high=item.vuln_total
+           }else if(item.vuln_level==4){
+               this.vuln_tips=item.vuln_total
+           }
+         });;
       });
     },
     handleClick(tab, event) {
