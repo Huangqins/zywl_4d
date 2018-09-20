@@ -310,7 +310,10 @@ export default {
     // 查看任务进度
     taskDetail(row) {
       this.$router.push({
-        name: 'taskExec'
+        name: 'taskExec',
+        params: {
+          target_id:row.target_id
+        }
       })
     },
     pageChange(pageObj) {
@@ -344,8 +347,6 @@ export default {
     },
     //   任务列表
     async targetInfo(params) {
-          console.log(params)
-
       this.loading = true;
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
@@ -434,7 +435,12 @@ export default {
           if (res.data.result === 0) {
             this.dialogFormVisible = false;
             this.$message.success("任务添加成功");
-            this.$router.push('/taskManage/taskExec')
+            this.$router.push({
+              name: 'taskExec',
+              params: {
+                target_id: res.data.target_id
+              }
+            })
             this.targetInfo(this.params);
           } else if (res.result === 1) {
             this.$message.error("任务添加失败");
