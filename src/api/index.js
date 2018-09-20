@@ -31,7 +31,7 @@ const ApiSchema = {
     vulnTotal: {
         url: `${path}vuln/vulnTotal`,
         method: 'post',
-        keys: ['target_id','assets_id']
+        keys: ['target_id', 'assets_id']
     },
     serviceTotal: {
         url: `${path}asset/serviceTotal`,
@@ -86,7 +86,7 @@ const ApiSchema = {
         url: `${path}asset/updateAssetsGroup`,
         method: 'post',
         title: '修改测试组',
-        keys: ['group_code','assets_ids','group_name']
+        keys: ['group_code', 'assets_ids', 'group_name']
     },
     //检测资产是否存在在执行任务
     checkAsset: {
@@ -234,7 +234,7 @@ const ApiSchema = {
         keys: ['username', 'rows', 'page']
     },
     //操作日志
-    optLogSearch:{
+    optLogSearch: {
         url: `${path}log/optLogSearch`,
         method: 'post',
         menuCode: '10-03-02',
@@ -305,14 +305,14 @@ const ApiSchema = {
     getDataDict: {
         url: `${path}dataDict/getDataDict`,
         method: 'post',
-        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_high','work_middle','work_low','work_vLow']
+        keys: ['vuln_vHigh', 'vuln_high', 'vuln_middle', 'vuln_low', 'vuln_vLow', 'is_email', 'work_vHigh', 'work_high', 'work_middle', 'work_low', 'work_vLow']
     },
     updateDataDict: {
         url: `${path}dataDict/updateDataDict`,
         method: 'post',
-        keys: ['vuln_vHigh','vuln_high','vuln_middle','vuln_low','vuln_vLow','is_email','work_vHigh','work_high','work_middle','work_low','work_vLow']
+        keys: ['vuln_vHigh', 'vuln_high', 'vuln_middle', 'vuln_low', 'vuln_vLow', 'is_email', 'work_vHigh', 'work_high', 'work_middle', 'work_low', 'work_vLow']
     },
-   
+
     //删除资产区域
     deleteArea: {
         url: `${path}asset/deleteArea`,
@@ -329,19 +329,19 @@ const ApiSchema = {
     updateArea: {
         url: `${path}asset/updateArea`,
         method: 'post',
-        keys: ['area_name','area_id']
+        keys: ['area_name', 'area_id']
     },
     //添加资产区域
     addAssetsType: {
         url: `${path}asset/addAssetsType`,
         method: 'post',
-        keys: ['name','desc']
+        keys: ['name', 'desc']
     },
     //修改资产区域
     updateAssetsType: {
         url: `${path}asset/updateAssetsType`,
         method: 'post',
-        keys: ['name','desc','id']
+        keys: ['name', 'desc', 'id']
     },
     //修改资产区域
     deleteAssetsType: {
@@ -353,25 +353,25 @@ const ApiSchema = {
     deleteVulnType: {
         url: `${path}vuln/deleteVulnType`,
         method: 'post',
-        keys: ['vuln_type_keyword','vuln_type_name']
+        keys: ['vuln_type_keyword', 'vuln_type_name']
     },
     //风险类型添加
     addVulnType: {
         url: `${path}vuln/addVulnType`,
         method: 'post',
-        keys: ['vuln_type_keyword','vuln_type_name']
+        keys: ['vuln_type_keyword', 'vuln_type_name']
     },
     //风险类型修改
     updateVulnType: {
         url: `${path}vuln/updateVulnType`,
         method: 'post',
-        keys: ['vuln_type_keyword','vuln_type_name']
+        keys: ['vuln_type_keyword', 'vuln_type_name']
     },
     //资产信息端口服务
     getServiceList: {
         url: `${path}asset/getServiceList`,
         method: 'post',
-        keys: ['assets_id','is_new']
+        keys: ['assets_id', 'is_new']
     },
     // 文件下载
     exportFile: {
@@ -413,61 +413,115 @@ const ApiSchema = {
         url: `${path}asset/getNewAssets`,
         method: 'post',
         keys: ['flag'],
-        title:'新发现域名信息'
+        title: '新发现域名信息'
     },
     //资产增加趋势
     getAssetsTrend: {
         url: `${path}asset/getAssetsTrend`,
         method: 'post',
         keys: [''],
-        title:'资产增加趋势'
+        title: '资产增加趋势'
     },
     //新发现应用信息
     getAssetsApplication: {
         url: `${path}asset/getAssetsApplication`,
         method: 'post',
-        keys: ['flag','rows','page'],
-        title:'新发现应用信息'
+        keys: ['flag', 'rows', 'page'],
+        title: '新发现应用信息'
     },
-     //用户认证配置查询
-     getUserConfig: {
+    //用户认证配置查询
+    getUserConfig: {
         url: `${path}user/getUserConfig`,
         method: 'post',
         keys: [
-        'config_id',
-        'min_length',
-        'max_length',
-        'complex',
-        'lowercase',
-        'capital',
-        'number',
-        'cycle',
-        'term',
-        'remind',
-        'handle',
-        'error_number'],
-        title:'用户认证配置查询'
+            'config_id',
+            'min_length',
+            'max_length',
+            'complex',
+            'lowercase',
+            'capital',
+            'number',
+            'cycle',
+            'term',
+            'remind',
+            'handle',
+            'error_number'
+        ],
+        title: '用户认证配置查询'
     },
-     //用户认证编辑
-     updateUserConfig: {
+    //用户认证编辑
+    updateUserConfig: {
         url: `${path}user/updateUserConfig`,
         method: 'post',
         keys: [
-        'config_id',
-        'min_length',
-        'max_length',
-        'complex',
-        'lowercase',
-        'capital',
-        'number',
-        'cycle',
-        'term',
-        'remind',
-        'handle',
-        'error_number'],
-        title:'用户认证编辑'
+            'config_id',
+            'min_length',
+            'max_length',
+            'complex',
+            'lowercase',
+            'capital',
+            'number',
+            'cycle',
+            'term',
+            'remind',
+            'handle',
+            'error_number'
+        ],
+        title: '用户认证编辑'
     },
-    
+    //邮件配置查询
+    getEmailConfig: {
+        url: `${path}system/getEmailConfig`,
+        method: 'post',
+        keys: [],
+        title: '邮件配置查询'
+    },
+    //邮件配置修改
+    updateEmailConfig: {
+        url: `${path}system/updateEmailConfig`,
+        method: 'post',
+        keys: [
+            'mail_username',
+            'mail_password',
+            'mail_host',
+            'mail_port',
+            'is_ssl'
+        ],
+        title: '邮件配置修改'
+    },
+    //发邮件测试
+    sendTestEmail: {
+        url: `${path}system/sendTestEmail`,
+        method: 'post',
+        keys: [
+            'to',
+            'mail_username',
+            'mail_password',
+            'mail_host',
+            'mail_port',
+            'is_ssl'
+        ],
+        title: '发邮件测试'
+    },
+     //系统参数配置
+     getSystemParam: {
+        url: `${path}system/getSystemParam`,
+        method: 'post',
+        keys: [ ],
+        title: '系统参数配置'
+    },
+    //系统参数配置修改
+    updateSystemParam: {
+        url: `${path}system/updateSystemParam`,
+        method: 'post',
+        keys: [
+            'isCode',
+            'isUpdate',
+            'sessionTimeOut'
+        ],
+        title: '系统参数配置修改'
+    }
+
 }
 // filter keys
 const filterKey = (obj, keys) => {
@@ -512,39 +566,39 @@ const filterKey = (obj, keys) => {
 
 function gernerater() {
     for (let key in ApiSchema) {
-      if (!ApiSchema[key].type) {
-        Api[key] = (params) => {
-            return _axios({
-                method: ApiSchema[key].method,
-                url: ApiSchema[key].url,
-                menuCode: ApiSchema[key].menuCode,
-                title: ApiSchema[key].title,
-                [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
-            })
+        if (!ApiSchema[key].type) {
+            Api[key] = (params) => {
+                return _axios({
+                    method: ApiSchema[key].method,
+                    url: ApiSchema[key].url,
+                    menuCode: ApiSchema[key].menuCode,
+                    title: ApiSchema[key].title,
+                    [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
+                })
+            }
+        } else if (ApiSchema[key].type === 'file') {
+            Api[key] = (url) => {
+                return _axios({
+                    method: 'get',
+                    url: url,
+                    baseURL: location.origin,
+                    headers: {
+                        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+                    },
+                    responseType: 'blob'
+                })
+            }
+        } else {
+            Api[key] = (data) => {
+                return _axios({
+                    method: ApiSchema[key].method,
+                    url: ApiSchema[key].url,
+                    data: data
+                })
+            }
         }
-      } else if (ApiSchema[key].type === 'file') {
-        Api[key] = (url) => {
-          return _axios({
-            method: 'get',
-            url: url,
-            baseURL: location.origin,
-            headers: {
-              accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-            },
-            responseType: 'blob'
-          })
-        }
-      } else {
-        Api[key] = (data) => {
-          return _axios({
-            method: ApiSchema[key].method,
-            url: ApiSchema[key].url,
-            data: data
-          })
-        }
-      }
     }
-  }
+}
 
 gernerater()
 

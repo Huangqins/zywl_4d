@@ -64,7 +64,7 @@
                     </div>
                     <div style="overflow:hidden">                    
                       <el-form-item label="登录锁定" prop="name" style="width:40%;float:left">
-                             <el-checkbox v-model="checked">启用</el-checkbox>
+                             <el-checkbox v-model="userA.checked">启用</el-checkbox>
                         </el-form-item> 
                         <el-form-item label="允许密码错误(次)" prop="error_number" style="width:40%;float:right">
                             <el-input v-model="userA.error_number"></el-input>
@@ -91,15 +91,15 @@
        <div>
            <panel title="邮件配置">
                <div>
-                   <el-form :model="Mailconfig" ref="Mailconfig" label-width="100px" class="form">
+                   <el-form :model="Mailconfig" ref="Mailconfig" label-width="110px" class="form">
                         <el-form-item label="邮箱用户名称" prop="mail_username">
                             <el-input v-model="Mailconfig.mail_username"></el-input>
                         </el-form-item>
                         <el-form-item label="邮箱密码" prop="mail_password">
                             <el-input v-model="Mailconfig.mail_password"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮件地址" prop="name">
-                            <el-input v-model="Mailconfig.name"></el-input>
+                        <el-form-item label="邮件地址" prop="mail_address">
+                            <el-input v-model="Mailconfig.mail_address"></el-input>
                         </el-form-item>
                         <el-form-item label="邮件服务器" prop="mail_host">
                             <el-input v-model="Mailconfig.mail_host"></el-input>
@@ -108,12 +108,14 @@
                             <el-input v-model="Mailconfig.mail_port"></el-input>
                         </el-form-item>
                         <el-form-item label="是否支持SSL" prop="is_ssl">
-                           <el-radio v-model="Mailconfig.is_ssl" label="1">是</el-radio>
-                           <el-radio v-model="Mailconfig.is_ssl" label="2">否</el-radio>
+                           <el-radio-group v-model="Mailconfig.is_ssl">
+                                <el-radio  label="0" >是</el-radio>
+                                <el-radio label="1" >否</el-radio>
+                            </el-radio-group>
                         </el-form-item>
                        <el-form-item style="width:50%;margin:0 auto;">
-                           <el-button type="primary"  style="margin-right:20px;">邮件测试</el-button>
-                            <el-button type="primary"  style="margin-right:20px;">保存</el-button>
+                           <el-button type="primary"  style="margin-right:20px;" @click="mailtest()">邮件测试</el-button>
+                            <el-button type="primary"  style="margin-right:20px;" @click="mailsubmit()">保存</el-button>
                             <el-button type="primary" >重置</el-button>
                        </el-form-item>
                     </el-form>
@@ -125,18 +127,22 @@
             <div >
                 <el-form :model="configuration"  ref="configuration" label-width="155px" class="form">
                     <el-form-item label="开启登陆验证" prop="isCode">
-                           <el-radio v-model="configuration.isCode" label="1">是</el-radio>
-                           <el-radio v-model="configuration.isCode" label="2">否</el-radio>
+                        <el-radio-group v-model="configuration.isCode">
+                                <el-radio  label="0" >是</el-radio>
+                                <el-radio label="1" >否</el-radio>
+                        </el-radio-group>                           
                     </el-form-item>
                     <el-form-item label="首次登陆是否修改密码" prop="isUpdate">
-                           <el-radio v-model="configuration.isUpdate" label="1">是</el-radio>
-                           <el-radio v-model="configuration.isUpdate" label="2">否</el-radio>
+                        <el-radio-group v-model="configuration.isUpdate">
+                                <el-radio  label="0" >是</el-radio>
+                                <el-radio label="1" >否</el-radio>
+                        </el-radio-group>                           
                     </el-form-item>
                      <el-form-item label="会话超时时间(分钟)" prop="sessionTimeOut" >
                             <el-input v-model="configuration.sessionTimeOut"></el-input>
                         </el-form-item>  
                    <el-form-item style="width:50%;margin:0 auto;">
-                            <el-button type="primary"  style="margin-right:20px;">保存</el-button>
+                            <el-button type="primary"  style="margin-right:20px;" @click="configsubmit()">保存</el-button>
                             <el-button type="primary" >重置</el-button>
                     </el-form-item>
                 </el-form>
@@ -169,6 +175,7 @@ export default {
           term: "",
           remind: "",
           handle: "",
+          checked:true,
           error_number: ""
         },
         handleS:[],
@@ -177,17 +184,21 @@ export default {
           mail_password: "",
           mail_host: "",
           mail_port: "",
-          is_ssl: 1
+          is_ssl: 1,
+          mail_address:''
         },
         configuration: {
-          isCode: 1,
-          isUpdate: 1,
+          isCode: '1',
+          isUpdate: '1',
           sessionTimeOut: ""
         }
       }   
   },
   created(){
-       this.getUserConfig()
+       this.getUserConfig();
+       this.getEmailConfig();
+       this.getSystemParam()
+
   },
   methods:{
       getUserConfig(){
@@ -196,8 +207,42 @@ export default {
             this.userA=data;
           })
       },
+      getEmailConfig(){
+          this.$api.getEmailConfig().then(res =>{
+             let data=res.data.mailConfig;
+             this.Mailconfig=data;
+          })
+      },
+      mailsubmit(){
+          this.$api.updateEmailConfig(this.Mailconfig).then( res => {
+        
+              }
+          )
+      },
+      mailtest(){
+          let data=Object.assign({},this.Mailconfig,{to:this.Mailconfig.mail_address})
+           this.$api.sendTestEmail(data).then( res => {
+                   
+                   
+              }
+          )
+      },
     userAsubmit(){
         
+    },
+    //系统参数配置
+    getSystemParam(){
+        this.$api.getSystemParam().then(res =>{
+            let data=res.data.mailConfig;          
+            this.configuration=data
+        })
+    },
+     //系统参数配置修改
+    configsubmit(){
+        console.log(this.configuration)
+        this.$api.updateSystemParam(this.configuration).then(res =>{
+            let data=res.data.mailConfig;  
+        })
     }
   }
 };

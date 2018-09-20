@@ -112,7 +112,7 @@
                     <span style="margin-right:15px">工单到期邮件提醒:</span>
                      <el-radio-group v-model="is_email" @change='workmeail()'>
                       <el-radio  :label="0" >是</el-radio>
-                    <el-radio :label="1" >否</el-radio>
+                      <el-radio :label="1" >否</el-radio>
                     </el-radio-group>
                     
                   </div>
