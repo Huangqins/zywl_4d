@@ -67,11 +67,39 @@ const ApiSchema = {
         method: 'post',
         keys: ['target_name', 'rule_id', 'assrts_url', "target_struts", "rows", "page"]
     },
+    //测试组列表
+    assetsGroupTotal: {
+        url: `${path}asset/assetsGroupTotal`,
+        method: 'post',
+        title: '自定义测试组列表',
+        keys: ''
+    },
+    // 查询测试组
+    getAssetsGroupList: {
+        url: `${path}asset/getAssetsGroupList`,
+        method: 'post',
+        title: '查询测试组',
+        keys: ['group_code']
+    },
+    //  修改测试组
+    updateAssetsGroup: {
+        url: `${path}asset/updateAssetsGroup`,
+        method: 'post',
+        title: '修改测试组',
+        keys: ['group_code','assets_ids','group_name']
+    },
     //检测资产是否存在在执行任务
     checkAsset: {
         url: `${path}task/checkAsset`,
         method: 'post',
         keys: ['target_url']
+    },
+    // 添加自定义测试组
+    assetsGroup: {
+        url: `${path}asset/assetsGroup`,
+        method: 'post',
+        title: '添加自定义测试组',
+        keys: ['assets_ids', 'group_name']
     },
     //添加任务
     addTarget: {

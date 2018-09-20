@@ -3,8 +3,8 @@
         <svg-icon icon-class="more" :style="morePos" @click.native="openMenu" v-if="more"></svg-icon>
         <div class="content">
            <div class="text">
-               <p>资产数量:{{item.value}}</p>
-               <p>任务名称:{{item.name}}</p>
+               <p>资产数量:{{item.asset_id}}</p>
+               <p>测试组名称:{{item.group_name}}</p>
            </div>
           <div>
               <el-button @click="addTask">添加任务测试</el-button>
@@ -15,7 +15,7 @@
                 <svg-icon icon-class="delete"></svg-icon>
                 删除
             </li>
-            <li>
+            <li @click="editItem">
                 <svg-icon icon-class="edit" style="margin-right:5px;"></svg-icon>
                 编辑
             </li>
@@ -48,7 +48,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button >取 消</el-button>
+                <el-button @click="dialogTableVisible = false">取 消</el-button>
                 <el-button type="primary">添加任务</el-button>
             </div>
         </el-dialog>
@@ -103,8 +103,18 @@
             closeMenu() {
                 this.menu = false;
             },
+            editItem() {
+              console.log(this.item)
+              this.$router.push({
+                  name: 'assetsGroup',
+                  params: {
+                      group_code: this.item.group_code,
+                      group_name: this.item.group_name
+                  }
+              })  
+            },
             deleteItem() {
-                console.log('删除')
+                console.log(this.item)
             },
             addTask() {
                 this.dialogTableVisible = true;

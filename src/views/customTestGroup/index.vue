@@ -1,6 +1,7 @@
 <template>
     <div class="customTestGroup">
-        <asset-panel></asset-panel>
+        <asset-panel :panelData="panelData"></asset-panel>
+        <!-- <asset-panel></asset-panel> -->
     </div>
 </template>
 <script>
@@ -9,6 +10,22 @@
     export default {
         components: {
             AssetPanel
+        },
+        data() {
+            return {
+                panelData: []
+            }
+        },
+        created() {
+            this.assetsGroupTotal();
+        },
+        methods: {
+            async assetsGroupTotal() {
+                let res = await this.$api.assetsGroupTotal();
+                if (res.data.result === 0) {
+                    this.panelData = res.data.list;
+                }
+            }
         }
     };
 </script>
