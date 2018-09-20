@@ -4,15 +4,15 @@
         <panel>
             <div class="assets-header-search">
                 <span>筛选条件:</span>
-                <el-select v-model="assetsArea" filterable placeholder="" class="select">
+                <el-select v-model="assetsArea" filterable placeholder="资产区域" class="select">
                     <el-option
-                    v-for="item in assetsAreaS"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    v-for="(item,index) in assetsAreaS"
+                    :key="index+1"
+                    :label="item.value"
+                    :value="item.label">
                     </el-option>
                 </el-select>
-                <el-select v-model="equipmentType" filterable placeholder="设备类型" class="select">
+                <el-select v-model="equipmentType" filterable placeholder="资产类型" class="select">
                     <el-option
                     v-for="item in equipmentTypeS"
                     :key="item.value"
@@ -58,8 +58,8 @@
                     <el-table-column prop="assets_ip" label="资产IP" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="assets_os_type" label="操作系统" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="assets_vm" label="虚拟机" align="center"></el-table-column>
-                    <el-table-column prop="area_name" label="所属区域" align="center"></el-table-column>
-                    <el-table-column prop="assets_type" label="设备类型" align="center">
+                    <el-table-column prop="area_name" label="资产区域" align="center"></el-table-column>
+                    <el-table-column prop="assets_type" label="资产类型" align="center">
                         <template slot-scope="scope">
                         <span>{{assetTypestruts[scope.row.assets_type]}}</span>
                         </template>
@@ -117,7 +117,7 @@
             <span>{{ form.assets_ip }}</span>
           </template>
         </el-form-item>
-        <el-form-item label="所属区域" prop="assets_zone">
+        <el-form-item label="资产区域" prop="assets_zone">
           <template v-if="status === 'edit'">
             <el-select v-model="form.assets_zone" placeholder="请选择" style="width:100%;">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -158,7 +158,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="resetForm('form')" style="background:transparent">取 消</el-button>
-        <el-button type="primary" @click="addAsset('form')" :loading="addPending">确 定</el-button>
+        <el-button type="primary" @click="addAsset(form)" :loading="addPending">确 定</el-button>
       </div>
     </el-dialog>
      <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="21%">
@@ -271,8 +271,8 @@ export default {
         assets_name: "",
         assets_url: "",
         assets_ip: "",
-        assets_zone: "",
-        assets_type: 1,
+        assets_zone: 1,
+        assets_type: 2,
         assets_important: 1,
         assets_os: "",
         assets_manger: getUserName(),
@@ -280,6 +280,7 @@ export default {
       },
       optionAssetsType: [],
       options: [],
+      area_map:{},
       assets_important_option: [
         {
           value: 0,
@@ -381,6 +382,8 @@ export default {
         this.$message.error(`模板文件下载失败`);
       }
     },
+    //资产类型
+
     searchAsset() {
       let data = Object.assign({}, this.params, {
         assets_name:this.assetsArea,
@@ -418,28 +421,42 @@ export default {
         });
       }
     },
-    //设备类型
+    //资产类型
     async assetsType() {
       let res = await this.$api.assetsType();
       if (res.data.result == "0") {
         let data = res.data.assetsType;
         this.equipmentTypeS = data.map(item => {
           return {
-            lable: item.id,
-            value: item.name
+            label: item.name,
+            value: item.id
+          };
+        });
+        this.optionAssetsType =  data.map(item => {
+          return {
+            label: item.name,
+            value: item.id
           };
         });
       }
     },
-    //设备类型
+    //所属区域
     async getArea() {
       let res = await this.$api.getArea();
       if (res.data.result == "0") {
         let data = res.data.areas;
         this.assetsAreaS = data.map(item => {
+          console.log(item)
           return {
-            lable: item.area_id,
-            value: item.area_name
+            label: item.area_name,
+            value: item.area_id
+          };
+        });
+        this.options= data.map(item => {
+          this.area_map[item.area_name] = item.area_id;
+          return {
+            label: item.area_name,
+            value: item.area_id
           };
         });
       }
@@ -511,10 +528,10 @@ export default {
       this.state = "1";
       this.status = "edit";
     },
-    // 编辑表格
+    // // 编辑表格
     editAsset(row) {
       row.assets_type = row.assets_type ? Number(row.assets_type) : "";
-      row.assets_zone = row.assets_zone ? Number(row.assets_zone) : "";
+      row.assets_zone = row.assets_zone ? row.assets_zone : "";
       this.dialogFormVisible = true;
       this.form = Object.assign({}, row);
       this.status = "edit";
@@ -540,7 +557,6 @@ export default {
     },
     // 添加资产
     addAsset(params) {
-      console.log(params)
       if (this.$refs.form) {
         this.$refs.form.validate(valid => {
           if (this.status === "check") {

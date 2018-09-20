@@ -400,7 +400,45 @@ const ApiSchema = {
         method: 'post',
         keys: ['flag','rows','page'],
         title:'新发现应用信息'
-    }
+    },
+     //用户认证配置查询
+     getUserConfig: {
+        url: `${path}user/getUserConfig`,
+        method: 'post',
+        keys: [
+        'config_id',
+        'min_length',
+        'max_length',
+        'complex',
+        'lowercase',
+        'capital',
+        'number',
+        'cycle',
+        'term',
+        'remind',
+        'handle',
+        'error_number'],
+        title:'用户认证配置查询'
+    },
+     //用户认证编辑
+     updateUserConfig: {
+        url: `${path}user/updateUserConfig`,
+        method: 'post',
+        keys: [
+        'config_id',
+        'min_length',
+        'max_length',
+        'complex',
+        'lowercase',
+        'capital',
+        'number',
+        'cycle',
+        'term',
+        'remind',
+        'handle',
+        'error_number'],
+        title:'用户认证编辑'
+    },
     
 }
 // filter keys
