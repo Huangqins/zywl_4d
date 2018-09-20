@@ -476,6 +476,58 @@ const ApiSchema = {
         ],
         title: '用户认证编辑'
     },
+    //邮件配置查询
+    getEmailConfig: {
+        url: `${path}system/getEmailConfig`,
+        method: 'post',
+        keys: [],
+        title: '邮件配置查询'
+    },
+    //邮件配置修改
+    updateEmailConfig: {
+        url: `${path}system/updateEmailConfig`,
+        method: 'post',
+        keys: [
+            'mail_username',
+            'mail_password',
+            'mail_host',
+            'mail_port',
+            'is_ssl'
+        ],
+        title: '邮件配置修改'
+    },
+    //发邮件测试
+    sendTestEmail: {
+        url: `${path}system/sendTestEmail`,
+        method: 'post',
+        keys: [
+            'to',
+            'mail_username',
+            'mail_password',
+            'mail_host',
+            'mail_port',
+            'is_ssl'
+        ],
+        title: '发邮件测试'
+    },
+     //系统参数配置
+     getSystemParam: {
+        url: `${path}system/getSystemParam`,
+        method: 'post',
+        keys: [ ],
+        title: '系统参数配置'
+    },
+    //系统参数配置修改
+    updateSystemParam: {
+        url: `${path}system/updateSystemParam`,
+        method: 'post',
+        keys: [
+            'isCode',
+            'isUpdate',
+            'sessionTimeOut'
+        ],
+        title: '系统参数配置修改'
+    }
 
 }
 // filter keys
