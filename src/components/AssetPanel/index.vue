@@ -8,7 +8,7 @@
                 </div>
             </li>
             <li v-for="(item, index) in panelData" :key="index" class="assetPanel">
-                <panel-item :item="item"></panel-item>
+                <panel-item :item="item" @add="add"></panel-item>
             </li>
         </ul>
     </div>
@@ -52,6 +52,9 @@
         methods: {
             setGroup() {
                 this.$router.push('/taskManage/assetsGroup')
+            },
+            add(item) {
+                this.$emit('add',item)
             }
         }
     }

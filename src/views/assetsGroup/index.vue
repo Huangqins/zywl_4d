@@ -12,19 +12,19 @@
       </div>
       <div slot="left-footer" class="left-footer">
         <div class="options">
-          <el-select v-model="areaVa" placeholder="区域名称" filterable @change="areaChange">
+          <el-select v-model="areaVa" placeholder="区域名称" filterable @change="areaChange" clearable >
             <el-option v-for="(item,index) in area" :key="index" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-          <el-select v-model="etDataVa" filterable placeholder="设备类型" @change="areaChange">
+          <el-select v-model="etDataVa" filterable placeholder="设备类型" @change="areaChange" clearable >
             <el-option v-for="(item,index) in etData" :key="index+'a'" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-          <el-select v-model="osDataVa" filterable placeholder="操作系统" @change="areaChange">
+          <el-select v-model="osDataVa" filterable placeholder="操作系统" @change="areaChange" clearable >
             <el-option v-for="(item,index) in osData" :key="index+'b'" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-          <el-input placeholder="请输入端口" :clearable="true" @change="areaChange"></el-input>
+          <el-input placeholder="请输入端口" :clearable="true"  v-model="port" @keyup.enter.native="areaChange"></el-input>
         </div>
         <div class="header">
           <ul>
@@ -62,6 +62,7 @@ export default {
       osData: [],
       assetsdata: [],
       group_name: "",
+      port: "",
       options: [
         {
           value: "选项1",
@@ -144,7 +145,14 @@ export default {
       console.log(value, direction, movedKeys);
     },
     areaChange() {
-      //
+      let params = {
+         is_page: 1,
+        area_id: this.areaVa,
+        id: this.etDataVa,
+        os_type: this.osDataVa,
+        port: this.port
+      }
+      this.assetsInfo(params)
     },
     async assetsInfo(params) {
       let res = await this.$api.assetsInfo(params);
