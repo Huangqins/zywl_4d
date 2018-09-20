@@ -115,7 +115,7 @@ const ApiSchema = {
         method: 'post',
         menuCode: '02-01-04',
         title: '资产列表',
-        keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name"]
+        keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name","area_id"]
     },
     // (添加)更新资产
     assetsUpdate: {

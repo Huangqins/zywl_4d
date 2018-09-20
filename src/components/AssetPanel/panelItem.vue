@@ -20,38 +20,7 @@
                 编辑
             </li>
         </ul>
-        <!--  弹框 -->
-        <el-dialog title="添加任务测试" :visible.sync="dialogTableVisible" width="28%">
-            <el-form :model="form" label-width="100px" ref="form">
-                <el-form-item label="任务名称" prop="target_name">
-                    <el-input v-model="form.target_name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="任务策略" prop="target_teststra">
-                    <el-select v-model="form.target_teststra" placeholder="请选择任务测试" style="width:100%">
-                        <el-option v-for="(item,index) in strageArr" :key="index + 'e'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="任务周期" prop="target_cycle">
-                    <el-select v-model="form.target_cycle" placeholder="请选择任务周期" style="width:100%">
-                        <el-option v-for="(item, index) in cycleArr" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="测试类型" prop="type_name">
-                    <el-select v-model="form.type_name" placeholder="请选择测试类型" style="width:100%">
-                        <el-option v-for="(item,index) in typeArr" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="开始时间" prop="target_starttime">
-                    <el-date-picker v-model="form.target_starttime" type="datetime" placeholder="选择开始时间" style="width:100%">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogTableVisible = false">取 消</el-button>
-                <el-button type="primary">添加任务</el-button>
-            </div>
-        </el-dialog>
+       
     </div>
 </template>
 
@@ -80,25 +49,14 @@
                     fontSize: "22px",
                     zIndex: 99,
                     cursor: "pointer"
-                },
-                form: {
-                    target_name: "渗透测试+",
-                    target_teststra: "",
-                    target_starttime: new Date(),
-                    target_cycle: "",
-                    target_url: "",
-                    asset_ids: "",
-                    target_ip: "",
-                    type_id: 1,
-                    type_name: "",
-                    task_type_id: "",
-                    userName: ''
-                },
+                }
             }
         },
         methods: {
+            
             openMenu() {
                 this.menu = true;
+                
             },
             closeMenu() {
                 this.menu = false;
@@ -117,7 +75,8 @@
                 console.log(this.item)
             },
             addTask() {
-                this.dialogTableVisible = true;
+                // this.dialogTableVisible = true;
+                this.$emit('add', this.item)
             }
         },
         mounted() {
