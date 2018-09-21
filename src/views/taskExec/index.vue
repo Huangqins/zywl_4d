@@ -153,13 +153,20 @@
       </div>
       <div class="timeline">
         <panel title="风险时间轴">
-          <div style="height:616px;">
-            <ul>
-              <li v-for="(item, index) in holeListData" :key="index + 'g'">
-                <div>{{item.vuln_name}}</div>
-                <div>{{item.vuln_ftime}}</div>
-              </li>
-            </ul>
+          <div style="height:616px;position:relative;">
+            <div class="line"></div>
+            <el-scrollbar>
+              <ul class="time-line">
+                <li v-for="(item, index) in holeListData" :key="index + 'g'">
+                  <div class="time">{{item.vuln_ftime}}</div>
+                  <div class="ball"></div>
+                  <div class="name">
+                    <div>{{item.vuln_name}}</div>
+                    <div>{{item.vuln_URL}}</div>
+                  </div>
+                </li>
+              </ul>
+            </el-scrollbar>
           </div>
         </panel>
       </div>
@@ -169,13 +176,13 @@
       <panel title="风险列表">
         <el-table :data="holeListData" style="width: 100%">
           <el-table-column prop="vuln_num" label="风险编号" align="center"> </el-table-column>
-          <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="vuln_level" label="风险等级" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="vuln_url" label="风险地址" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="vuln_useInfo" label="利用情况" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="image_path" label="取证情况" align="center" show-overflow-tooltip> </el-table-column>
-          <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip> </el-table-column>
+          <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_level" label="风险等级" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_url" label="风险地址" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_useInfo" label="利用情况" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="image_path" label="取证情况" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_modifytime" label="利用时间" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column label="操作" align="center"> </el-table-column>
         </el-table>
@@ -273,15 +280,22 @@ export default {
           target_task_num,
           check_scaning,
           target_scaning,
-          goal_scaning: !goal_scaning ? {now: 0,total:0,status:""} : JSON.parse(goal_scaning),
-          logic_scaning: !logic_scaning ? {now: 0,total:0,status:""} : JSON.parse(logic_scaning),
-          safe_scaning: !safe_scaning ? {now: 0,total:0,status:""} : JSON.parse(safe_scaning),
-          use_scaning: !use_scaning ? {now: 0,total:0,status:""} : JSON.parse(use_scaning),
+          goal_scaning: !goal_scaning
+            ? { now: 0, total: 0, status: "" }
+            : JSON.parse(goal_scaning),
+          logic_scaning: !logic_scaning
+            ? { now: 0, total: 0, status: "" }
+            : JSON.parse(logic_scaning),
+          safe_scaning: !safe_scaning
+            ? { now: 0, total: 0, status: "" }
+            : JSON.parse(safe_scaning),
+          use_scaning: !use_scaning
+            ? { now: 0, total: 0, status: "" }
+            : JSON.parse(use_scaning),
           target_name,
           target_createtime: fomatterTime(new Date(target_createtime.time)),
           target_starttime
         };
-        console.log( this.taskInfo.logic_scaning.now)
         this.tableData = [
           {
             date: response_info
@@ -319,7 +333,47 @@ export default {
     transform: rotateZ(360deg);
   }
 }
-
+.time-line {
+  li {
+    align-items: center;
+    text-align: center;
+    display: flex;
+    margin-bottom: 10px;
+    .time {
+      width: 35%;
+      margin: 0 5px;
+      color: #dba480;
+      font-size: 14px;
+    }
+    .ball {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #7d75de;
+    }
+    .name {
+      font-size: 14px;
+      // overflow: hidden;
+      flex: 1;
+      height: 59px;
+      line-height: 59px;
+      margin: 0 20px;
+      background-color: #7d75de;
+      position: relative;
+      border-radius: 4px;
+      &::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 25px;
+        border: 5px solid #7d75de;
+        border-top: 5px solid transparent;
+        border-left: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+      }
+    }
+  }
+}
 .taskExec {
   .task-target {
     display: flex;
@@ -410,6 +464,14 @@ export default {
     }
     .timeline {
       width: 30%;
+      .line {
+        position: absolute;
+        margin-top:32px;
+        height: 567px;
+        left: calc( 38% + 0px);
+        width: 2px;
+        background:rgba(18,27,41,1);
+      }
     }
   }
   .degree {
