@@ -26,6 +26,7 @@ const ApiSchema = {
     vulnrepair: {
         url: `${path}vuln/repairRate`,
         method: 'post',
+        title: '修复率',
         keys: ['target_id']
     },
     vulnTotal: {
@@ -108,14 +109,20 @@ const ApiSchema = {
         title: '添加任务',
         keys: ['type_name', 'task_type_id', 'target_name', 'asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
-
+    // 扫描次数和执行阶段
+    targetProgress: {
+        url: `${path}task/targetProgress`,
+        method: 'post',
+        title: '扫描次数和执行阶段',
+        keys: ['target_id']
+    },
     // 资产列表
     assetsInfo: {
         url: `${path}asset/assetsInfo`,
         method: 'post',
         menuCode: '02-01-04',
         title: '资产列表',
-        keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name","area_id"]
+        keys: ['start_time', 'id', 'end_time', 'is_page', 'assets_url', 'assets_ip', 'area_name', 'assets_zone', "assets_type", "port", "os_type", 'rows', 'page', "isPage", "assets_name", "area_id"]
     },
     // (添加)更新资产
     assetsUpdate: {

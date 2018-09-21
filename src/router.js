@@ -150,6 +150,16 @@ export default new Router({
                         import('@/views/taskExec')
                 },
                 {
+                    path: 'taskResult',
+                    name: 'taskResult',
+                    meta: {
+                        title: '任务结果详情',
+                        menuCode: '03-01'
+                    },
+                    component: () =>
+                        import('@/views/taskResult')
+                },
+                {
                     path: 'assetsGroup',
                     name: 'assetsGroup',
                     meta: {

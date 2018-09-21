@@ -9,7 +9,7 @@
           <el-input  v-model="loginForm.userName" placeholder="username" ></el-input>
         </el-form-item>
 		<el-form-item prop="password">
-		  <el-input  v-model="loginForm.password" placeholder="password" type="password"></el-input>
+		  <el-input  v-model="loginForm.password" placeholder="password" type="password" @keyup.enter.native="handleLogin"></el-input>
 		</el-form-item>
 		<el-form-item><el-button type="primary" @click.native.prevent="handleLogin" style="width:100%">登录</el-button></el-form-item>
 		</el-form>
