@@ -75,7 +75,7 @@
                             <el-table-column prop="" label="操作人" align="center" width="100"></el-table-column>                            
                             <el-table-column label="操作" align="center" width="190">
                                 <template slot-scope="scope">
-                                    <el-button type="text"  size="mini" @click="editAsset(scope.row)">修改</el-button>
+                                    <el-button type="text"  size="mini" @click="taskedit(scope.row)">修改</el-button>
                                     <el-button type="text" size="mini" @click="detailVuln(scope.row)">详情</el-button>
                                     <el-button type="text"   size="mini" @click="assetsDeleteSelect(scope.row)">确认</el-button>
                                 </template>
@@ -205,6 +205,16 @@ export default {
             params:params
         });
         },
+        //修改
+        taskedit(row) {
+        this.status = "edit";
+        this.state = '2';
+        this.form = Object.assign({}, row);
+        this.$router.push({
+            name:'vulnAdd',
+            params:Object.assign({},row,{status: 'edit'})
+        })
+        },  
         // 触发分页
         pageChange(pageObj) {
         this.pageObj = pageObj;

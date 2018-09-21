@@ -433,20 +433,7 @@ const ApiSchema = {
     getUserConfig: {
         url: `${path}user/getUserConfig`,
         method: 'post',
-        keys: [
-            'config_id',
-            'min_length',
-            'max_length',
-            'complex',
-            'lowercase',
-            'capital',
-            'number',
-            'cycle',
-            'term',
-            'remind',
-            'handle',
-            'error_number'
-        ],
+        keys: [ ],
         title: '用户认证配置查询'
     },
     //用户认证编辑
@@ -520,7 +507,31 @@ const ApiSchema = {
             'sessionTimeOut'
         ],
         title: '系统参数配置修改'
-    }
+    },
+    //api接口配置
+    apiList: {
+        url: `${path}api/apiList`,
+        method: 'post',
+        keys: ['page','rows'],
+        title: 'api接口配置'
+    },
+    //api删除
+    deleteSystemKey: {
+        url: `${path}api/deleteSystemKey`,
+        method: 'post',
+        keys: ['api_id'],
+        title: 'api删除'
+    },
+    //api生成
+    setSystemKey: {
+        url: `${path}api/setSystemKey`,
+        method: 'post',
+        keys: [''],
+        title: 'api生成'
+    },
+    
+    
+
 
 }
 // filter keys

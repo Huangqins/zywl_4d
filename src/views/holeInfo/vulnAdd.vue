@@ -7,12 +7,12 @@
                    <el-input  v-model="form.kb_vuln_name"></el-input>                  
               </el-form-item>
               <el-form-item label="风险级别" prop="kb_vuln_level" style="float:left;width:50%;">  
-                   <el-select v-model="form.kb_vuln_level" placeholder="请选择风险等级" style="width:100%">
-                    <el-option label="极低风险" value="0"></el-option>
-                    <el-option label="低风险" value="1"></el-option>
-                    <el-option label="中风险" value="2"></el-option>
-                    <el-option label="高风险" value="3"></el-option>
-                    <el-option label="极高风险" value="4"></el-option>
+                   <el-select v-model="form.kb_vuln_level" placeholder="请选择风险等级" style="width:100%;" :style="{color: vulncolor[form.kb_vuln_level]}" >
+                    <el-option label="极低风险" value="0" style="color: #46A5C0;"></el-option>
+                    <el-option label="低风险" value="1" style="color: #51B323;"></el-option>
+                    <el-option label="中风险" value="2" style="color: #E2B928;"></el-option>
+                    <el-option label="高风险" value="3" style="color: #DD7C35;"></el-option>
+                    <el-option label="极高风险" value="4" style="color: red;"></el-option>
                   </el-select>               
               </el-form-item>
               <el-form-item label="风险类型" prop="kb_vuln_type" style="float:left;width:50%;">                     
@@ -69,17 +69,35 @@
 </template>
 <script>
 import Panel from "@/components/panel";
+import route from 'mixins/route';
 const titlestruts={
   '0':'漏洞录入',
   '1':'修改漏洞'
 }
 
-export default {
+export default {  
+  mixins:[route],
   components: {
     Panel
   },
   data() {
+    const levelSchema = {
+  "4": "极高风险",
+  "3": "高风险",
+  "2": "中风险",
+  "1": "极低风险",
+  "0": "无风险"
+};
+const vulncolor = {
+  "4": "red",
+  "3": "rgb(221, 124, 53)",
+  "2": "rgb(226, 185, 40)",
+  "1": "rgb(81, 179, 35)",
+  "0": "rgb(70, 165, 192)"
+};
     return {
+      vulncolor:vulncolor,
+      levelSchema:levelSchema,
       titlestruts:titlestruts,
       state:0,
       status: "edit",
@@ -132,75 +150,57 @@ export default {
     };
   },
   created(){
-    this.kbdata=this.$route.params;
+    this.kbdata=this.pageInfo;
+    console.log(this.pageInfo)
     this.form=this.kbdata;
-    this.getKbVulnType()
+    // this.getKbVulnType()
   },
   methods: {
     // 清空表单
     resetForm(formName) {
       // this.form = Object.assign({}, this.formCopy);
     },
-    getKbVulnType(){
-     this.$api.getKbVulnType({}).then(res =>{       
-       if (res.result === 0) {
-        this.vulnType = res.kb.map(item => {
-          return {
-            value: item.kb_vuln_type,
-            label: item.vuln_type_name
-          };
-        });
-      }
-     })
-    },
+    // getKbVulnType(){
+    //  this.$api.getKbVulnType({}).then(res =>{       
+    //    if (res.result === 0) {
+    //     this.vulnType = res.kb.map(item => {
+    //       return {
+    //         value: item.kb_vuln_type,
+    //         label: item.vuln_type_name
+    //       };
+    //     });
+    //   }
+    //  })
+    // },
     //知识库添加
-    addkb(form) {
-      this.$refs[form].validate((valid) => {
-        if(valid===false){
-        //  this.$message('请填写带星号的项')
-        }else{
-            if (this.form.kb_vuln_id) {
-        this.$api.updatekb(this.form).then(res => {
-          if (res.result === 0) {
-            this.$message.success(`修改成功`);
-            this.$router.push('./KbManage')
-          } else {
-            this.$message.error(`修改失败`);
-          }
-        });
-      } else {       
-        this.$api.addkb(this.form).then(res => {
-          if (res.result === 0) {
-            this.$message.success(`添加成功`);
-            this.$router.push('./KbManage')
-          } else {
-            this.$message.error(`添加失败`);
-          }
-        });
-      }
-        }
-      //   if (valid.kb_vuln_id) {
-      //   this.$api.updatekb(valid).then(res => {
-      //     if (res.result === 0) {
-      //       this.$message.success(`修改成功`);
-      //       this.$router.push('./KbManage')
-      //     } else {
-      //       this.$message.error(`修改失败`);
-      //     }
-      //   });
-      // } else {
-      //   this.$api.addkb(valid).then(res => {
-      //     if (res.result === 0) {
-      //       this.$message.success(`添加成功`);
-      //       this.$router.push('./KbManage')
-      //     } else {
-      //       this.$message.error(`添加失败`);
-      //     }
-      //   });
-      // }
-      })
+    // addkb(form) {
+    //   this.$refs[form].validate((valid) => {
+    //     if(valid===false){
+    //     //  this.$message('请填写带星号的项')
+    //     }else{
+    //         if (this.form.kb_vuln_id) {
+    //     this.$api.updatekb(this.form).then(res => {
+    //       if (res.result === 0) {
+    //         this.$message.success(`修改成功`);
+    //         this.$router.push('./KbManage')
+    //       } else {
+    //         this.$message.error(`修改失败`);
+    //       }
+    //     });
+    //   } else {       
+    //     this.$api.addkb(this.form).then(res => {
+    //       if (res.result === 0) {
+    //         this.$message.success(`添加成功`);
+    //         this.$router.push('./KbManage')
+    //       } else {
+    //         this.$message.error(`添加失败`);
+    //       }
+    //     });
+    //   }
+    //     }
+    //   })
       
-    },
+    // },
   }
 };
 </script>

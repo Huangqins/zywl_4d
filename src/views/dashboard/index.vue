@@ -509,12 +509,10 @@ export default {
 .vulntext {
   width: 55%;
   height: 100%;
-  //   padding-top: 40px;
   float: left;
   & > div {
     width: 29%;
     height: 50%;
-    // background: red;
     float: left;
     padding: 24px 10px 10px 0;
     p:nth-of-type(2) {
