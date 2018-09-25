@@ -103,6 +103,9 @@ export default {
       }
     };
   },
+  created(){
+    
+  },
   methods: {
       select(sel,row){
         this.selectData=sel.map(item => (item.vuln_id))

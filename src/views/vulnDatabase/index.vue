@@ -4,7 +4,7 @@
         <panel>
             <div class="assets-header-search">
                 <span>筛选条件:</span>
-                <el-input v-model="assetsArea" filterable placeholder="" style="width:200px;margin-right:20px;"> </el-input>
+                <el-input v-model="vuln_name" filterable placeholder="请输入漏洞名称" style="width:200px;margin-right:20px;"> </el-input>
                <el-date-picker v-model="start_time" type="datetime" placeholder="选择日期" style="margin-right:15px;"></el-date-picker>
                <el-date-picker v-model="end_time" type="datetime" placeholder="选择日期" style="margin-right:30px;"></el-date-picker>
                 <el-button class="btn" @click="searchAsset">查询</el-button>
@@ -16,100 +16,39 @@
                  <div class="assets-content-btn">
                     <el-button type="primary" @click='addAssets'>添加漏洞</el-button>
                     <el-button type="primary" @click="areaImportVisible=true">导入</el-button>
-                    <el-button type="primary" @click="areaImportVisible=true">导出</el-button>
+                    <el-button type="primary" @click="exportVuln">导出</el-button>
                 </div>
                <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
                     <el-table-column type="selection" width="35"></el-table-column>
-                    <el-table-column prop="assets_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_url" label="风险编号" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_ip" label="CVE/CNVD" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_os_type" label="风险级别" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_vm" label="利用端口" align="center"></el-table-column>
-                    <el-table-column prop="area_name" label="风险类型" align="center"></el-table-column>     
-                                                        
+                    <el-table-column prop="kb_vuln_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>                    
+                    <el-table-column prop="kb_vuln_cve" label="CVE/CNVD" align="center" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="kb_vuln_level" label="风险级别" align="center" :show-overflow-tooltip="true">
+                      <template slot-scope="scope">
+                        <span> {{ vulntruts[scope.row.kb_vuln_level]}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="kb_vuln_port" label="利用端口" align="center"></el-table-column>
+                    <el-table-column prop="type_name" label="风险类型" align="center"></el-table-column> 
+                    <el-table-column prop="kb_vuln_ftime" label="发现时间" align="center">
+                       <template slot-scope="scope">
+                        <span> {{ fomatterTime(new Date(scope.row.kb_vuln_ftime.time)) }}</span>
+                        </template>
+                    </el-table-column>
+                                                                          
                     <el-table-column label="操作" align="center" width="190">
                         <template slot-scope="scope">
-                            <el-button type="text"  size="mini" @click="editAsset(scope.row)">详情</el-button>
-                            <el-button type="text" size="mini" @click="detailAsset(scope.row)">编辑</el-button>
-                            <el-button type="text" size="mini" @click="detailAsset(scope.row)">删除</el-button>
+                            <el-button type="text"  size="mini" @click="editAsset(scope.row)">编辑</el-button>
+                            <el-button type="text" size="mini" @click="detailAsset(scope.row)">详情</el-button>
+                            <el-button type="text" size="mini" @click="DeleteSelect(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
             </panel>
         </div>
         <!-- 添加框 -->
-    <el-dialog :title="titlestruts[state]" :visible.sync="dialogFormVisible" width="28%" @close="resetForm('form')">
-      <el-form :model="form" label-width="90px" ref="form" :rules="rules">
-        <el-form-item label="资产名称" prop="assets_name">
-          <template v-if="status === 'edit'">
-            <el-input v-model="form.assets_name" auto-complete="off"></el-input>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_name }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="资产URL" prop="assets_url">
-          <template v-if="status === 'edit'">
-            <el-input v-model="form.assets_url" auto-complete="off" placeholder="例:www.zywl-tech.com"></el-input>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_url }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="资产IP" prop="assets_ip">
-          <template v-if="status === 'edit'">
-            <el-input v-model="form.assets_ip" auto-complete="off" placeholder="例:192.168.10.104"></el-input>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_ip }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="所属区域" prop="assets_zone">
-          <template v-if="status === 'edit'">
-            <el-select v-model="form.assets_zone" placeholder="请选择" style="width:100%;">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_zone }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="资产类型" prop="assets_type">
-          <template v-if="status === 'edit'">
-            <el-select v-model="form.assets_type" placeholder="请选择" style="width:100%;">
-              <el-option v-for="item in optionAssetsType" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_type }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="资产重要度" prop="assets_important">
-          <template v-if="status === 'edit'">
-            <el-select v-model="form.assets_important" placeholder="请选择" style="width:100%;">
-              <el-option v-for="item in assets_important_option" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_important }}</span>
-          </template>
-        </el-form-item>
-        <el-form-item label="负责人" prop="assets_manger">
-          <template v-if="status === 'edit'">
-            <el-input v-model="form.assets_manger" auto-complete="off"></el-input>
-          </template>
-          <template v-else>
-            <span>{{ form.assets_manger }}</span>
-          </template>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="resetForm('form')" style="background:transparent">取 消</el-button>
-        <el-button type="primary" @click="addAsset('form')" :loading="addPending">确 定</el-button>
-      </div>
-    </el-dialog>
-     <el-dialog title="资产导入" :visible.sync="areaImportVisible" width="30%">
-       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;">下载资产模板</p>
+    
+     <el-dialog title="漏洞库导入" :visible.sync="areaImportVisible" width="30%">
+       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;" @click="importTem">下载资产模板</p>
        <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
             <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
                 <i class="el-icon-upload"></i>
@@ -156,7 +95,13 @@ const titlestruts = {
   "2": "资产修改",
   "3": "资产详情"
 };
-
+const vulntruts = {
+  "0": "极低风险",
+  "1": "低风险",
+  "2": "中风险",
+  "3": "高风险",
+  "4": "极高风险"
+};
 export default {
   components: {
     Panel,
@@ -184,10 +129,18 @@ export default {
       }
     };
     return {
+      file:{},
+      fomatterTime:fomatterTime,
+      vulntruts:vulntruts,
       pageObj: {},
       defaultPage: {
         rows: 10,
         page: 1
+      },
+       headers: {
+        token: getToken(),
+        userName: getUserName(),
+        menuCode: vm._route.meta.menuCode
       },
       fomatterTime: fomatterTime,
       formatTime: formatTime,
@@ -201,169 +154,29 @@ export default {
       addPending: false,
       state: "1",
       status: "edit",
-      assetsAreaS: [],
-      assetsArea: "",
-      equipmentTypeS: [],
-      equipmentType: "",
-      OSsystemS: [],
       start_time:'',
       end_time:'',
-      osystem: "",
-      portS: [],
-      port: "",
-      assetdate: [],
-      form: {
-        assets_name: "",
-        assets_url: "",
-        assets_ip: "",
-        assets_zone: "",
-        assets_type: 1,
-        assets_important: 1,
-        assets_os: "",
-        assets_manger: getUserName(),
-        assets_creatuser: getUserName()
-      },
-      optionAssetsType: [],
-      options: [],
-      assets_important_option: [
-        {
-          value: 0,
-          label: "一般重要"
-        },
-        {
-          value: 1,
-          label: "重要"
-        },
-        {
-          value: 2,
-          label: "特别重要"
-        }
-      ],
-      rules: {
-        assets_name: [
-          {
-            type: "string",
-            required: true,
-            message: "请填写资产名称",
-            trigger: "blur"
-          }
-        ],
-        assets_type: [
-          {
-            type: "number",
-            required: true,
-            message: "请填写资产类型",
-            trigger: "change"
-          }
-        ],
-        assets_manger: [
-          {
-            type: "string",
-            required: true,
-            message: "请填写资产负责人",
-            trigger: "blur"
-          }
-        ],
-        assets_url: [
-          {
-            validator: checkUrl,
-            trigger: "blur"
-          }
-        ],
-        assets_ip: [
-          {
-            validator: checkIp,
-            trigger: "blur"
-          }
-        ]
-      },
+      vuln_name: "",
+      options: [],      
       page: "",
       rows: "",
       pageTotal: 0,
-      headers: {
-        token: getToken(),
-        userName: getUserName(),
-        menuCode: vm._route.meta.menuCode
-      },
-      params: {
-        is_page: 0,
-        page: "1",
-        rows: "10"
-      }
+      params: {}
     };
   },
   created() {
-    this.assetsInfo(this.params);
-    this.getPort();
-    this.getOSType();
-    this.assetsType();
-    this.getArea();
+    let data=Object.assign({},this.defaultPage,{isOrder:1})
+    this.kbInfo(data);
   },
   methods: {
-    // searchAsset() {
-    //   let data = Object.assign({}, this.params, {
-    //     assets_name:this.assetsArea,
-    //     id: this.equipmentType,
-    //     os_type:this.osystem,
-    //     port: this.port,
-    //     start_time:fomatterTime(this.start_time),
-    //     end_time:fomatterTime(this.end_time)
-    //   });
-    //   this.assetsInfo();
-    // },
-    //端口号
-    async getPort() {
-      let res = await this.$api.getPort();
-      if (res.data.result == "0") {
-        let data = res.data.assets;
-        this.portS = data.map(item => {
-          return {
-            lable: item.port,
-            value: item.port
-          };
-        });
-      }
+    searchAsset() {
+      let data = Object.assign({}, this.params, {
+        vuln_name:this.vuln_name,
+        start_time:fomatterTime(this.start_time),
+        end_time:fomatterTime(this.end_time)
+      });
+       this.kbInfo(data);
     },
-    //操作系统
-    async getOSType() {
-      let res = await this.$api.getOSType();
-      if (res.data.result == "0") {
-        let data = res.data.assets;
-        this.OSsystemS = data.map(item => {
-          return {
-            lable: item.assets_os_type,
-            value: item.assets_os_type
-          };
-        });
-      }
-    },
-    //设备类型
-    async assetsType() {
-      let res = await this.$api.assetsType();
-      if (res.data.result == "0") {
-        let data = res.data.assetsType;
-        this.equipmentTypeS = data.map(item => {
-          return {
-            lable: item.id,
-            value: item.name
-          };
-        });
-      }
-    },
-    //设备类型
-    async getArea() {
-      let res = await this.$api.getArea();
-      if (res.data.result == "0") {
-        let data = res.data.areas;
-        this.assetsAreaS = data.map(item => {
-          return {
-            lable: item.area_id,
-            value: item.area_name
-          };
-        });
-      }
-    },
-
     // 导入回调
     fileUpload(res) {
       this.file = res;
@@ -371,53 +184,69 @@ export default {
     upload() {
       let formData = new FormData();
       formData.append("excelFile", this.file.raw);
-      this.$api.assetImport(formData).then(res => {
+      this.$api.importExcel(formData).then(res => {
         this.areaImportVisible = false;
-        if (res.result === 0) {
+        if (res.data.result === 0) {
           this.$message.success("文件导入成功");
         } else {
           this.$message.error("文件导入失败，请查看文件项填写是否完整或正确");
         }
       });
     },
+    async exportVuln() {
+      let res = await this.$api.exportExcel({});
+      if (res.data.result === 0) {
+        let result = await this.$api.exportFile(res.data.path);
+        createDownload(result, '导出', '.xls')
+      }
+    },    
+    async importTem() {
+      let assetUrl = "ZR/excel/kb_vuln.xls";
+      let res = await this.$api.exportFile(assetUrl);
+      if (res.data.size) {
+        let url = window.URL.createObjectURL(new Blob([res.data]));
+        let link = document.createElement("a");
+        link.style.display = "none";
+        link.href = url;
+        link.setAttribute("download", "知识库导入模板" + ".xls");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        this.$message.error(`模板文件下载失败`);
+      }
+    },
     // 触发分页
-    pageChange(pageObj) {
-      this.pageObj = pageObj;
-      let { page, rows } = pageObj,
-        params = { page, rows, is_page: 0 };
-      this.params = params;
+    pageChange() {
+      this.params =Object.assign({},this.params,params) ;
       this.assetsInfo(params);
     },
-    // 资产列表
-    // async assetsInfo(params) {
-    //   this.tableLoading = true;
-    //   let res = await this.$api.assetsInfo(params);
-    //   this.tableLoading = false;
-    //   if (res.data.result === 0) {
-    //     let data = res.data.rows;
-    //     this.pageTotal = res.data.total;
-    //     res.data.rows.forEach(item => {
-    //       assetTypestruts[item.assets_type];
-    //     });
-    //     this.tableData = res.data.rows;
-    //   }
-    // },
+    // 漏洞库列表
+    async kbInfo(params) {
+      let res = await this.$api.kbInfo(params);
+      this.tableLoading = false;
+      if (res.data.result === 0) {
+        let data = res.data.rows;
+        this.pageTotal = res.data.total;
+        this.tableData = data
+      }
+    },
     // 选中删除项并且打开提示框
-    assetsDeleteSelect(row) {
+    DeleteSelect(row) {
       this.assetItem = Object.assign({}, row);
       this.deleteAssetVisible = true;
     },
     // 确定删除
     deleteItem() {
-      this.assetsDelete(this.assetItem);
+      this.vulnDelete(this.assetItem);
     },
-    // 资产删除
-    assetsDelete(row) {
-      this.$api.deleteAssets({ assets_ids: [row.assets_id] }).then(res => {
+    // 漏洞删除
+    vulnDelete(row) {
+      this.$api.deleteKb({ kb_vuln_id: row.kb_vuln_id, kb_vuln_name:row.kb_vuln_name}).then(res => {
         this.deleteAssetVisible = false;
         if (res.data.result === 0) {
           this.$message.success(`删除成功`);
-          this.assetsInfo(this.params);
+          this.kbInfo(this.defaultPage);
         } else {
           this.$message.error(`删除失败`);
         }
@@ -425,19 +254,19 @@ export default {
     },
     //添加弹框
     addAssets() {
-    //   this.dialogFormVisible = true;
       this.state = "1";
       this.status = "edit";
       this.$router.push('./addDatabase')
     },
     // 编辑表格
     editAsset(row) {
-      row.assets_type = row.assets_type ? Number(row.assets_type) : "";
-      row.assets_zone = row.assets_zone ? Number(row.assets_zone) : "";
-      this.dialogFormVisible = true;
-      this.form = Object.assign({}, row);
-      this.status = "edit";
-      this.state = "2";
+        this.status = "edit";
+        this.state = '2';
+        this.form = Object.assign({}, row);
+        this.$router.push({
+            name:'addDatabase',
+            params:Object.assign({},row,{status: 'edit'})
+        })
     },
     // 清空表单
     resetForm() {

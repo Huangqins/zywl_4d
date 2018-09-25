@@ -536,6 +536,79 @@ const ApiSchema = {
         keys: [''],
         title: 'api生成'
     },
+    //报告管理
+    reportList:{
+       url:`${path}report/reportList`,
+       method: 'post',
+       keys: ['page','rows'],
+       title: '报告管理'
+    },
+    //删除报告
+    deletePDF:{
+        url:`${path}report/deletePDF`,
+        method: 'post',
+        keys: ['reports_id','target_id','reports_name'],
+        title: '删除报告'
+     },
+     //漏洞库列表
+     kbInfo:{
+        url:`${path}kb/kbInfo`,
+        method: 'post',
+        keys: ['page','rows','isOrder','vuln_name','start_time','end_time'],
+        title: '漏洞库列表'
+     },
+     //漏洞库删除
+     deleteKb:{
+        url:`${path}kb/deleteKb`,
+        method: 'post',
+        keys: ['kb_vuln_id','kb_vuln_name'],
+        title: '漏洞库删除'
+     },
+     //漏洞库添加
+     addKb:{
+        url:`${path}kb/addKb`,
+        method: 'post',
+        keys: ['kb_vuln_name','kb_vuln_cve','kb_vuln_level','kb_vuln_port',
+        'kb_vuln_type','kb_vuln_class','kb_vuln_tool','kb_vuln_atme','kb_vuln_veme','kb_vuln_payload','kb_vuln_des','kb_vuln_ref'],
+        title: '漏洞库删除'
+     },
+     //漏洞库编辑
+     updateKb:{
+        url:`${path}kb/updateKb`,
+        method: 'post',
+        keys: ['kb_vuln_id','kb_vuln_name','kb_vuln_cve','kb_vuln_level','kb_vuln_port',
+        'kb_vuln_type','kb_vuln_class','kb_vuln_tool','kb_vuln_atme','kb_vuln_veme','kb_vuln_payload','kb_vuln_des','kb_vuln_ref'],
+        title: '漏洞库编辑'
+     },
+     //漏洞库导入
+     importExcel:{
+        url:`${path}kb/importExcel`,
+        method: 'post',
+        keys: ['excelFile'],
+        title: '漏洞库导入'
+     },
+     //漏洞库导出
+     exportExcel:{
+        url:`${path}kb/exportExcel`,
+        method: 'post',
+        keys: [''],
+        title: '漏洞库导出'
+     },  
+     //策略配置   
+     strategyList:{
+        url:`${path}strategy/strategyList`,
+        method: 'post',
+        keys: ['group_name','start_time','end_time','page','rows'],
+        title: '策略配置'
+     },
+     //策略风险列表     
+     getVulnList:{
+        url:`${path}strategy/getVulnList`,
+        method: 'post',
+        keys: ['vuln_name','vuln_level'],
+        title: '策略风险列表'
+     },
+     
     
     
 

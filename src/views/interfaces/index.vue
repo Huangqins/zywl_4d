@@ -77,7 +77,7 @@ export default {
     },
     pageChange(){
       this.params = Object.assign({},this.params,params)
-       this._apiList(this.params)
+      this._apiList(this.params)
     },
     DeleteReport(row){
       this.api_id=row.api_id;

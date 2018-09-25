@@ -19,12 +19,25 @@
                     </div>
                      <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
                     <el-table-column type="selection" width="35"></el-table-column>
-                    <el-table-column prop="assets_name" label="报告名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-                     <el-table-column prop="assets_name" label="报告类型" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_url" label="创建人" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_ip" label="所属部门" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_os_type" label="创建时间" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="assets_vm" label="最近下载时间" align="center"></el-table-column>
+                    <el-table-column prop="reports_name" label="报告名称" align="center" :show-overflow-tooltip="true"></el-table-column>
+                     <el-table-column prop="report_type" label="报告类型" align="center" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="oper_name" label="创建人" align="center" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="dept_name" label="所属部门" align="center" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="create_time" label="创建时间" align="center" :show-overflow-tooltip="true">
+                        <template slot-scope="scope">
+                            <span>{{fomatterTime(new Date(scope.row.creat_time.time))}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="download_time" label="最近下载时间" align="center">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.download_time != null">
+                                    {{ fomatterTime(new Date(scope.row.download_time.time)) }}
+                            </span>
+                            <span v-else>
+                                    {{scope.row.download_time}}
+                             </span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" align="center" width="190">
                         <template slot-scope="scope">
                             <el-button type="text"  size="mini" @click="downLoadReport(scope.row)">下载</el-button>
@@ -35,25 +48,62 @@
                   </div>
               </panel>
         </div> 
+        <el-dialog title="删除确认" :visible.sync="deleteVisible" width="30%">
+            <p style="font-size:18px;overflow:hidden;">
+                <i class="el-icon-warning" style="color:#FFCC33;font-size:30px;display:inline-block;vertical-align:middle;margin-right:5px;"></i>该操作不可撤回,是否确认删除该条数据?</p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="deleteVisible = false">取 消</el-button>
+                <el-button type="primary" @click="deleteItem">确 定</el-button>
+            </span>
+        </el-dialog>
+        <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
 </template>
 
 <script>
-import Panel from '@/components/panel'
+import Panel from '@/components/panel';
+import Pages from "@/components/Pages";
+import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 export default {
     components:{
-        Panel
+        Panel,
+        Pages
     },
     data(){
         return{
+            deleteVisible:false,
+            fomatterTime:fomatterTime,
             reportName:'',
             start_time:'',
             end_time:'',
             tableData:[],
-            tableLoading:false
+            tableLoading:false,
+            pageTotal:0,
+            defaultPage: {
+                rows: 10,
+                page: 1
+            },
+            params:{},
+            reportid:'',
+            target_id:[],
+            reports_name:'',
+            deleteargue:{}
         }
     },
+    created(){
+           this._reportList(this.defaultPage)
+    },
     methods:{
+        _reportList(params){
+            this.$api.reportList(params).then(res =>{
+              let data=res.data.reports;
+              this.tableData=data
+            })
+        },
+        pageChange(){
+           this.params = Object.assign({},this.params,params)
+           this._reportList(this.params)
+        },
         searchReport(){},
         addreport(){
            this.$router.push('./addReport')
@@ -61,8 +111,16 @@ export default {
         downLoadReport(){
 
         },
-        DeleteReport(){
-
+        DeleteReport(row){
+            this.reportid=row.reports_id;
+            this.target_id=row.target_id;
+            this.reports_name=row.reports_name;
+            this.deleteVisible=true;  
+        },
+        deleteItem(){
+           this.$api.deletePDF({reports_id:this.reportid,target_id:[this.target_id],reports_name:this.reports_name}).then(res =>{
+               
+           })
         }
     }
 }
