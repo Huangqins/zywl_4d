@@ -86,7 +86,7 @@
 
                   <el-tooltip class="item" effect="dark" content="立即终止任务" placement="top">
 
-                    <div class="search stop" @click.native="taskOver(scope.row)"></div>
+                    <div class="search stop" @click="taskOver(scope.row)"></div>
                   </el-tooltip>
                 </template>
                 <template v-if="scope.row.export_url">
@@ -105,7 +105,7 @@
                   </el-tooltip>
                 </template>
 
-                <el-tooltip class="item" effect="dark" content="查看任务进度" placement="top">
+                <el-tooltip class="item" effect="dark" content="查看任务" placement="top">
                   <div @click="taskDetail(scope.row)" class="search detailLook"> </div>
                 </el-tooltip>
                 <!-- 删除按钮暂定不用 -->
@@ -309,12 +309,31 @@ export default {
   methods: {
     // 查看任务进度
     taskDetail(row) {
-      this.$router.push({
-        name: "taskExec",
-        params: {
-          target_id: row.target_id
-        }
-      });
+      if (row.target_struts === "-1") {
+        this.$router.push({
+          name: "taskResult",
+          params: {
+            target_id: row.target_id
+          }
+        });
+      } else if (row.target_struts === "0") {
+        this.$router.push({
+          name: "taskExec",
+          params: {
+            target_id: row.target_id
+          }
+        });
+      }
+    },
+    // 终止任务
+    async taskOver(row) {
+      console.log(row);
+      let { target_id } = row;
+      let res = await this.$api.stopTarget({ target_id, target_struts: -1 });
+      if (res.data.result === 0) {
+        this.$message.success(`任务终止成功`);
+        this.targetInfo(this.params);
+      }
     },
     pageChange(pageObj) {
       this.pageObj = pageObj;

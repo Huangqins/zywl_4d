@@ -37,8 +37,7 @@ const user = {
                 commit('SET_USER_NAME', res.data.userName)
                 commit('SET_USERID', res.data.userId)
                 commit('SET_TOKEN', res.data.token)
-                commit('SET_USER_MENU',res.data.model)
-               
+                commit('SET_USER_MENU',res.data.model)    
             }
             return res //返回登录结果给登录页
         },

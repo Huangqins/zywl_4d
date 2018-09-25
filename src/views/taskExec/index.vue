@@ -23,7 +23,6 @@
               </ul>
             </panel>
           </div>
-
           <div class="pic">
             <div class="pic-num">共进行扫描{{taskInfo.target_task_num}}次</div>
             <div class="circle ing"></div>
@@ -38,22 +37,19 @@
                 <div class="des">
                   <div class="des-num">
                     <div class="title">目标数量</div>
-                    <div class="num">{{ !taskInfo.goal_scaning ? 0 : taskInfo.goal_scaning.total }}</div>
+                    <div class="num">{{taskInfo.goal_scaning.total }}</div>
                   </div>
                   <div class="des-num">
                     <div class="title">完成数量</div>
-                    <div class="num">{{ !taskInfo.goal_scaning ? 0 : taskInfo.goal_scaning.now }}</div>
+                    <div class="num">{{taskInfo.goal_scaning.now }}</div>
                   </div>
                 </div>
-                <div :class="['res', {'checkfull': taskInfo.goal_scaning.status === '1' ? true : false}, {'checking': taskInfo.goal_scaning.status === '0' ? true : false}]">
+                <div :class="['res', {'checkfull': taskInfo.goal_scaning.status === '1' ? true : false}, {'checking': taskInfo.goal_scaning.status === '1' ? false : true}]">
                   <span v-if="taskInfo.goal_scaning.status === '1'">
                     检测完成
                   </span>
-                  <span v-else-if="taskInfo.goal_scaning.status === '0'">
-                    检测中...
-                  </span>
                   <span v-else>
-                    等待检测
+                    检测中...
                   </span>
                 </div>
               </li>
@@ -62,24 +58,23 @@
                 <div class="des">
                   <div class="des-num">
                     <div class="title">系统数量</div>
-                    <div class="num">{{!taskInfo.logic_scaning ? 0 : taskInfo.logic_scaning.total }}</div>
+                    <div class="num">{{taskInfo.logic_scaning.total }}</div>
                   </div>
                   <div class="des-num">
                     <div class="title">完成数量</div>
-                    <div class="num">{{!taskInfo.logic_scaning ? 0 : taskInfo.logic_scaning.now }}</div>
+                    <div class="num">{{taskInfo.logic_scaning.now }}</div>
                   </div>
                 </div>
-                <div :class="['res']">
-                  <!-- <span v-if="taskInfo.logic_scaning.status === '1'">
+                <div :class="['res', {'checkfull': taskInfo.logic_scaning.status === '1' ? true : false}, {'checking': taskInfo.logic_scaning.status === '0' ? true : false}]">
+                  <span v-if="taskInfo.logic_scaning.status === '1'">
                     检测完成
                   </span>
                   <span v-else-if="taskInfo.logic_scaning.status === '0'">
                     检测中...
                   </span>
-                  <span v-else>
+                  <span v-else style="color:#8AC7EA">
                     等待检测
-                  </span> -->
-                  <!-- <span>{{taskInfo.logic_scaning.now}}</span> -->
+                  </span>
                 </div>
               </li>
               <li>
@@ -87,23 +82,23 @@
                 <div class="des">
                   <div class="des-num">
                     <div class="title">业务功能数</div>
-                    <div class="num">{{ !taskInfo.safe_scaning ? 0 : taskInfo.safe_scaning.total }}</div>
+                    <div class="num">{{taskInfo.safe_scaning.total }}</div>
                   </div>
                   <div class="des-num">
                     <div class="title">完成测试数量</div>
-                    <div class="num">{{ !taskInfo.safe_scaning ? 0 : taskInfo.safe_scaning.now }}</div>
+                    <div class="num">{{taskInfo.safe_scaning.now }}</div>
                   </div>
                 </div>
-                <div :class="['res']">
-                  <!-- <span v-if="taskInfo.safe_scaning.status === '1'">
+                <div :class="['res', {'checkfull': taskInfo.safe_scaning.status === '1' ? true : false}, {'checking': taskInfo.safe_scaning.status === '0' ? true : false}]">
+                  <span v-if="taskInfo.safe_scaning.status === '1'">
                     检测完成
                   </span>
                   <span v-else-if="taskInfo.safe_scaning.status === '0'">
                     检测中...
                   </span>
-                  <span v-else>
+                  <span v-else style="color:#8AC7EA">
                     等待检测
-                  </span> -->
+                  </span>
                 </div>
               </li>
               <li>
@@ -126,8 +121,16 @@
                     <div class="num">0</div>
                   </div>
                 </div>
-                <div class="res">
-                  检测完成
+                 <div :class="['res', {'checkfull': taskInfo.use_scaning.status === '1' ? true : false}, {'checking': taskInfo.use_scaning.status === '0' ? true : false}]">
+                  <span v-if="taskInfo.use_scaning.status === '1'">
+                    检测完成
+                  </span>
+                  <span v-else-if="taskInfo.use_scaning.status === '0'">
+                    检测中...
+                  </span>
+                  <span v-else style="color:#8AC7EA">
+                    等待检测
+                  </span>
                 </div>
               </li>
             </ul>
@@ -136,11 +139,13 @@
       </div>
       <div class="task-state">
         <panel title="任务目标情况" style="margin-top:-22px;">
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="域名"></el-table-column>
-            <!-- <el-table-column  label="IP"></el-table-column>
+          <div style="height: 366px;background:#263143">
+            <el-table :data="tableData" style="width: 100%">
+              <el-table-column prop="date" label="域名"></el-table-column>
+              <!-- <el-table-column  label="IP"></el-table-column>
                         <el-table-column  label="可访问性"></el-table-column> -->
-          </el-table>
+            </el-table>
+          </div>
         </panel>
       </div>
     </div>
@@ -148,25 +153,31 @@
     <div class="charts">
       <div class="logic">
         <panel title="业务功能图">
-          <div style="height:616px;"></div>
+          <div style="height:616px;">
+            <Charts height="616px" :chartData="logicData" />
+          </div>
         </panel>
       </div>
       <div class="timeline">
         <panel title="风险时间轴">
-          <div style="height:616px;position:relative;">
+          <div style="height:616px;position:relative;overflow:auto;">
             <div class="line"></div>
-            <el-scrollbar>
-              <ul class="time-line">
-                <li v-for="(item, index) in holeListData" :key="index + 'g'">
-                  <div class="time">{{item.vuln_ftime}}</div>
-                  <div class="ball"></div>
-                  <div class="name">
-                    <div>{{item.vuln_name}}</div>
-                    <div>{{item.vuln_URL}}</div>
+            <ul class="time-line">
+              <li v-for="(item, index) in holeListData" :key="index + 'g'">
+                <div class="time" :style="{color: colorMap[item.vuln_level]}">{{item.vuln_ftime}}</div>
+                <div class="ball" :style="{background:  colorMap[item.vuln_level]}"></div>
+                <div class="name" :style="{background:  colorMap[item.vuln_level]}">
+                  <div class="arrow" :style="{borderRightWidth: '5px',borderRightStyle: 'solid',borderRightColor:colorMap[item.vuln_level]}"></div>
+                  <div style="height:28px;line-height:28px;">{{item.vuln_name}}</div>
+                  <div style="word-break:break-all;">
+                    <span>{{item.vuln_URL}}</span>
+                    <!-- <el-tooltip  effect="dark" :content="item.vuln_URL" placement="top-start" v-else>
+                             <span>{{item.vuln_URL.slice(0,40)}}</span>
+                        </el-tooltip> -->
                   </div>
-                </li>
-              </ul>
-            </el-scrollbar>
+                </div>
+              </li>
+            </ul>
           </div>
         </panel>
       </div>
@@ -175,11 +186,15 @@
     <div class="holelist">
       <panel title="风险列表">
         <el-table :data="holeListData" style="width: 100%">
-          <el-table-column prop="vuln_num" label="风险编号" align="center"> </el-table-column>
+          <el-table-column prop="vuln_Num" label="风险编号" align="center"> </el-table-column>
           <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="vuln_level" label="风险等级" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_level" label="风险等级" align="center">
+            <!-- <template slot-scope="scope">
+               
+            </template> -->
+          </el-table-column>
           <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="vuln_url" label="风险地址" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="vuln_URL" label="风险地址" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_useInfo" label="利用情况" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="image_path" label="取证情况" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
@@ -194,6 +209,7 @@
 import panel from "@/components/panel";
 import { formatTime, fomatterTime } from "@/utils";
 import route from "mixins/route";
+import Charts from "@/components/Charts";
 
 const vulnMap = [
   "极低风险数",
@@ -203,10 +219,19 @@ const vulnMap = [
   "极高风险数"
 ];
 
+const colorMap = ["#97BEE2", "#26CF74", "#E5B918", "#E27C32", "#C33936"];
+const imgMap = [
+  "../../../public/img/png/0.png",
+  "../../../public/img/png/1.png",
+  "../../../public/img/png/2.png",
+  "../../../public/img/png/3.png",
+  "../../../public/img/png/4.png"
+];
 export default {
   mixins: [route],
   components: {
-    panel
+    panel,
+    Charts
   },
   created() {
     let { target_id } = this.pageInfo;
@@ -214,10 +239,12 @@ export default {
       this.targetProgress(target_id);
       this.getVulnTotal(target_id);
       this.vulnSearch(target_id);
+       this.getLogicList(target_id);
     }, 5000);
     this.getVulnTotal(target_id);
     this.vulnSearch(target_id);
     this.targetProgress(target_id);
+    this.getLogicList(target_id);
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -227,6 +254,8 @@ export default {
       tableData: [],
       holeListData: [],
       formatTime: formatTime,
+      colorMap: colorMap,
+      imgMap: imgMap,
       vulnTotal: [
         {
           value: 0,
@@ -251,15 +280,53 @@ export default {
       ],
       taskInfo: {
         target_task_num: null, //扫描次数
-        check_scaning: "",
-        target_scaning: "",
-        goal_scaning: {},
+        check_scaning: { now: 0, total: 0, status: "" },
+        target_scaning: { now: 0, total: 0, status: "" },
+        safe_scaning: { now: 0, total: 0, status: "" },
+        goal_scaning: { now: 0, total: 0, status: "" },
+        logic_scaning: { now: 0, total: 0, status: "" },
+        use_scaning: { now: 0, total: 0, status: "" },
         target_name: "",
         target_starttime: {}
+      },
+      logicData: {
+        series: [
+          {
+            type: "graph",
+            layout: "force",
+            animation: true,
+            draggable: true,
+            label: {
+              normal: {
+                show: true
+              }
+            },
+            data: [
+              {
+                name: "数据分析中..."
+              }
+            ],
+            force: {
+              // initLayout: 'circular'
+              // gravity: 0
+              repulsion: 100,
+              edgeLength: 5
+            }
+          }
+        ]
       }
     };
   },
   methods: {
+    // 业务功能逻辑图
+    async getLogicList(id) {
+      let res = await this.$api.getLogicList({ target_id: id });
+      if (res.data.result === 0 && res.data.logics.length > 0) {
+        this.logicData.series[0].data = res.data.logics.map((item, index) => {
+          return { name: item.logic_name, id: index };
+        });
+      }
+    },
     async targetProgress(id) {
       let res = await this.$api.targetProgress({ target_id: id });
       if (res.data.result === 0) {
@@ -334,6 +401,7 @@ export default {
   }
 }
 .time-line {
+  margin-top: 10px;
   li {
     align-items: center;
     text-align: center;
@@ -350,23 +418,22 @@ export default {
       height: 16px;
       border-radius: 50%;
       background: #7d75de;
+      z-index: 2;
     }
     .name {
       font-size: 14px;
       // overflow: hidden;
       flex: 1;
-      height: 59px;
-      line-height: 59px;
+      // height: 59px;
       margin: 0 20px;
+      padding: 10px;
       background-color: #7d75de;
       position: relative;
       border-radius: 4px;
-      &::before {
-        content: "";
+      .arrow {
         position: absolute;
         left: -10px;
-        top: 25px;
-        border: 5px solid #7d75de;
+        top: calc(50% - 5px);
         border-top: 5px solid transparent;
         border-left: 5px solid transparent;
         border-bottom: 5px solid transparent;
@@ -418,6 +485,7 @@ export default {
       ul {
         display: flex;
         text-align: center;
+        color: #cad5db;
       }
       li {
         float: left;
@@ -466,11 +534,11 @@ export default {
       width: 30%;
       .line {
         position: absolute;
-        margin-top:32px;
+        margin-top: 32px;
         height: 567px;
-        left: calc( 38% + 0px);
+        left: calc(38% + 0px);
         width: 2px;
-        background:rgba(18,27,41,1);
+        background: rgba(18, 27, 41, 1);
       }
     }
   }

@@ -15,40 +15,64 @@
             <panel title="风险数量" style="margin-top:-12px;">
               <div class="vuln-num">
                 <div class="left">
-                  1
-                  <!-- <ul class="clearfix" style="height:98px;">
-                  <li>
-                    <dl>
-                      <dt>100</dt>
-                      <dd class="vuln-bg-4">极高风险数</dd>
-                    </dl>
-                  </li>
-                </ul> -->
+                  <ul>
+                    <li>
+                      <dl>
+                        <dt>{{vulnMap[4].vuln_total}}</dt>
+                        <dd class="vuln-bg-4">极高风险数</dd>
+                      </dl>
+                    </li>
+                    <li>
+                      <dl>
+                        <dt>{{vulnMap[3].vuln_total}}</dt>
+                        <dd class="vuln-bg-3">高危风险数</dd>
+                      </dl>
+                    </li>
+                  </ul>
                 </div>
                 <div class="middle">
-2
+                  <Charts :chartData="options" height="254px" />
                 </div>
                 <div class="right">
-3
+                  <ul>
+                    <li>
+                      <dl>
+                        <dt>{{vulnMap[2].vuln_total}}</dt>
+                        <dd class="vuln-bg-2">中危风险数</dd>
+                      </dl>
+                    </li>
+                    <li>
+                      <dl>
+                        <dt>{{vulnMap[1].vuln_total}}</dt>
+                        <dd class="vuln-bg-1">低危风险数</dd>
+                      </dl>
+                    </li>
+                    <li>
+                      <dl>
+                        <dt>{{vulnMap[0].vuln_total}}</dt>
+                        <dd class="vuln-bg-0">极低风险数</dd>
+                      </dl>
+                    </li>
+                  </ul>
                 </div>
               </div>
-
             </panel>
           </div>
 
           <div class="pic">
             <div class="pic-num">漏洞类型百分比分布</div>
-
+            <Charts :chartData="typeOptions" height="309px" id="type" />
           </div>
         </div>
         <!--  -->
-        <!-- <div class="tables">
-          <panel title="任务目标情况">
-
+        <div class="tables">
+          <panel title="任务目标情况" style="height:257px;">
+            <el-table></el-table>
           </panel>
-          <panel title="新发现资产/域名">
+          <panel title="新发现资产/域名" style="height:257px;">
+            <el-table></el-table>
           </panel>
-        </div> -->
+        </div>
 
       </div>
       <div class="task-state">
@@ -68,6 +92,8 @@
 import panel from "@/components/panel";
 import { formatTime, fomatterTime } from "@/utils";
 import route from "mixins/route";
+import echarts from "echarts";
+import Charts from "@/components/Charts";
 
 const vulnMap = [
   "极低风险数",
@@ -77,29 +103,313 @@ const vulnMap = [
   "极高风险数"
 ];
 
+const placeHolderStyle = {
+  normal: {
+    label: {
+      show: false
+    },
+    labelLine: {
+      show: false
+    },
+    color: "rgba(0,0,0,0)",
+    borderWidth: 0
+  },
+  emphasis: {
+    color: "rgba(0,0,0,0)",
+    borderWidth: 0
+  }
+};
+
+const dataStyle = {
+  normal: {
+    formatter: "{c}%",
+    position: "center",
+    show: true,
+    textStyle: {
+      fontSize: "28",
+      fontWeight: "normal",
+      color: "#fff"
+    }
+  }
+};
+
 export default {
   mixins: [route],
   components: {
-    panel
+    panel,
+    Charts
   },
   created() {
     let { target_id } = this.pageInfo;
-    this.timer = setInterval(() => {
-      this.targetProgress(target_id);
-      this.getVulnTotal(target_id);
-      this.vulnSearch(target_id);
-    }, 5000);
     this.getVulnTotal(target_id);
-    this.vulnSearch(target_id);
     this.targetProgress(target_id);
+    this.getLogic(target_id);
+    this.targetGoalSure(target_id);
+    this.targetNewAsset(target_id);
   },
-  beforeDestroy() {
-    clearInterval(this.timer);
-  },
+
   data() {
     return {
       tableData: [],
-      holeListData: [],
+      options: {
+        title: [
+          {
+            text: "资产健康度",
+            left: "49%",
+            top: "80%",
+            textAlign: "center",
+            textStyle: {
+              fontWeight: "normal",
+              fontSize: "14",
+              color: "#fff",
+              textAlign: "center"
+            }
+          }
+        ],
+        series: [
+          {
+            type: "pie",
+            hoverAnimation: false, //鼠标经过的特效
+            radius: ["85%", "70%"],
+            center: ["50%", "50%"],
+            startAngle: 225,
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            label: {
+              normal: {
+                position: "center"
+              }
+            },
+            data: [
+              {
+                value: 75,
+                itemStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#99da69"
+                      },
+                      {
+                        offset: 1,
+                        color: "#01babc"
+                      }
+                    ])
+                  }
+                },
+                label: dataStyle
+              },
+              {
+                value: 25,
+                itemStyle: placeHolderStyle
+              }
+            ]
+          },
+          //外圈的边框
+          {
+            // name: '总人数',
+            type: "pie",
+            hoverAnimation: false, //鼠标经过的特效
+            radius: ["96%", "72%"],
+            center: ["50%", "50%"],
+            startAngle: 225,
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            label: {
+              normal: {
+                position: "center"
+              }
+            },
+            data: [
+              {
+                value: 75,
+                itemStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#01babc"
+                      },
+                      {
+                        offset: 1,
+                        color: "#99da69"
+                      }
+                    ])
+                  }
+                }
+              },
+              {
+                value: 25,
+                itemStyle: placeHolderStyle
+              }
+            ]
+          }
+        ]
+      },
+      typeOptions: {
+        color: [
+          "#2edfa3",
+          "#bce672",
+          "#ff4777",
+          "#70f3ff",
+          "#4b5cc4",
+          "#f47983",
+          "#8d4bbb",
+          "#6635EF",
+          "#FFAFDA"
+        ],
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            selectedMode: "single",
+            radius: [0, "38%"],
+
+            label: {
+              normal: {
+                show: false,
+                position: "inner",
+                formatter: "{d}",
+                textStyle: {
+                  color: "#fff",
+                  fontWeight: "normal",
+                  fontSize: 12
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: [
+              {
+                value: 100,
+                name: "独居"
+              },
+              {
+                value: 100,
+                name: "与配偶同住"
+              },
+              {
+                value: 100,
+                name: "与子女同住"
+              },
+              {
+                value: 100,
+                name: "仅与重度残疾子女共同居住"
+              },
+              {
+                value: 100,
+                name: "与配偶及子女同住"
+              },
+              {
+                value: 100,
+                name: "与其他亲属同住"
+              },
+              {
+                value: 100,
+                name: "与父母同住"
+              },
+              {
+                value: 100,
+                name: "与其他人同住"
+              }
+            ]
+          },
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: ["40%", "42%"],
+            label: {
+              normal: {
+                formatter: "{b|{b}}\n{hr|}\n{d|{d}%}",
+                rich: {
+                  b: {
+                    fontSize: 12,
+                    color: "#fff",
+                    align: "left",
+                    padding: 4
+                  },
+                  hr: {
+                    borderColor: "#12EABE",
+                    width: "100%",
+                    borderWidth: 2,
+                    height: 0
+                  },
+                  d: {
+                    fontSize: 12,
+                    color: "#fff",
+                    align: "left",
+                    padding: 4
+                  },
+                  c: {
+                    fontSize: 12,
+                    color: "#fff",
+                    align: "center",
+                    padding: 4
+                  }
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                show: true,
+                length: 20,
+                length2: 20,
+                lineStyle: {
+                  type: "dashed",
+                  width: 2
+                }
+              }
+            },
+            data: [
+              {
+                value: 100,
+                name: "独居"
+              },
+              {
+                value: 100,
+                name: "与配偶同住"
+              },
+              {
+                value: 100,
+                name: "与子女同住"
+              },
+              {
+                value: 100,
+                name: "仅与重度残疾子女共同居住"
+              },
+              {
+                value: 100,
+                name: "与配偶及子女同住"
+              },
+              {
+                value: 100,
+                name: "与其他亲属同住"
+              },
+              {
+                value: 100,
+                name: "与父母同住"
+              },
+              {
+                value: 100,
+                name: "与其他人同住"
+              }
+            ]
+          }
+        ]
+      },
       formatTime: formatTime,
       vulnTotal: [
         {
@@ -129,12 +439,76 @@ export default {
         target_scaning: "",
         goal_scaning: {},
         target_name: "",
+        target_starttime: {},
+        target_name: "",
+        target_createtime: "",
         target_starttime: {}
-      }
+      },
+      vulnMap: [
+        {
+          vuln_total: 0
+        },
+        {
+          vuln_total: 0
+        },
+        {
+          vuln_total: 0
+        },
+        {
+          vuln_total: 0
+        },
+        {
+          vuln_total: 0
+        }
+      ]
     };
   },
   methods: {
-
+    // 任务目标情况
+    async targetGoalSure(id) {
+      let res = await this.$api.targetGoalSure({ target_id: id });
+      if (res.data.result === 0) {
+      }
+    },
+    //任务目标情况
+    async targetNewAsset(id) {
+      let res = await this.$api.targetNewAsset({ target_id: id });
+      if (res.data.result === 0) {
+      }
+    },
+    async getLogic(id) {
+      let res = await this.$api.getLogic({ target_id: id });
+      if (res.data.result === 0) {
+      }
+    },
+    async getVulnTotal(id) {
+      let res = await this.$api.vulnTotal({ target_id: id });
+      if (res.data.result === 0) {
+        res.data.vulns.forEach(item => {
+          this.$set(this.vulnMap, Number(item.vuln_level), {
+            vuln_total: item.vuln_total
+          });
+        });
+      }
+    },
+    async targetProgress(id) {
+      let res = await this.$api.targetProgress({ target_id: id });
+      if (res.data.result === 0) {
+        let {
+          target_task_num,
+          response_info,
+          target_name,
+          target_createtime,
+          target_starttime
+        } = res.data.target;
+        this.taskInfo = {
+          target_task_num,
+          target_name,
+          target_createtime: fomatterTime(new Date(target_createtime.time)),
+          target_starttime
+        };
+      }
+    }
   }
 };
 </script>
@@ -174,45 +548,14 @@ export default {
           font-size: 14px;
           padding: 10px 10px 10px 15px;
         }
-        .circle {
-          width: 119px;
-          height: 119px;
-          margin: 18px auto;
-          background: url(../../../public/img/png/circle.png) center center
-              no-repeat,
-            url(../../../public/img/png/circlebg.png) center center no-repeat;
-          background-size: 119px 119px, 119px 119px;
-        }
-        .circle.ing {
-          animation: ing 2s linear infinite;
-        }
         box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
-      }
-      ul {
-        display: flex;
-        text-align: center;
-      }
-      li {
-        float: left;
-        flex: 1;
-        dl {
-          text-align: center;
-          margin: 0;
-          margin-top: 26px;
-          dt {
-            margin: 5px 0;
-          }
-          dd {
-            margin-left: 0;
-            font-size: 14px;
-          }
-        }
       }
       .taskInfo {
         li {
           line-height: 58px;
-          text-align: center;
+          // text-align: center;
           font-size: 14px;
+          padding: 0 5px;
         }
       }
       .status {
@@ -299,7 +642,7 @@ export default {
     .vuln-bg-#{$i} {
       background: url(../../../public/img/png/icon-#{$i}.png)
         left
-        12px
+        calc(50% - 50px)
         center
         no-repeat;
     }
@@ -315,12 +658,40 @@ export default {
     margin-right: 20px;
   }
 }
+.taskInfo {
+  display: flex;
+  li {
+    flex: 1;
+    text-align: left;
+  }
+}
 .vuln-num {
   display: flex;
   height: 254px;
   & > div {
     flex: 1;
     height: 100%;
+  }
+  ul {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    text-align: center;
+    li {
+      flex: 1;
+      dl {
+        text-align: center;
+        margin: 0;
+        margin-top: 26px;
+        dt {
+          margin: 5px 0;
+        }
+        dd {
+          margin-left: 0;
+          font-size: 14px;
+        }
+      }
+    }
   }
 }
 </style>

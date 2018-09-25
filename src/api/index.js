@@ -109,6 +109,41 @@ const ApiSchema = {
         title: '添加任务',
         keys: ['type_name', 'task_type_id', 'target_name', 'asset_ids', 'target_teststra', 'target_cycle', 'type_id', 'userName', 'target_starttime', 'target_url', 'target_ip']
     },
+    // 终止任务
+    stopTarget: {
+        url: `${path}task/stopTarget`,
+        method: 'post',
+        title: '终止任务',
+        keys: ['target_id', 'target_struts']
+    },
+    // 业务功能结构图
+    getLogicList: {
+        url: `${path}logic/getLogicList`,
+        method: 'post',
+        title: '业务功能结构图',
+        keys: ['target_id']
+    },
+    // 业务功能
+    getLogic: {
+        url: `${path}logic/getLogic`,
+        method: 'post',
+        title: '业务功能',
+        keys: ['target_id']
+    },
+    // 任务目标情况
+    targetGoalSure: {
+        url: `${path}task/targetProgress`,
+        method: 'post',
+        title: '任务目标情况',
+        keys: ['target_id ']
+    },
+    //新发现资产 
+    targetNewAsset: {
+        url: `${path}target/targetNewAsset`,
+        method: 'post',
+        title: '新发现资产',
+        keys: ['target_id ']
+    },
     // 扫描次数和执行阶段
     targetProgress: {
         url: `${path}task/targetProgress`,
@@ -440,7 +475,7 @@ const ApiSchema = {
     getUserConfig: {
         url: `${path}user/getUserConfig`,
         method: 'post',
-        keys: [ ],
+        keys: [],
         title: '用户认证配置查询'
     },
     //用户认证编辑
@@ -497,11 +532,11 @@ const ApiSchema = {
         ],
         title: '发邮件测试'
     },
-     //系统参数配置
-     getSystemParam: {
+    //系统参数配置
+    getSystemParam: {
         url: `${path}system/getSystemParam`,
         method: 'post',
-        keys: [ ],
+        keys: [],
         title: '系统参数配置'
     },
     //系统参数配置修改
@@ -519,7 +554,7 @@ const ApiSchema = {
     apiList: {
         url: `${path}api/apiList`,
         method: 'post',
-        keys: ['page','rows'],
+        keys: ['page', 'rows'],
         title: 'api接口配置'
     },
     //api删除
@@ -536,8 +571,8 @@ const ApiSchema = {
         keys: [''],
         title: 'api生成'
     },
-    
-    
+
+
 
 
 }
