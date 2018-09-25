@@ -359,9 +359,7 @@ export default {
      async exportAssets() {
       let res = await this.$api.exportExcel({});
       if (res.data.result === 0) {
-        console.log(res.data.path)
         let result = await this.$api.exportFile(res.data.path);
-        console.log(result)
         createDownload(result, '导出', '.xls')
       }
     },
@@ -383,7 +381,6 @@ export default {
       }
     },
     //资产类型
-
     searchAsset() {
       let data = Object.assign({}, this.params, {
         assets_name:this.assetsArea,
@@ -446,7 +443,6 @@ export default {
       if (res.data.result == "0") {
         let data = res.data.areas;
         this.assetsAreaS = data.map(item => {
-          console.log(item)
           return {
             label: item.area_name,
             value: item.area_id

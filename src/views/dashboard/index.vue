@@ -153,8 +153,7 @@
                             <el-table-column prop="target_name" label="任务名称" ></el-table-column>
                             <el-table-column prop="target_url" label="任务目标" ></el-table-column>
                             <el-table-column prop="target_teststra" label="策略" ></el-table-column>
-                            <el-table-column prop="target_starttime" label="开始时间" >
-                              
+                            <el-table-column prop="target_starttime" label="开始时间" >                             
                                 <template slot-scope="scope">
                                   <span v-if="scope.row.target_starttime != null">
                                     {{ fomatterTime(new Date(scope.row.target_starttime.time)) }}

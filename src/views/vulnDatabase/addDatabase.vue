@@ -27,8 +27,8 @@
                       <el-option v-for="(item, index) in vulnClass" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
                     </el-select>                              
               </el-form-item>
-              <el-form-item label="CVE/CNVN编码" prop="kb_vuln_cnvd" style="float:left;width:50%;">                 
-                   <el-input auto-complete="off" v-model="form.kb_vuln_cnvd"></el-input>                  
+              <el-form-item label="CVE/CNVD编码" prop="kb_vuln_cve" style="float:left;width:50%;">                 
+                   <el-input auto-complete="off" v-model="form.kb_vuln_cve"></el-input>                  
               </el-form-item>
               
               <el-form-item label="风险端口" prop="kb_vuln_port" style="float:left;width:50%;">               
@@ -54,12 +54,12 @@
               <el-form-item label="风险描述" prop="kb_vuln_des" style="float:left;width:50%;">                
                    <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_des" ></el-input>                
               </el-form-item>
-              <el-form-item label="修复方案" prop="kb_vuln_anly" style="float:left;width:50%;">                
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_anly"></el-input>                  
+              <el-form-item label="修复方案" prop="kb_vuln_ref" style="float:left;width:50%;">                
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_ref"></el-input>                  
               </el-form-item>
                <el-form-item style="float:left;margin-left:42%">
                 <el-button type="primary" @click="resetForm('form')" >取消</el-button>
-                <el-button @click="addkb('form')">保存</el-button>
+                <el-button @click="addkbaubmit('form')">保存</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -68,14 +68,17 @@
 </template>
 <script>
 import Panel from "@/components/panel";
+import route from 'mixins/route';
 const titlestruts={
   '0':'漏洞录入',
   '1':'修改漏洞'
 }
 
 export default {
+  mixins:[route],
   components: {
-    Panel
+    Panel,
+    route
   },
   data() {
     return {
@@ -84,7 +87,7 @@ export default {
       status: "edit",
       form: {
         kb_vuln_name: "",
-        kb_vuln_cnvd: "",
+        kb_vuln_cve: "",
         kb_vuln_level: "",
         kb_vuln_port: "",
         kb_vuln_tool: "",
@@ -94,7 +97,7 @@ export default {
         vuln_type_name: "",
         kb_vuln_class: "",
         kb_vuln_des: "",
-        kb_vuln_anly: "",
+        kb_vuln_ref: "",
         kb_vuln_id: ""
       },
       vulnType:[],
@@ -131,7 +134,7 @@ export default {
     };
   },
   created(){
-    this.kbdata=this.$route.params;
+    this.kbdata=this.pageInfo;
     this.form=this.kbdata;
     this.getKbVulnType()
   },
@@ -141,62 +144,43 @@ export default {
       // this.form = Object.assign({}, this.formCopy);
     },
     getKbVulnType(){
-     this.$api.getKbVulnType({}).then(res =>{       
-       if (res.result === 0) {
-        this.vulnType = res.kb.map(item => {
+     this.$api.vulnType({}).then(res =>{       
+       if (res.data.result === 0) {
+        this.vulnType = res.data.vulns.map(item => {
           return {
-            value: item.kb_vuln_type,
-            label: item.vuln_type_name
+            value: item.vuln_type,
+            label: item.vuln_name
           };
         });
       }
      })
     },
-    //知识库添加
-    addkb(form) {
+    //漏洞库添加
+    addkbaubmit(form) {
       this.$refs[form].validate((valid) => {
         if(valid===false){
         //  this.$message('请填写带星号的项')
         }else{
             if (this.form.kb_vuln_id) {
-        this.$api.updatekb(this.form).then(res => {
-          if (res.result === 0) {
+        this.$api.updateKb(this.form).then(res => {
+          if (res.data.result === 0) {
             this.$message.success(`修改成功`);
-            this.$router.push('./KbManage')
+            this.$router.push('vulnDatabase')
           } else {
             this.$message.error(`修改失败`);
           }
         });
       } else {       
-        this.$api.addkb(this.form).then(res => {
-          if (res.result === 0) {
+        this.$api.addKb(this.form).then(res => {
+          if (res.data.result === 0) {
             this.$message.success(`添加成功`);
-            this.$router.push('./KbManage')
+            this.$router.push('vulnDatabase')
           } else {
             this.$message.error(`添加失败`);
           }
         });
       }
         }
-      //   if (valid.kb_vuln_id) {
-      //   this.$api.updatekb(valid).then(res => {
-      //     if (res.result === 0) {
-      //       this.$message.success(`修改成功`);
-      //       this.$router.push('./KbManage')
-      //     } else {
-      //       this.$message.error(`修改失败`);
-      //     }
-      //   });
-      // } else {
-      //   this.$api.addkb(valid).then(res => {
-      //     if (res.result === 0) {
-      //       this.$message.success(`添加成功`);
-      //       this.$router.push('./KbManage')
-      //     } else {
-      //       this.$message.error(`添加失败`);
-      //     }
-      //   });
-      // }
       })
       
     },
