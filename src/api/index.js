@@ -648,14 +648,43 @@ const ApiSchema = {
         keys: ['group_name', 'start_time', 'end_time', 'page', 'rows'],
         title: '策略配置'
     },
-    //策略风险列表     
+    //策略新增风险列表     
     getVulnList: {
         url: `${path}strategy/getVulnList`,
         method: 'post',
         keys: ['vuln_name', 'vuln_level'],
         title: '策略风险列表'
     },
-
+    //新增策略保存
+    addStrategyGroup: {
+        url: `${path}strategy/addStrategyGroup`,
+        method: 'post',
+        keys: ['group_name', 'group_desc','group_content'],
+        title: '新增策略保存'
+    },
+    //删除策略
+    deleteStrategyGroup: {
+        url: `${path}strategy/deleteStrategyGroup`,
+        method: 'post',
+        keys: ['group_name', 'group_id'],
+        title: '删除策略'
+    },
+    //合并策略
+    mergeStrategy: {
+        url: `${path}strategy/mergeStrategy`,
+        method: 'post',
+        keys: ['group_name', 'group_desc','group_content'],
+        title: '合并策略'
+    },
+    //修改策略
+    updateStrategyGroup: {
+        url: `${path}strategy/updateStrategyGroup`,
+        method: 'post',
+        keys: ['group_name', 'group_desc','group_content','group_id'],
+        title: '修改策略'
+    },
+    
+    
 
 
 

@@ -15,9 +15,9 @@
             <panel>
                  <div class="assets-content-btn">
                     <el-button type="primary" @click='addAssets'>新增</el-button>
-                    <el-button type="primary" @click="areaImportVisible=true">合并</el-button>
+                    <el-button type="primary" @click="merge">合并</el-button>
                 </div>
-               <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
+               <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading"  @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="35"></el-table-column>
                     <el-table-column prop="group_name" label="策略名称" align="center" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="group_id" label="策略ID" align="center" :show-overflow-tooltip="true"></el-table-column>
@@ -38,8 +38,8 @@
                     </el-table-column>                                      
                     <el-table-column label="操作" align="center" width="190">
                         <template slot-scope="scope">
-                            <el-button type="text"  size="mini" @click="editAsset(scope.row)">复制</el-button>
-                            <el-button type="text" size="mini" @click="detailAsset(scope.row)">导出</el-button>
+                            <el-button type="text"  size="mini" @click="editstrategy(scope.row)">修改</el-button>
+                            <el-button type="text" size="mini" @click="deletestrategy(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -47,6 +47,28 @@
         </div>    
         <!--分页-->
         <pages :total="pageTotal" @pageChange="pageChange"></pages>
+        <el-dialog title="删除确认" :visible.sync="deleteVisible" width="30%">
+          <p style="font-size:18px;overflow:hidden;">
+            <i class="el-icon-warning" style="color:#FFCC33;font-size:30px;display:inline-block;vertical-align:middle;margin-right:5px;"></i>该操作不可撤回,是否确认删除该条数据?</p>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteVisible = false">取 消</el-button>
+            <el-button type="primary" @click="deleteItem">确 定</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog title="合并策略" :visible.sync="mergeVisible" width="30%">
+            <el-form :model="mergeform" label-width="115px"  ref="mergeform" style="overflow:hidden;margin:0 auto;width:70%;padding-top:50px;">
+              <el-form-item label="策略名称" prop="group_name">                
+                   <el-input  v-model="mergeform.group_name"></el-input>                  
+              </el-form-item> 
+              <el-form-item label="策略描述" prop="group_desc">                
+                   <el-input type="textarea" auto-complete="off" v-model="mergeform.group_desc" ></el-input>                
+              </el-form-item>             
+               <el-form-item >
+                <el-button type="primary">取消</el-button>
+                <el-button @click="addmerge(mergeform)">保存</el-button>
+              </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -67,6 +89,12 @@ export default {
   },
   data() {
     return {
+      mergeform:{
+        group_name:'',
+        group_desc:''
+      },
+      deleteVisible:false,
+      mergeVisible:false,
       pageObj: {},
       defaultPage: {
         rows: 10,
@@ -100,14 +128,56 @@ export default {
       params: {
         page: "1",
         rows: "10"
-      }
+      },
+      deleteData:{},
+      groundId:{}
     };
   },
   created() {
     this.strategyList(this.params);    
   },
   methods: {
-    
+    merge(){
+      this.mergeVisible=true;
+    },
+    handleSelectionChange(row){
+      
+      this.groundId=row.map(item=>{
+        return item.group_id
+      }).join(',')
+    },
+    addmerge(){
+      let data=Object.assign({},this.mergeform,{group_content:this.groundId})
+      this.$api.mergeStrategy(data).then(res=>{
+          if(res.data.result===0){
+              this.$message.success(`合并成功`)
+              this.mergeVisible=false
+              this.strategyList(this.params)
+          }
+      })
+    },
+    deletestrategy(row){
+      this.deleteData={
+        group_name:row.group_name,
+        group_id:row.group_id
+      }
+      this.deleteVisible=true;
+    },
+    deleteItem(){
+      this.$api.deleteStrategyGroup(this.deleteData).then(res=>{
+        if(res.data.result===0){
+          this.$message.success(`删除成功`)
+          this.strategyList(this.params)
+          this.deleteVisible=false;
+        }else if(res.data.result===4){
+          this.deleteVisible=false;
+           this.$message(`策略下有任务,不能删除`)
+        }else if(res.data.result===2){
+          this.deleteVisible=false;
+           this.$message(`默认策略,不能删除`)
+        }
+      })
+    },
     searchAsset() {
       let data = Object.assign({}, this.params, {
         group_name:this.group_name,
@@ -138,7 +208,7 @@ export default {
       let { page, rows } = pageObj,
         params = { page, rows, is_page: 0 };
       this.params = params;
-      this.assetsInfo(params);
+      this.strategyList(params);
     },
     // 策略配置列表
     async strategyList(params) {
@@ -150,28 +220,7 @@ export default {
         this.pageTotal = res.data.total;
         this.tableData = res.data.list;
       }
-    },
-    // 选中删除项并且打开提示框
-    assetsDeleteSelect(row) {
-      this.assetItem = Object.assign({}, row);
-      this.deleteAssetVisible = true;
-    },
-    // 确定删除
-    deleteItem() {
-      this.assetsDelete(this.assetItem);
-    },
-    // 资产删除
-    assetsDelete(row) {
-      this.$api.deleteAssets({ assets_ids: [row.assets_id] }).then(res => {
-        this.deleteAssetVisible = false;
-        if (res.data.result === 0) {
-          this.$message.success(`删除成功`);
-          this.assetsInfo(this.params);
-        } else {
-          this.$message.error(`删除失败`);
-        }
-      });
-    },
+    },    
     //添加弹框
     addAssets() {
     //   this.dialogFormVisible = true;
@@ -179,14 +228,10 @@ export default {
       this.status = "edit";
       this.$router.push('./addPolicySetting')
     },
-    // 编辑表格
-    editAsset(row) {
-      row.assets_type = row.assets_type ? Number(row.assets_type) : "";
-      row.assets_zone = row.assets_zone ? Number(row.assets_zone) : "";
-      this.dialogFormVisible = true;
-      this.form = Object.assign({}, row);
-      this.status = "edit";
-      this.state = "2";
+    editstrategy(row){
+      this.$router.push({
+        name:'addPolicySetting',
+        params:Object.assign({},row,{status: 'edit'})})
     },
     // 清空表单
     resetForm() {
