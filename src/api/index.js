@@ -130,25 +130,25 @@ const ApiSchema = {
         title: '业务功能',
         keys: ['target_id']
     },
-    // 任务目标情况
-    targetGoalSure: {
-        url: `${path}task/targetProgress`,
-        method: 'post',
-        title: '任务目标情况',
-        keys: ['target_id ']
-    },
+    // 任务目标情况 
+    // targetGoalSure: {
+    //     url: `${path}task/targetProgress`,
+    //     method: 'post',
+    //     title: '任务目标情况/扫描次数和执行阶段',
+    //     keys: ['target_id']
+    // },
     //新发现资产 
     targetNewAsset: {
-        url: `${path}target/targetNewAsset`,
+        url: `${path}task/targetNewAsset`,
         method: 'post',
         title: '新发现资产',
-        keys: ['target_id ']
+        keys: ['target_id']
     },
-    // 扫描次数和执行阶段
+    // 扫描次数和执行阶段/任务目标情况 
     targetProgress: {
         url: `${path}task/targetProgress`,
         method: 'post',
-        title: '扫描次数和执行阶段',
+        title: '任务目标情况/扫描次数和执行阶段',
         keys: ['target_id']
     },
     // 资产列表
@@ -212,7 +212,15 @@ const ApiSchema = {
     vulnSearch: {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
+        title: '风险列表',
         keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time']
+    },
+    // 漏洞数量统计
+    vulnNumTotal: {
+        url:`${path}vuln/vulnNumTotal`,
+        method:'post',
+        title: '漏洞数量统计',
+        keys: ''
     },
     //资产
     getAssetURL: {

@@ -1,16 +1,23 @@
 <template>
-    <div class="panel">
+  <div class="panel">
     <div class="panel-title" v-if="title">
-      <p class="panel-title-text" :style="{height: titleStyle}">{{title}}</p>
+      <p class="panel-title-text" :style="{height: titleStyle}">
+        <template v-if="!num && num !== 0">
+          {{title}}
+        </template>
+        <template v-else>
+          {{title}} ({{num}})
+        </template>
+      </p>
     </div>
     <div class="panel-content">
-       <slot />
+      <slot />
     </div>
-    </div>
+  </div>
 </template>
 <script>
 export default {
-    computed: {
+  computed: {
     titleStyle() {
       if (!this.title) {
         return "100%";
@@ -23,22 +30,26 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+    num: {
+      type: Number,
+      default: null
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.panel-title{
-    color:rgba(209,255,255,1);
-    &-text{
-        font-size:16px;
-        margin: 22px 0 8px 12px;
-    }
+.panel-title {
+  color: rgba(209, 255, 255, 1);
+  &-text {
+    font-size: 16px;
+    margin: 22px 0 8px 12px;
+  }
 }
-.panel-content{
-    background: $main-bg;
-    width: auto;
-    // height: calc(100% - 31px);
-    box-shadow: 4px 0px 4px rgba(29,36,46,1)
+.panel-content {
+  background: $main-bg;
+  width: auto;
+  // height: calc(100% - 31px);
+  box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
 }
 </style>

@@ -461,10 +461,12 @@ export default {
                   }
                 });
                 this.targetInfo(this.params);
-              } else if (res.result === 1) {
+              } else if (res.data.result === 1) {
                 this.$message.error("任务添加失败");
-              } else if (res.result === 2) {
+              } else if (res.data.result === 2) {
                 this.$message.error("填写资产不存在");
+              } else if (res.data.result === -1 ) {
+                this.dialogFormVisible = false;
               }
             });
           }

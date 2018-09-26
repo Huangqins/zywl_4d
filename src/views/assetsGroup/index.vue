@@ -38,7 +38,7 @@
         <div class="name">
           项目测试组名称:
           <el-input placeholder="请输入项目测试组名称" style="width:60%;padding-left:10px;margin-right:10px;" v-model="group_name"></el-input>
-          <el-button type="text" @click="setGroup">确定</el-button>
+          <el-button type="text" @click.native="setGroup">确定</el-button>
         </div>
       </div>
     </el-transfer>
@@ -111,11 +111,11 @@ export default {
       }
     },
     setGroup() {
-      console.log(this.pageInfo.group_code)
+      console.log(1111)
       if (this.pageInfo.group_code) {
         this.updateAssetsGroup();
       } else {
-        // this.addGroup();
+        this.addGroup();
       }
     },
     async addGroup() {
