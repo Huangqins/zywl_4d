@@ -151,7 +151,6 @@ const vulncolor = {
   },
   created(){
     this.kbdata=this.pageInfo;
-    console.log(this.pageInfo)
     this.form=this.kbdata;
     // this.getKbVulnType()
   },
