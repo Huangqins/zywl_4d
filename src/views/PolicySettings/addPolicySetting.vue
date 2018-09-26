@@ -126,6 +126,7 @@ export default {
     this.policyData = this.pageInfo;
     this.form = this.pageInfo;
     this.getVulnList({});
+    this.vulndetail()
   },
   mounted() {
     this.pageInfo.group_content = this.pageInfo.group_content
@@ -137,7 +138,6 @@ export default {
   },
   methods: {
     vulndetail(row) {
-      console.log(row);
       this.vuln_name = row.name;
       this.vuln_des = row.vuln_des;
       this.vuln_level = row.vuln_level;
