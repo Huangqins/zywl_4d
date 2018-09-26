@@ -14,7 +14,7 @@
         <div class="assets-content">           
             <panel>
                  <div class="assets-content-btn">
-                    <el-button type="primary" @click='addAssets'>添加漏洞</el-button>
+                    <el-button type="primary" @click='addvulns'>添加漏洞</el-button>
                     <el-button type="primary" @click="areaImportVisible=true">导入</el-button>
                     <el-button type="primary" @click="exportVuln">导出</el-button>
                 </div>
@@ -31,7 +31,7 @@
                     <el-table-column prop="type_name" label="风险类型" align="center"></el-table-column> 
                     <el-table-column prop="kb_vuln_ftime" label="发现时间" align="center">
                        <template slot-scope="scope">
-                        <span> {{ fomatterTime(new Date(scope.row.kb_vuln_ftime.time)) }}</span>
+                        <span> {{scope.row.kb_vuln_ftime}}</span>
                         </template>
                     </el-table-column>
                                                                           
@@ -219,7 +219,7 @@ export default {
     // 触发分页
     pageChange() {
       this.params =Object.assign({},this.params,params) ;
-      this.assetsInfo(params);
+      this.kbInfo(params);
     },
     // 漏洞库列表
     async kbInfo(params) {
@@ -253,7 +253,7 @@ export default {
       });
     },
     //添加弹框
-    addAssets() {
+    addvulns() {
       this.state = "1";
       this.status = "edit";
       this.$router.push('./addDatabase')
@@ -279,7 +279,7 @@ export default {
     // 详情
     detailAsset(row) {
       this.$router.push({
-        name: "AssetDetail",
+        name: "addDatabase",
         params: {
           assets_id: row.assets_id,
           row: row
@@ -287,7 +287,7 @@ export default {
       });
     },
     // 添加资产
-    addAsset(params) {
+    addvulns(params) {
       if (this.$refs.form) {
         this.$refs.form.validate(valid => {
           if (this.status === "check") {
