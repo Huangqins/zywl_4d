@@ -121,7 +121,7 @@
                     <div class="num">0</div>
                   </div>
                 </div>
-                 <div :class="['res', {'checkfull': taskInfo.use_scaning.status === '1' ? true : false}, {'checking': taskInfo.use_scaning.status === '0' ? true : false}]">
+                <div :class="['res', {'checkfull': taskInfo.use_scaning.status === '1' ? true : false}, {'checking': taskInfo.use_scaning.status === '0' ? true : false}]">
                   <span v-if="taskInfo.use_scaning.status === '1'">
                     检测完成
                   </span>
@@ -189,9 +189,11 @@
           <el-table-column prop="vuln_Num" label="风险编号" align="center"> </el-table-column>
           <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_level" label="风险等级" align="center">
-            <!-- <template slot-scope="scope">
-               
-            </template> -->
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" :content="vulnMap[scope.row.vuln_level].slice(0,-1)" placement="top">
+              <div :class="['vuln-level-tag',`vuln-level-${scope.row.vuln_level}`]"></div>
+              </el-tooltip>
+            </template>
           </el-table-column>
           <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_URL" label="风险地址" align="center" show-overflow-tooltip></el-table-column>
@@ -239,7 +241,7 @@ export default {
       this.targetProgress(target_id);
       this.getVulnTotal(target_id);
       this.vulnSearch(target_id);
-       this.getLogicList(target_id);
+      this.getLogicList(target_id);
     }, 5000);
     this.getVulnTotal(target_id);
     this.vulnSearch(target_id);
@@ -251,6 +253,7 @@ export default {
   },
   data() {
     return {
+      vulnMap: vulnMap,
       tableData: [],
       holeListData: [],
       formatTime: formatTime,
@@ -605,6 +608,19 @@ export default {
         12px
         center
         no-repeat;
+    }
+  }
+  .vuln-level-tag {
+    width: 50px auto;
+    height: 7px;
+  }
+  @for $i from 0 through 4 {
+    .vuln-level-#{$i} {
+      background: url(../../../public/img/png/#{$i}.png)
+        center
+        center
+        no-repeat;
+      background-size: 50px 7px;
     }
   }
 }

@@ -7,9 +7,9 @@
           <div class="no-pic">
             <panel title="任务信息" style="margin-top:-22px;">
               <ul class="taskInfo clearfix" style="height:58px;">
-                <li>任务名称:{{taskInfo.target_name}}</li>
-                <li>开始时间:{{taskInfo.target_createtime}}</li>
-                <li>已历时: {{formatTime(Date.now()- taskInfo.target_starttime.time)}}</li>
+                <li>任务名称:<span class="taskInfoColor">{{taskInfo.target_name}}</span></li>
+                <li>结束时间:<span class="taskInfoColor">{{taskInfo.target_endtime}}</span></li>
+                <li>总历时: <span class="taskInfoColor">{{taskInfo.target_alltime}}</span></li>
               </ul>
             </panel>
             <panel title="风险数量" style="margin-top:-12px;">
@@ -66,26 +66,116 @@
         </div>
         <!--  -->
         <div class="tables">
-          <panel title="任务目标情况" style="height:257px;">
-            <el-table></el-table>
+          <panel title="任务目标情况" style="height:281px;" :num="targetGoalLength">
+            <div style="height:230px;background:#263143">
+              <el-table :data="targetGoal">
+                <el-table-column label="目标" align="center"></el-table-column>
+                <el-table-column label="是否可访问" align="center"></el-table-column>
+              </el-table>
+            </div>
           </panel>
-          <panel title="新发现资产/域名" style="height:257px;">
-            <el-table></el-table>
+          <panel title="新发现资产/域名" style="height:281px;" :num="newAssetLength">
+            <div style="height:230px;background:#263143">
+              <el-table :data="newAsset">
+                <el-table-column label="域名" align="center"></el-table-column>
+                <el-table-column label="IP" align="center"></el-table-column>
+              </el-table>
+            </div>
           </panel>
         </div>
 
       </div>
       <div class="task-state">
-        <panel title="新发现业务功能" style="margin-top:-22px;">
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="域名"></el-table-column>
-            <!-- <el-table-column  label="IP"></el-table-column>
-                        <el-table-column  label="可访问性"></el-table-column> -->
-          </el-table>
+        <panel title="新发现业务功能" style="margin-top:-22px;" :num="tableDataLength">
+          <div style="height:632px;background:#263143">
+            <el-table :data="tableData" style="width: 100%;" max-height="620">
+              <el-table-column prop="logic_name" label="业务功能名" align="left" width="200" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="logic_url" label="功能地址" align="left" show-overflow-tooltip></el-table-column>
+            </el-table>
+          </div>
         </panel>
       </div>
     </div>
-
+    <!-- 风险总览 -->
+    <div class="vuln-panorama">
+      <el-tabs v-model="activeName">
+        <el-tab-pane :label="item.label" :name="item.name" v-for="(item, index) in vulnTabs" :key="index+ 'tabs'">
+          <template v-if="item.name === 'all'">
+            <div class="table-group">
+              <div class="margin-right">
+                <panel title="漏洞风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+              <div>
+                <panel title="配置风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="风险地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+              <div class="margin-right">
+                <panel title="内容风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+              <div>
+                <panel title="数据风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+              <div class="margin-right">
+                <panel title="业务风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+              <div>
+                <panel title="应用风险">
+                  <div class="vuln-table">
+                    <el-table>
+                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
+                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
+                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    </el-table>
+                  </div>
+                </panel>
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            其他的
+          </template>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 <script>
@@ -122,7 +212,7 @@ const placeHolderStyle = {
 
 const dataStyle = {
   normal: {
-    formatter: "{c}%",
+    formatter: "{c}",
     position: "center",
     show: true,
     textStyle: {
@@ -144,13 +234,23 @@ export default {
     this.getVulnTotal(target_id);
     this.targetProgress(target_id);
     this.getLogic(target_id);
-    this.targetGoalSure(target_id);
     this.targetNewAsset(target_id);
+    this.getVulnSearch(target_id, "");
+    // this.vulnNumTotal(target_id);
+    this.getVulnType(target_id);
+    this.getVulnTypeTotal(target_id);
+
   },
 
   data() {
     return {
+      activeName: "all",
+      newAsset: [],
+      newAssetLength:0,
+      targetGoal: [],
+      targetGoalLength: 0,
       tableData: [],
+      tableDataLength: 0,
       options: {
         title: [
           {
@@ -442,7 +542,9 @@ export default {
         target_starttime: {},
         target_name: "",
         target_createtime: "",
-        target_starttime: {}
+        target_starttime: {},
+        target_endtime: {},
+        target_alltime:''
       },
       vulnMap: [
         {
@@ -460,10 +562,59 @@ export default {
         {
           vuln_total: 0
         }
-      ]
+      ],
+      vulnTabs: []
     };
   },
   methods: {
+    // 统计
+    async getVulnTypeTotal(id) {
+      let res = await this.$api.vulnTypeTotal({ target_id: id });
+      if (res.data.result === 0) {
+
+      }
+    },
+    // 风险类型
+    async getVulnType(id) {
+      let res = await this.$api.vulnType(); // 获取类型
+      let resNum = await this.$api.vulnNumTotal({ target_id: id }); // 获取数量
+      let vulnTabs = [];
+      vulnTabs = res.data.vulns.map(item => {
+        return {
+          label: `${item.vuln_name}(0)`,
+          name: item.vuln_type
+        };
+      });
+      let temp = resNum.data.vulns.map(item => {
+        return { name: item.vuln_type_keyword, value: item.vuln_total };
+      });
+      let vulnTotal = temp.reduce((a, b) => {
+        return a.value + b.value;
+      });
+      vulnTabs.forEach(item => {
+        let tempt = null;
+        tempt = temp.find(i => {
+          return i.name === item.name;
+        });
+        if (tempt) {
+          item.label = `${item.label.slice(0, -3)}(${tempt.value})`;
+        }
+      });
+      vulnTabs.unshift({
+        label: `风险总览(${vulnTotal})`,
+        name: "all"
+      });
+      this.vulnTabs = vulnTabs;
+    },
+    // 漏洞数量统计
+    async vulnNumTotal(id) {
+      // let res = await this.$api.vulnNumTotal({ target_id: id });
+      // if (res.data.result === 0) {
+      //     let temp = res.data.vulns.map(item => {
+      //       return {name: item.vuln_type_keyword}
+      //     })
+      // }
+    },
     // 任务目标情况
     async targetGoalSure(id) {
       let res = await this.$api.targetGoalSure({ target_id: id });
@@ -476,9 +627,12 @@ export default {
       if (res.data.result === 0) {
       }
     },
+    //业务功能
     async getLogic(id) {
       let res = await this.$api.getLogic({ target_id: id });
       if (res.data.result === 0) {
+        this.tableData = res.data.logics;
+        this.tableDataLength = res.data.logics.length;
       }
     },
     async getVulnTotal(id) {
@@ -491,6 +645,11 @@ export default {
         });
       }
     },
+    async getVulnSearch(id, type) {
+      let res = await this.$api.vulnSearch({ target_id: id, vuln_type: type });
+      if (res.data.result === 0) {
+      }
+    },
     async targetProgress(id) {
       let res = await this.$api.targetProgress({ target_id: id });
       if (res.data.result === 0) {
@@ -499,13 +658,15 @@ export default {
           response_info,
           target_name,
           target_createtime,
-          target_starttime
+          target_starttime,
+          target_endtime
         } = res.data.target;
         this.taskInfo = {
           target_task_num,
           target_name,
           target_createtime: fomatterTime(new Date(target_createtime.time)),
-          target_starttime
+          target_endtime: fomatterTime(new Date(target_endtime.time)),
+          target_alltime: formatTime(target_endtime.time - target_createtime.time)
         };
       }
     }
@@ -521,7 +682,23 @@ export default {
     transform: rotateZ(360deg);
   }
 }
-
+.vuln-panorama {
+  // width: 80%;
+  margin-top: 10px;
+  .vuln-table {
+    height: 350px;
+    background: #263143;
+  }
+  .table-group {
+    & > div {
+      float: left;
+      width: calc(50% - 10px);
+    }
+    .margin-right {
+      margin-right: 20px;
+    }
+  }
+}
 .taskExec {
   .task-target {
     display: flex;
@@ -537,6 +714,9 @@ export default {
         width: 68%;
         margin-right: 20px;
         height: 380px;
+        .taskInfoColor {
+          color: #A5FDD5;
+        }
       }
       .pic {
         flex: 1;
@@ -568,7 +748,7 @@ export default {
     }
     .task-state {
       width: 30%;
-      height: 395px;
+      height: 660px;
       box-shadow: 4px 0px 4px rgba(29, 36, 46, 1);
     }
   }
