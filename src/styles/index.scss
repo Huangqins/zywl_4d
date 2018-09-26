@@ -191,3 +191,11 @@ code {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+
+@for $i from 0 through 4 {
+  .vuln-level-#{$i} {
+    background: url(../../public/img/png/#{$i}.png) center center no-repeat;
+    background-size: 50px 7px;
+  }
+}
