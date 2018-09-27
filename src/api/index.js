@@ -29,9 +29,11 @@ const ApiSchema = {
         title: '修复率',
         keys: ['target_id']
     },
+    // 高中低风险状况/总览
     vulnTotal: {
         url: `${path}vuln/vulnTotal`,
         method: 'post',
+        title: '高中低风险状况/总览',
         keys: ['target_id', 'assets_id']
     },
     serviceTotal: {
@@ -215,11 +217,60 @@ const ApiSchema = {
         title: '风险列表',
         keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time']
     },
-    // 漏洞数量统计
+    // 风险top10
+    vulnTopTen: {
+        url: `${path}asset/vulnTopTen`,
+        method: 'post',
+        title: '风险top10',
+        keys: ''
+    },
+    // 进展分析总体整改情况
+    vulnCorrective: {
+        url: `${path}vuln/vulnCorrective`,
+        method: 'post',
+        title: '风险top10',
+        keys: ''
+    },
+    //资产类型风险分布
+    getVulnLevel: {
+        url: `${path}asset/getVulnLevel`,
+        method: 'post',
+        title: '资产类型风险分布',
+        keys: ''
+    },
+    // 区域漏洞分布
+    getAreaVuln: {
+        url: `${path}asset/getAreaVuln`,
+        method: 'post',
+        title: '区域漏洞分布',
+        keys: ''
+    },
+    // 风险变化趋势
+    vulnTrend: {
+        url: `${path}vuln/vulnTrend`,
+        method: 'post',
+        title: '风险变化趋势',
+        keys: ['startTime', 'endTime', 'area_id', 'assets_id', 'target_id']
+    },
+    // 漏洞数量统计 /风险类型分布
     vulnNumTotal: {
-        url:`${path}vuln/vulnNumTotal`,
-        method:'post',
-        title: '漏洞数量统计',
+        url: `${path}vuln/vulnNumTotal`,
+        method: 'post',
+        title: '漏洞数量统计/风险类型分布',
+        keys: ''
+    },
+    // 工单信息--列表
+    getOrderList: {
+        url: `${path}order/getOrderList`,
+        method: 'post',
+        title: '工单信息--列表',
+        keys: ['order_name', 'order_type', 'order_status']
+    },
+    // 工单 任务名称
+    getTargetName: {
+        url: `${path}order/getOrderList`,
+        method: 'post',
+        title: '工单信息--任务名称',
         keys: ''
     },
     //资产
@@ -659,7 +710,7 @@ const ApiSchema = {
     addStrategyGroup: {
         url: `${path}strategy/addStrategyGroup`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content'],
+        keys: ['group_name', 'group_desc', 'group_content'],
         title: '新增策略保存'
     },
     //删除策略
@@ -673,18 +724,18 @@ const ApiSchema = {
     mergeStrategy: {
         url: `${path}strategy/mergeStrategy`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content'],
+        keys: ['group_name', 'group_desc', 'group_content'],
         title: '合并策略'
     },
     //修改策略
     updateStrategyGroup: {
         url: `${path}strategy/updateStrategyGroup`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content','group_id'],
+        keys: ['group_name', 'group_desc', 'group_content', 'group_id'],
         title: '修改策略'
     },
-    
-    
+
+
 
 
 

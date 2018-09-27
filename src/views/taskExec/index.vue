@@ -65,11 +65,11 @@
                     <div class="num">{{taskInfo.logic_scaning.now }}</div>
                   </div>
                 </div>
-                <div :class="['res', {'checkfull': taskInfo.logic_scaning.status === '1' ? true : false}, {'checking': taskInfo.logic_scaning.status === '0' ? true : false}]">
+                <div :class="['res', {'checkfull': taskInfo.logic_scaning.status === '1'}, {'checking': taskInfo.goal_scaning.status === '1' && taskInfo.logic_scaning.status !== '1'}]">
                   <span v-if="taskInfo.logic_scaning.status === '1'">
                     检测完成
                   </span>
-                  <span v-else-if="taskInfo.logic_scaning.status === '0'">
+                  <span v-else-if="taskInfo.goal_scaning.status === '1' && taskInfo.logic_scaning.status !== '1'">
                     检测中...
                   </span>
                   <span v-else style="color:#8AC7EA">
@@ -89,11 +89,11 @@
                     <div class="num">{{taskInfo.safe_scaning.now }}</div>
                   </div>
                 </div>
-                <div :class="['res', {'checkfull': taskInfo.safe_scaning.status === '1' ? true : false}, {'checking': taskInfo.safe_scaning.status === '0' ? true : false}]">
+                <div :class="['res', {'checkfull': taskInfo.safe_scaning.status === '1'}, {'checking': taskInfo.logic_scaning.status === '1' && taskInfo.safe_scaning.status !== '1'}]">
                   <span v-if="taskInfo.safe_scaning.status === '1'">
                     检测完成
                   </span>
-                  <span v-else-if="taskInfo.safe_scaning.status === '0'">
+                  <span v-else-if="taskInfo.logic_scaning.status === '1' && taskInfo.safe_scaning.status !== '1'">
                     检测中...
                   </span>
                   <span v-else style="color:#8AC7EA">
@@ -121,11 +121,11 @@
                     <div class="num">0</div>
                   </div>
                 </div>
-                <div :class="['res', {'checkfull': taskInfo.use_scaning.status === '1' ? true : false}, {'checking': taskInfo.use_scaning.status === '0' ? true : false}]">
+                <div :class="['res', {'checkfull': taskInfo.use_scaning.status === '1'}, {'checking': taskInfo.safe_scaning.status === '1' && taskInfo.use_scaning.status !== '1'}]">
                   <span v-if="taskInfo.use_scaning.status === '1'">
                     检测完成
                   </span>
-                  <span v-else-if="taskInfo.use_scaning.status === '0'">
+                  <span v-else-if="taskInfo.safe_scaning.status === '1' && taskInfo.use_scaning.status !== '1'">
                     检测中...
                   </span>
                   <span v-else style="color:#8AC7EA">
