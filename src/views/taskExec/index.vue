@@ -610,10 +610,6 @@ export default {
         no-repeat;
     }
   }
-  .vuln-level-tag {
-    width: 50px auto;
-    height: 7px;
-  }
 }
 </style>
 

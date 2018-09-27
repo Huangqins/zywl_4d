@@ -94,27 +94,32 @@
                        <div>
                          <el-table :data="vulnData"  style="width: 100%" > 
                             <el-table-column prop="vuln_name" label="风险名称"  align="center" :show-overflow-tooltip="true"></el-table-column>                          
-                            <el-table-column prop="vuln_type" label="风险类型"  align="center" :show-overflow-tooltip="true"></el-table-column>
+                            <el-table-column prop="vuln_type" label="风险类型"  align="center" :show-overflow-tooltip="true">
+                              <template slot-scope="scope">
+                                  {{ scope.row.vuln_type }}
+                              </template>
+                            </el-table-column>
                             <el-table-column prop="vuln_IP" label="风险IP"  align="center"></el-table-column>                            
                             <el-table-column prop="vuln_level" label="风险等级"  align="center">
-                              <template slot-scope="scope">
-                              <el-tooltip class="item" effect="dark" :content="vulnLevel[scope.row.vuln_level]" placement="top">
-                                <img :src="vulnLevelS[scope.row.vuln_level]" style="width:26px;height:6px;">
+                             <template slot-scope="scope">
+                              <el-tooltip effect="dark" :content="vulnMap[scope.row.vuln_level].slice(0,-1)" placement="top">
+                                <div :class="['vuln-level-tag',`vuln-level-${scope.row.vuln_level}`]"></div>
                               </el-tooltip>
-                              </template>                  
+                            </template>        
                              </el-table-column>
-                            <el-table-column prop="kb_vuln_cnvd" label="CNVD"  align="center"></el-table-column>
-                            <el-table-column prop="kb_vuln_cve" label="CVE"  align="center"></el-table-column>                                    
-                            <el-table-column prop="vuln_url" label="风险链接"  align="center" :show-overflow-tooltip="true"></el-table-column>          
+                            <!-- <el-table-column prop="kb_vuln_cnvd" label="CNVD"  align="center"></el-table-column>
+                            <el-table-column prop="kb_vuln_cve" label="CVE"  align="center"></el-table-column>                                     -->
+                            <!-- <el-table-column prop="vuln_url" label="风险链接"  align="center" :show-overflow-tooltip="true"></el-table-column>           -->
                             <el-table-column prop="vuln_ftime" label="发现时间"  align="center" :show-overflow-tooltip="true">
                               <template slot-scope="scope">
-                                  {{ fomatterTime(new Date(scope.row.vuln_ftime.time)) }}
+                                  {{ scope.row.vuln_ftime.time }}
                               </template>
                             </el-table-column>
                              <el-table-column prop="vuln_modifytime" label="利用时间"  align="center" :show-overflow-tooltip="true">
-                              <template slot-scope="scope">
-                                  {{ fomatterTime(new Date(scope.row.vuln_modifytime.time)) }}
-                              </template>
+                                <template slot-scope="scope">
+                                  <span  v-if="scope.row.vuln_modifytime == null">{{scope.row.vuln_modifytime}}</span>
+                                  <span v-else> {{ fomatterTime(new Date(scope.row.vuln_modifytime.time)) }}</span>
+                                </template>
                             </el-table-column>
                             <el-table-column prop="vuln_oper" label="操作人"  align="center"></el-table-column>  
                            
@@ -126,8 +131,8 @@
                         <panel  style="height:100%">
                        <div>
                          <el-table :data="bussfunction"  style="width: 100%" > 
-                            <el-table-column prop="vuln_name" label="业务功能名称"  align="center" :show-overflow-tooltip="true"></el-table-column>                          
-                            <el-table-column prop="vuln_type" label="业务链接"  align="center" :show-overflow-tooltip="true"></el-table-column>
+                            <el-table-column prop="logic_name" label="业务功能名称"  align="center" :show-overflow-tooltip="true"></el-table-column>                          
+                            <el-table-column prop="logic_url" label="业务链接"  align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="vuln_IP" label="可用性"  align="center"></el-table-column>              
                             
                           </el-table>
@@ -151,6 +156,13 @@ const vulnLevel = {
   "1": "低风险",
   "0": "极低风险"
 };
+const vulnMap = [
+  "极低风险数",
+  "低风险数",
+  "中风险数",
+  "高风险数",
+  "极高风险数"
+];
 //资产类型
 const assetTypestruts = {
   "1": "服务器",
@@ -184,6 +196,7 @@ export default {
   },
   data() {
     return {
+      vulnMap,
       fomatterTime: fomatterTime,
       vulnLevelS: vulnLevelS,
       vulnLevel: vulnLevel,
@@ -249,7 +262,7 @@ export default {
       let assets_id = this.pageInfo.assets_id;
       this.$api.getLogicByAsset({ assets_id: assets_id }).then(res => {
         let data = res.data.logics;
-        this.vulnData = data;
+        this.bussfunction = data;
       });
     },
     vulnTotal(){
