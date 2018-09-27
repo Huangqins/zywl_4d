@@ -4,19 +4,14 @@
       <div class="workAdd">
         <el-form ref="form" :model="form" label-width="110px" :rules="rules">
           <el-form-item label="工单名称" prop="order_name">
-            <el-input v-model="form.order_name"></el-input>
+            <span>111</span>
           </el-form-item>
 
           <el-form-item label="工单类型" prop="order_type">
-            <el-select v-model="form.order_type" placeholder="请选择活动区域" style="width:100%">
-              <el-option v-for="item in workTypeS" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
+           <span>222</span>
           </el-form-item>
           <el-form-item label="工单内容" prop="order_content">
-            <el-select v-model="form.order_content" filterable placeholder="请输入任务名称" style="width:100%" @change="orderChange">
-              <el-option v-for="item in orders" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+            <span>333</span>
           </el-form-item>
           <el-form-item label="漏洞列表">
             <el-table :data="tableData" style="width: 100%;" v-loading="tableLoading" @selection-change='selectVuln' max-height="198">
@@ -27,20 +22,21 @@
               <el-table-column prop="vuln_level" label="漏洞等级" align="center"></el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item label="开始时间" prop="expire_time">
-            <el-date-picker v-model="form.expire_time" type="datetime" placeholder="选择到期时间" style="width:100%">
-            </el-date-picker>
+    
+          <el-form-item label="创建人" prop="audit_user">
+            <span>555</span>
           </el-form-item>
+
           <el-form-item label="审核人" prop="audit_user">
-            <el-input v-model="form.audit_user"></el-input>
+            <span>444</span>
           </el-form-item>
 
           <el-form-item label="工单紧急程度" prop="urgent_type">
-            <el-select v-model="form.urgent_type" style="width:100%">
-              <el-option v-for="item in urgentType" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
+            <span>333</span>
           </el-form-item>
-
+         <el-form-item label="审批意见" prop="urgent_type">
+            <span>333</span>
+          </el-form-item>
           <el-form-item style="margin:0 auto;width:50%">
             <el-button @click="submitForm(form,'1')" v-if="$auth('05-01-07')">保存</el-button>
             <el-button type="primary" @click="submitForm(form, '2')" v-if="$auth('05-01-06')">保存并提交</el-button>

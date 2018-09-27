@@ -25,15 +25,37 @@
         <div class="table">
             <panel>
                 <el-table :data="tableData" style="width: 100%">
-                    <el-table-column prop="date" label="工单名称"></el-table-column>
-                    <el-table-column prop="date" label="工单类型"></el-table-column>
-                    <el-table-column prop="date" label="工单紧急程度"></el-table-column>
-                    <el-table-column prop="date" label="创建人"></el-table-column>
-                    <el-table-column prop="date" label="审核人"></el-table-column>
-                    <el-table-column prop="date" label="创建时间"></el-table-column>
-                    <el-table-column prop="date" label="到期时间"></el-table-column>
-                    <el-table-column prop="date" label="工单状态"></el-table-column>
-                    <el-table-column prop="date" label="操作"></el-table-column>
+                    <el-table-column prop="order_name" label="工单名称"></el-table-column>
+                    <el-table-column prop="order_type" label="工单类型">
+                        <template slot-scope="scope">
+                            {{orderTypes[scope.row.order_type - 1]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="urgent_type" label="工单紧急程度">
+                        <template slot-scope="scope">
+                            {{urgentTypes[scope.row.urgent_type - 1]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="create_user" label="创建人"></el-table-column>
+                    <el-table-column prop="audit_user" label="审核人"></el-table-column>
+                    <el-table-column label="创建时间">
+                        <template slot-scope="scope">
+                            {{fomatterTime(new Date(scope.row.create_time.time))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="expire_time" label="到期时间"></el-table-column>
+                    <el-table-column prop="order_status" label="工单状态">
+                        <template slot-scope="scope">
+                            {{orderStatus[scope.row.order_status - 1]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" align="center">
+                         <template slot-scope="scope">
+                               <el-button type="text"  size="mini">修改</el-button>
+                               <el-button type="text"  size="mini" v-if="$auth('05-01-03')">通过</el-button>
+                               <el-button type="text"  size="mini" v-if="$auth('05-01-04')">驳回</el-button>
+                         </template>
+                    </el-table-column>
                 </el-table>
             </panel>
         </div>
@@ -41,6 +63,11 @@
 </template>
 <script>
 import panel from "@/components/panel";
+import { fomatterTime } from "@/utils";
+
+const orderTypes = ["整改", "任务"]
+const urgentTypes = ["一般", "紧急"]
+const orderStatus = ["待提交", "待审核", "完成", "驳回"]
 
 export default {
   components: {
@@ -49,11 +76,15 @@ export default {
   data() {
     return {
       form: {},
-      tableData: []
+      tableData: [],
+      fomatterTime,
+      orderTypes,
+      urgentTypes,
+      orderStatus
     };
   },
   created() {
-      this.getOrderList()
+    this.getOrderList();
   },
   methods: {
     createWork() {
@@ -61,10 +92,10 @@ export default {
     },
     //工单查询列表
     async getOrderList(params) {
-        let res = await this.$api.getOrderList(params);
-        if (res.data.result === 0) {
-
-        }
+      let res = await this.$api.getOrderList(params);
+      if (res.data.result === 0) {
+        this.tableData = res.data.lists;
+      }
     }
   }
 };

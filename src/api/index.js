@@ -765,6 +765,13 @@ const ApiSchema = {
         url: `${path}model`,
         method: 'get',
         type: 'img'
+    },
+    // 创建工单
+    addOrder:{
+        url: `${path}order/addOrder`,
+        method: 'post',
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time','flag'],
+        title: '创建工单'
     }
 }
 // filter keys
