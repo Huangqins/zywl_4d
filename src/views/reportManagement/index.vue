@@ -98,18 +98,30 @@ export default {
             this.$api.reportList(params).then(res =>{
               let data=res.data.reports;
               this.tableData=data
+              this.pageTotal=res.data.total
             })
         },
-        pageChange(){
-           this.params = Object.assign({},this.params,params)
+        pageChange(pageObj){
+            this.pageObj = pageObj; 
+            let { page, rows } = pageObj,
+                params = { page, rows, is_page: 0 };
+            this.params = params;
            this._reportList(this.params)
         },
         searchReport(){},
         addreport(){
            this.$router.push('./addReport')
         },
-        downLoadReport(){
-
+        downLoadReport(row){         
+        let data={
+            reports_name:row.reports_name,
+            reports_id:row.reports_id
+        }
+         this.$api.downloadReport(data).then(res =>{
+            if(res.data.result===0){
+                this.$message.success(`下载成功`)
+            }
+         })
         },
         DeleteReport(row){
             this.reportid=row.reports_id;
@@ -118,8 +130,12 @@ export default {
             this.deleteVisible=true;  
         },
         deleteItem(){
-           this.$api.deletePDF({reports_id:this.reportid,target_id:[this.target_id],reports_name:this.reports_name}).then(res =>{
-               
+           this.$api.deletePDF({report_id:this.reportid,target_id:[this.target_id],reports_name:this.reports_name}).then(res =>{
+               if(res.data.result===0){
+                  this.$message.success(`删除成功`)
+                   this.deleteVisible=false
+                   this._reportList(this.defaultPage)
+               }
            })
         }
     }

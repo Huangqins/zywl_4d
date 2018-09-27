@@ -271,6 +271,7 @@ const ApiSchema = {
         url: `${path}order/getOrderList`,
         method: 'post',
         title: '工单信息--任务名称',
+
         keys: ''
     },
     //资产
@@ -630,8 +631,6 @@ const ApiSchema = {
         keys: [''],
         title: 'api生成'
     },
-
-
     //报告管理
     reportList: {
         url: `${path}report/reportList`,
@@ -643,8 +642,36 @@ const ApiSchema = {
     deletePDF: {
         url: `${path}report/deletePDF`,
         method: 'post',
-        keys: ['reports_id', 'target_id', 'reports_name'],
+        keys: ['report_id', 'target_id', 'reports_name'],
         title: '删除报告'
+    },
+    //报告下载
+    downloadReport: {
+        url: `${path}report/downloadReport`,
+        method: 'post',
+        keys: ['reports_id', 'reports_name'],
+        title: 'PDF报告下载'
+    },
+    //报告模板
+    reportModel: {
+        url: `${path}report/reportModel`,
+        method: 'post',
+        keys: [],
+        title: '报告模板'
+    },
+    //PDF报告创建
+    exportPDFFile: {
+        url: `${path}report/exportPDFFile`,
+        method: 'post',
+        keys: ['reports_name', 'dept_name', 'target_id', 'model'],
+        title: '删除报告'
+    },
+    //word报告创建
+    exportWord: {
+        url: `${path}report/exportWord`,
+        method: 'post',
+        keys: ['reports_name', 'dept_name', 'target_id', 'model'],
+        title: 'word报告创建'
     },
     //漏洞库列表
     kbInfo: {
@@ -734,12 +761,11 @@ const ApiSchema = {
         keys: ['group_name', 'group_desc', 'group_content', 'group_id'],
         title: '修改策略'
     },
-
-
-
-
-
-
+    getImg: {
+        url: `${path}model`,
+        method: 'get',
+        type: 'img'
+    }
 }
 // filter keys
 const filterKey = (obj, keys) => {
@@ -804,6 +830,13 @@ function gernerater() {
                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                     },
                     responseType: 'blob'
+                })
+            }
+        } else if (ApiSchema[key].type === 'img') {
+            Api[key] = (name) => {
+                return _axios({
+                    method: ApiSchema[key].method,
+                    url: `${ApiSchema[key].url}/${name}`
                 })
             }
         } else {

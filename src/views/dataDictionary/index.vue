@@ -102,13 +102,7 @@
       <div class="workManage">
           <section>
                <panel title="工单管理配置">
-                  <div style="padding:20px;height:266px">
-                    <!-- <el-form :model="workManage" :rules="rules" ref="ruleForm" label-width="185px" class="form" >    
-                       <el-form-item label="工单到期邮件提醒" prop=" " style="width:100%;">
-                         <el-radio v-model="workManage.is_email" label="0">是</el-radio>
-                         <el-radio v-model="workManage.is_email" label="1">否</el-radio>
-                      </el-form-item>
-                    </el-form> -->
+                  <div style="padding:20px;height:266px">                   
                     <span style="margin-right:15px">工单到期邮件提醒:</span>
                      <el-radio-group v-model="is_email" @change='workmeail()'>
                       <el-radio  :label="0" >是</el-radio>

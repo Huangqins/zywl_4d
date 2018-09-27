@@ -2,42 +2,45 @@
     <div>
           <panel title='创建一项报告'>
            <div class="workAdd">
-               <el-form ref="form" :model="form" label-width="110px" :rules="rules">
-                       <el-form-item label="报告名称" prop="name">
-                        <el-input v-model="form.name" ></el-input >                       
-                    </el-form-item>
-                    
-                     <el-form-item label="任务ID" prop="workType">
-                       <el-select v-model="form.workType" placeholder="请选择活动区域" style="width:100%">
-                           <el-option  v-for="item in workTypeS"
-                            :key="item.value"
+               <el-form ref="form" :model="form" label-width="110px" :rules="rules" style="height: -webkit-fill-available;">
+                       <el-form-item label="报告名称" prop="reports_name">
+                        <el-input v-model="form.reports_name" ></el-input >                       
+                    </el-form-item>                    
+                     <el-form-item label="任务ID" prop="target_id">
+                       <el-select v-model="form.target_id" placeholder="请选择任务" style="width:100%">
+                           <el-option  v-for="(item,index) in tasknameS"
+                            :key="index+'1'"
                             :label="item.label"
                             :value="item.value"></el-option>
                        </el-select>
                     </el-form-item>
-                     <el-form-item label="模板" prop="detail" >
-                        
-                    </el-form-item>
-                   
+                     <el-form-item label="模板" prop="detail" >  
+                        <div class="reportModel">
+                          <ul><li v-for="(item,index) in reportModelPic" :key="index+'1'">
+                            <p style="padding:0 5px;background:#4B5B75;height:20px;margin:0;text-align:right;">
+                               <el-checkbox-group v-model="form.model">
+                                    <el-checkbox :label="item">1</el-checkbox>                                                                    
+                                </el-checkbox-group>
+                            </p>
+                               <img :src="item" @load="imgLoad" style="width:100%;height:100%"/>
+                            </li>
+                            </ul>
+                        </div>                      
+                    </el-form-item>                   
                      <el-form-item label="文件格式" prop="person">
-                        <el-select v-model="form.workType" placeholder="请选择活动区域" style="width:100%">
-                           <el-option  v-for="item in workTypeS"
+                        <el-select v-model="form.textType" placeholder="请选择文件格式" style="width:100%">
+                           <el-option  v-for="item in textTypeS"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"></el-option>
                        </el-select>
                     </el-form-item>
                     <el-form-item label="所属部门">
-                         <el-select v-model="form.workType" placeholder="请选择活动区域" style="width:100%">
-                           <el-option  v-for="item in workTypeS"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"></el-option>
-                       </el-select>
+                         <el-input v-model="form.dept_name" ></el-input >   
                     </el-form-item>                     
                     <el-form-item style="margin:0 auto;width:50%">
-                        <el-button type="primary" @click="keep('ruleForm')" >保存报告</el-button>
-                        <el-button  type="primary" @click="submitForm('ruleForm')">保存并运行报告</el-button>
+                        <el-button  type="primary" @click="resit(form)">重置</el-button>
+                        <el-button type="primary" @click="keep(form)" >保存报告</el-button>                       
                      </el-form-item>
                 </el-form>
            </div>
@@ -46,6 +49,8 @@
 </template>
 <script>
 import Panel from "@/components/panel";
+import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+
 export default {
   components: {
     Panel
@@ -53,65 +58,125 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        workType: "",
-        detail: "",
-        person: "",
-        value11:''
+        reports_name: "",
+        target_id:'',
+        textType: "",
+        dept_name: "",
+        model:[]
       },
+      textTypeS:[
+        {
+          value: 'pdf',
+          label: 'PDF'
+        }, {
+          value: 'word',
+          label: 'WORD'
+        }
+      ],
+      tasknameS:[],
+      reportModelPic:[],
       tableLoading:false,
       tableData:[],
-      selectData:[],
-      options: [
-          {
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-      workTypeS: [],
       rules: {
-        vuln:[
-            { required: true, message: "请选择活动区域", trigger: "change" }
+        reports_name: [
+          { required: true, message: "请输入报告名称", trigger: "blur" }
         ],
-        name: [
-          { required: true, message: "请输入工单名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        target_id: [
+          { required: true, message: "请选择任务", trigger: "change" }
         ],
-        workType: [
-          { required: true, message: "请选择活动区域", trigger: "change" }
-        ],
-        person: [
+        textType: [
           {
-            type: "array",
             required: true,
-            message: "请至少选择一个活动性质",
+            message: "请至少选择一个文件格式",
             trigger: "change"
           }
-        ],
-        detail: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
+        ]
       }
     };
   },
   created(){
-    
+    this.taskname();
+    this.reportmodel();
+    this.formCopy = deepClone(this.form);
   },
   methods: {
-      select(sel,row){
-        this.selectData=sel.map(item => (item.vuln_id))
-        }, 
-    keep() {},
-    submitForm() {}
+    resit(){
+      this.$refs.form.resetFields();
+      setTimeout(() => {
+        this.form = Object.assign({}, this.formCopy);
+      }, 200);
+    //  console.log(data)
+    },
+    taskname(){
+      this.$api.taskname().then(res=>{
+        let data=res.data.targets;
+        this.tasknameS = data.map(item =>{
+          return{
+            label:item.target_name,
+            value:item.target_id
+          }
+        })
+      })
+    },
+    //模板
+    reportmodel(){
+      this.$api.reportModel().then(res =>{
+        let data=res.data.reports
+        this.reportModelPic = data.map(item => {
+          return  location.origin + '/ZR/model/' +  item
+        });
+        // this.$api.getImg('model_1.png').then(res => {
+        //   console.log(res)
+        // })
+
+      })
+    },
+    imgLoad() {
+
+    },
+    keep() {  
+      this.form.model=this.form.model.map(item =>{
+        return item.slice(-5,-4)
+        
+      }).join(',')   
+      let data={
+         reports_name:this.form.reports_name,
+         target_id:[this.form.target_id],
+         dept_name:this.form.dept_name,
+         model:this.form.model
+      }
+     if(this.form.textType == "pdf"){       
+       this.$api.exportPDFFile(data).then(res =>{
+        if(res.data.result == '0'){
+           this.$message.success(`保存成功`)
+        }
+       })
+     }else if(this.form.textType == "word"){
+       this.$api.exportWord(data).then(res =>{
+        if(res.data.result == '0'){
+            this.$message.success(`保存成功`)
+        }
+       })
+       
+     }
+    },
+    submitForm() {
+      let data={
+         reports_name:this.form.reports_name,
+         target_id:[this.form.target_id],
+         dept_name:this.form.dept_name
+      }
+     if(this.form.textType == "pdf"){       
+       this.$api.exportPDFFile(data).then(res =>{
+        
+       })
+     }else if(this.form.textType == "word"){
+       this.$api.exportWord(data).then(res =>{
+        
+       })
+       
+     }
+    }
   }
 };
 </script>
@@ -120,5 +185,20 @@ export default {
   padding: 20px;
   width: 50%;
   margin: 0 auto;
+}
+.reportModel{
+  width: 100%;
+  display: flex;
+  height: 150px;  
+  ul{
+    width:100%;
+    li{
+     flex: 1;
+     width:22%;
+     margin-right:10px;
+     height: 100%;
+    }
+  }
+   
 }
 </style>

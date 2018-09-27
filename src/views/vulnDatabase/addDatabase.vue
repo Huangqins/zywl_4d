@@ -4,63 +4,89 @@
           <div>                 
             <el-form :model="form" label-width="115px" :rules="rules" ref="form" style="overflow:hidden;margin:0 auto;width:70%;padding-top:50px;">
               <el-form-item label="风险名称" prop="kb_vuln_name" style="float:left;width:50%;">                
-                   <el-input  v-model="form.kb_vuln_name"></el-input>                  
+                  <el-input  v-model="form.kb_vuln_name" v-if="this.kbdata.status === 'edit'"></el-input> 
+                  <el-input  v-model="form.kb_vuln_name" v-else :disabled=true></el-input>                                 
               </el-form-item>
               <el-form-item label="风险级别" prop="kb_vuln_level" style="float:left;width:50%;">  
-                   <el-select v-model="form.kb_vuln_level" placeholder="请选择风险等级" style="width:100%">
+                   <el-select v-model="form.kb_vuln_level" placeholder="请选择风险等级" style="width:100%" v-if="this.kbdata.status === 'edit'">
                     <el-option label="极低风险" value="0"></el-option>
                     <el-option label="低风险" value="1"></el-option>
                     <el-option label="中风险" value="2"></el-option>
                     <el-option label="高风险" value="3"></el-option>
                     <el-option label="极高风险" value="4"></el-option>
-                  </el-select>               
+                  </el-select>  
+                   <el-select v-model="form.kb_vuln_level" placeholder="请选择风险等级" style="width:100%" v-else :disabled=true>
+                    <el-option label="极低风险" value="0"></el-option>
+                    <el-option label="低风险" value="1"></el-option>
+                    <el-option label="中风险" value="2"></el-option>
+                    <el-option label="高风险" value="3"></el-option>
+                    <el-option label="极高风险" value="4"></el-option>
+                  </el-select>              
               </el-form-item>
-              <el-form-item label="风险类型" prop="kb_vuln_type" style="float:left;width:50%;">                     
-                   <!-- <el-input auto-complete="off" v-model="form.vuln_type_name"></el-input>    -->
-                    <el-select v-model="form.kb_vuln_type" placeholder="" style="width:100%">
+              <el-form-item label="风险类型" prop="kb_vuln_type" style="float:left;width:50%;">         
+                    <el-select v-model="form.kb_vuln_type" placeholder="" style="width:100%" v-if="this.kbdata.status === 'edit'">
                       <el-option v-for="(item, index) in vulnType" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>                
+                    </el-select>   
+                    <el-select v-model="form.kb_vuln_type" placeholder="" style="width:100%" v-else :disabled=true>
+                      <el-option v-for="(item, index) in vulnType" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
+                    </el-select>               
               </el-form-item>
-              <el-form-item label="风险分类" prop="kb_vuln_class" style="float:left;width:50%;">                
-                   <!-- <el-input auto-complete="off" v-model="form.kb_vuln_class"></el-input>  -->
-                   <el-select v-model="form.kb_vuln_class" placeholder="" style="width:100%">
+              <el-form-item label="风险分类" prop="kb_vuln_class" style="float:left;width:50%;">     
+                    <el-select v-model="form.kb_vuln_class" placeholder="" style="width:100%" v-if="this.kbdata.status === 'edit'">
                       <el-option v-for="(item, index) in vulnClass" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>                              
+                    </el-select>  
+                    <el-select v-model="form.kb_vuln_class" placeholder="" style="width:100%" v-else :disabled=true>
+                      <el-option v-for="(item, index) in vulnClass" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
+                    </el-select>                             
               </el-form-item>
               <el-form-item label="CVE/CNVD编码" prop="kb_vuln_cve" style="float:left;width:50%;">                 
-                   <el-input auto-complete="off" v-model="form.kb_vuln_cve"></el-input>                  
+                  <el-input auto-complete="off" v-model="form.kb_vuln_cve" v-if="this.kbdata.status === 'edit'"></el-input>   
+                  <el-input auto-complete="off" v-model="form.kb_vuln_cve" v-else :disabled=true></el-input>                 
               </el-form-item>
               
               <el-form-item label="风险端口" prop="kb_vuln_port" style="float:left;width:50%;">               
-                   <el-input auto-complete="off" v-model="form.kb_vuln_port"></el-input>               
+                   <el-input auto-complete="off" v-model="form.kb_vuln_port" v-if="this.kbdata.status === 'edit'"></el-input>  
+                   <el-input auto-complete="off" v-model="form.kb_vuln_port" v-else :disabled=true></el-input>              
               </el-form-item>
 
               <el-form-item label="利用工具" prop="kb_vuln_tool" style="float:left;width:50%;" >                 
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_tool"></el-input>                 
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_tool" v-if="this.kbdata.status === 'edit'"></el-input>  
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_tool" v-else :disabled=true></el-input>               
               </el-form-item>
               <el-form-item label="攻击方法" prop="kb_vuln_atme" style="float:left;width:50%;">                 
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_atme"></el-input>              
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_atme" v-if="this.kbdata.status === 'edit'"></el-input>  
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_atme" v-else :disabled=true></el-input>            
 
               </el-form-item>
               <el-form-item label="验证手段" prop="kb_vuln_veme" style="float:left;width:50%;">                
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_veme"></el-input>                  
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_veme" v-if="this.kbdata.status === 'edit'"></el-input> 
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_veme" v-else :disabled=true></el-input>                  
 
               </el-form-item>
               <el-form-item label="攻击Payod" prop="kb_vuln_payload" style="float:left;width:50%;">                 
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_payload"></el-input>                  
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_payload" v-if="this.kbdata.status === 'edit'"></el-input>     
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_payload" v-else :disabled=true></el-input>             
                     
               </el-form-item>             
 
               <el-form-item label="风险描述" prop="kb_vuln_des" style="float:left;width:50%;">                
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_des" ></el-input>                
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_des" v-if="this.kbdata.status === 'edit'"></el-input>
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_des" v-else :disabled=true></el-input>                
               </el-form-item>
               <el-form-item label="修复方案" prop="kb_vuln_ref" style="float:left;width:50%;">                
-                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_ref"></el-input>                  
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_ref" v-if="this.kbdata.status === 'edit'"></el-input>   
+                   <el-input type="textarea" auto-complete="off" v-model="form.kb_vuln_ref" v-else :disabled=true></el-input>                 
               </el-form-item>
-               <el-form-item style="float:left;margin-left:42%">
-                <el-button type="primary" @click="resetForm('form')" >取消</el-button>
-                <el-button @click="addkbaubmit('form')">保存</el-button>
-              </el-form-item>
+               <el-form-item style="float:left;margin-left:42%" >
+                 <template v-if="this.kbdata.status === 'edit'">
+                   <el-button type="primary" @click="resetForm('form')" >取消</el-button>
+                   <el-button @click="addkbaubmit('form')">保存</el-button>
+                 </template>
+                 <template v-else >
+                   <el-button type="primary"  @click="backpage">返回上一页</el-button>                   
+                 </template>
+                
+               </el-form-item>
             </el-form>
           </div>
       </panel>
@@ -135,10 +161,17 @@ export default {
   },
   created(){
     this.kbdata=this.pageInfo;
-    this.form=this.kbdata;
+    if(this.kbdata.status === "detail"){
+        this.form=this.kbdata.row;
+    }else{
+      this.form=this.kbdata;
+    }    
     this.getKbVulnType()
   },
   methods: {
+    backpage(){
+      this.$router.push('vulnDatabase')
+    },
     // 清空表单
     resetForm(formName) {
       // this.form = Object.assign({}, this.formCopy);

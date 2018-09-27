@@ -177,6 +177,7 @@ export default {
       this.ruleForm.vuln_level = this.ruleForm.vuln_level.map(item => {
         return Number(item);
       });
+      console.log(this.ruleForm.vuln_level)
       this.ruleForm.vulnleveL = this.ruleForm.vuln_level.join(",");
       this.getVulnList({
         vuln_name: this.ruleForm.vuln_name,
