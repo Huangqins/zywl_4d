@@ -191,7 +191,7 @@
           <el-table-column prop="vuln_level" label="风险等级" align="center">
             <template slot-scope="scope">
               <el-tooltip effect="dark" :content="vulnMap[scope.row.vuln_level].slice(0,-1)" placement="top">
-              <div :class="['vuln-level-tag',`vuln-level-${scope.row.vuln_level}`]"></div>
+                <div :class="['vuln-level-tag',`vuln-level-${scope.row.vuln_level}`]"></div>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -614,14 +614,14 @@ export default {
     width: 50px auto;
     height: 7px;
   }
-  @for $i from 0 through 4 {
-    .vuln-level-#{$i} {
-      background: url(../../../public/img/png/#{$i}.png)
-        center
-        center
-        no-repeat;
-      background-size: 50px 7px;
-    }
+}
+</style>
+
+<style lang="scss">
+@for $i from 0 through 4 {
+  .vuln-level-#{$i} {
+    background: url(../../../public/img/png/#{$i}.png) center center no-repeat;
+    background-size: 50px 7px;
   }
 }
 </style>

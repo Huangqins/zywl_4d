@@ -47,8 +47,13 @@
                         <div>
                             <p style="margin:0px"> 漏洞信息</p>
                             <div>
-                             <p style="margin:5px 0px;"><span style="margin:3px 10px 0 20px;background:#313E53;">漏洞名称:</span>{{vuln_name}}</p>
-                             <p style="margin:5px 0px;"><span style="margin:3px 10px 0 20px;background:#313E53;">漏洞等级:</span>{{levelSchema[vuln_level]}}</p>
+                             <p style="margin:5px 0px;"><span style="margin:3px 10px 0 20px;background:#313E53;">漏洞名称:</span> {{vuln_name}}</p>
+                             <p style="margin:5px 0px;"><span style="margin:3px 10px 0 20px;background:#313E53;">漏洞等级:</span>
+                           
+                              <el-tooltip effect="dark" :content="levelSchema[vuln_level]" placement="top">
+                                 <span :class="['vuln-level',`vuln-level-${vuln_level}`]"></span>
+                              </el-tooltip>
+                             </p>
                              <p style="margin:0;"><span style="margin-right:10px;margin-left:20px;background:#313E53;">详细描述:</span></p>
                              <div style="padding:10px 30px;font-size:14px">
                                {{vuln_des}}
@@ -243,6 +248,11 @@ export default {
     }
   }
   div:nth-child(2) {
+  }
+  .vuln-level {
+    display: inline-block;
+     width: 50px;
+     height: 7px; 
   }
 }
 </style>
