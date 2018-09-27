@@ -354,6 +354,7 @@ export default {
     this.getOSType();
     this.assetsType();
     this.getArea();
+    this.formCopy = deepClone(this.form);
   },
   methods: {
      async exportAssets() {

@@ -38,7 +38,7 @@
                     <el-table-column label="操作" align="center" width="190">
                         <template slot-scope="scope">
                             <el-button type="text"  size="mini" @click="editAsset(scope.row)">编辑</el-button>
-                            <el-button type="text" size="mini" @click="detailAsset(scope.row)">详情</el-button>
+                            <el-button type="text" size="mini" @click="detailvulnbase(scope.row)">详情</el-button>
                             <el-button type="text" size="mini" @click="DeleteSelect(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
@@ -47,7 +47,7 @@
         </div>
         <!-- 添加框 -->
     
-     <el-dialog title="漏洞库导入" :visible.sync="areaImportVisible" width="30%">
+     <el-dialog title="漏洞库导入" :visible.sync="areaImportVisible" width="21%">
        <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;" @click="importTem">下载资产模板</p>
        <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
             <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
@@ -217,8 +217,11 @@ export default {
       }
     },
     // 触发分页
-    pageChange() {
-      this.params =Object.assign({},this.params,params) ;
+    pageChange(pageObj) {
+      this.pageObj = pageObj; 
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0 };
+      this.params = params;
       this.kbInfo(params);
     },
     // 漏洞库列表
@@ -252,105 +255,33 @@ export default {
         }
       });
     },
-    //添加弹框
+    //添加
     addvulns() {
       this.state = "1";
-      this.status = "edit";
-      this.$router.push('./addDatabase')
+      this.$router.push({
+            name:'addDatabase',
+            params:Object.assign({},{status: 'edit'})
+        })
     },
     // 编辑表格
     editAsset(row) {
         this.status = "edit";
         this.state = '2';
-        this.form = Object.assign({}, row);
         this.$router.push({
             name:'addDatabase',
             params:Object.assign({},row,{status: 'edit'})
         })
     },
-    // 清空表单
-    resetForm() {
-      this.dialogFormVisible = false;
-      this.$refs.form.resetFields();
-      setTimeout(() => {
-        this.form = Object.assign({}, this.formCopy);
-      }, 200);
-    },
     // 详情
-    detailAsset(row) {
+    detailvulnbase(row) {
       this.$router.push({
         name: "addDatabase",
         params: {
           assets_id: row.assets_id,
-          row: row
+          row: row,
+          status: 'detail'
         }
       });
-    },
-    // 添加资产
-    addvulns(params) {
-      if (this.$refs.form) {
-        this.$refs.form.validate(valid => {
-          if (this.status === "check") {
-            this.dialogFormVisible = false;
-          } else {
-            if (valid) {
-              if (this.form.assets_id) {
-                this.$api.assetsUpdate(this.form).then(res => {
-                  this.addPending = true;
-                  if (res.data.result === 0) {
-                    this.$message.success(`修改成功`);
-                    this.addPending = false;
-                    this.dialogFormVisible = false;
-                    this.assetsInfo(this.params);
-                  } else {
-                    this.$message.success(`修改失败`);
-                    setTimeout(() => {
-                      this.dialogFormVisible = false;
-                    }, 500);
-                    this.addPending = false;
-                  }
-                });
-              } else {
-                this.$api.assetsAdd(this.form).then(res => {
-                  this.addPending = true;
-                  if (res.data.result === 0) {
-                    this.$message.success(`添加成功`);
-                    this.addPending = false;
-                    this.dialogFormVisible = false;
-                    this.assetsInfo(this.params);
-                  } else {
-                    this.$message.success(`添加失败`);
-                    setTimeout(() => {
-                      this.dialogFormVisible = false;
-                    }, 500);
-                    this.addPending = false;
-                  }
-                });
-              }
-            } else {
-              return false;
-            }
-          }
-        });
-      } else {
-        if (params.assets_id) {
-          this.$api.assetsUpdate(params).then(res => {
-            this.addPending = true;
-            if (res.data.result === 0) {
-              this.$message.success(`修改成功`);
-              this.addPending = false;
-              this.dialogFormVisible = false;
-              this.assetsInfo(this.params);
-            } else {
-              this.$message.success(`修改失败`);
-              setTimeout(() => {
-                this.dialogFormVisible = false;
-              }, 500);
-              this.addPending = false;
-            }
-          });
-        }
-      }
     }
   }
 };

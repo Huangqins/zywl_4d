@@ -217,8 +217,8 @@ const ApiSchema = {
     },
     // 漏洞数量统计
     vulnNumTotal: {
-        url:`${path}vuln/vulnNumTotal`,
-        method:'post',
+        url: `${path}vuln/vulnNumTotal`,
+        method: 'post',
         title: '漏洞数量统计',
         keys: ''
     },
@@ -579,8 +579,6 @@ const ApiSchema = {
         keys: [''],
         title: 'api生成'
     },
-
-
     //报告管理
     reportList: {
         url: `${path}report/reportList`,
@@ -592,8 +590,36 @@ const ApiSchema = {
     deletePDF: {
         url: `${path}report/deletePDF`,
         method: 'post',
-        keys: ['reports_id', 'target_id', 'reports_name'],
+        keys: ['report_id', 'target_id', 'reports_name'],
         title: '删除报告'
+    },
+    //报告下载
+    downloadReport: {
+        url: `${path}report/downloadReport`,
+        method: 'post',
+        keys: ['reports_id', 'reports_name'],
+        title: 'PDF报告下载'
+    },
+    //报告模板
+    reportModel: {
+        url: `${path}report/reportModel`,
+        method: 'post',
+        keys: [],
+        title: '报告模板'
+    },
+    //PDF报告创建
+    exportPDFFile: {
+        url: `${path}report/exportPDFFile`,
+        method: 'post',
+        keys: ['reports_name', 'dept_name', 'target_id','model'],
+        title: '删除报告'
+    },
+    //word报告创建
+    exportWord: {
+        url: `${path}report/exportWord`,
+        method: 'post',
+        keys: ['reports_name', 'dept_name', 'target_id','model'],
+        title: 'word报告创建'
     },
     //漏洞库列表
     kbInfo: {
@@ -659,7 +685,7 @@ const ApiSchema = {
     addStrategyGroup: {
         url: `${path}strategy/addStrategyGroup`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content'],
+        keys: ['group_name', 'group_desc', 'group_content'],
         title: '新增策略保存'
     },
     //删除策略
@@ -673,18 +699,22 @@ const ApiSchema = {
     mergeStrategy: {
         url: `${path}strategy/mergeStrategy`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content'],
+        keys: ['group_name', 'group_desc', 'group_content'],
         title: '合并策略'
     },
     //修改策略
     updateStrategyGroup: {
         url: `${path}strategy/updateStrategyGroup`,
         method: 'post',
-        keys: ['group_name', 'group_desc','group_content','group_id'],
+        keys: ['group_name', 'group_desc', 'group_content', 'group_id'],
         title: '修改策略'
     },
-    
-    
+
+    getImg: {
+        url: `${path}model`,
+        method: 'get',
+        type: 'img'
+    }
 
 
 
@@ -753,6 +783,13 @@ function gernerater() {
                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                     },
                     responseType: 'blob'
+                })
+            }
+        } else if (ApiSchema[key].type === 'img') {
+            Api[key] = (name) => {
+                return _axios({
+                    method: ApiSchema[key].method,
+                    url: `${ApiSchema[key].url}/${name}`
                 })
             }
         } else {

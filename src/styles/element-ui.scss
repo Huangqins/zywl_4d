@@ -209,3 +209,10 @@
 .el-tree-node__content:hover{
   background: transparent;
 }
+.el-textarea.is-disabled .el-textarea__inner{
+  background-color: #263143;
+  border: 1px solid #444b5a;
+}
+.el-form-item__content{
+  line-height: 20px;
+}
