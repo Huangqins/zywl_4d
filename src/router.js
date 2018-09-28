@@ -272,14 +272,14 @@ export default new Router({
                          import('@/views/workInfo/workAdd')
                 },
                 {
-                    path: 'workDetail',
-                    name: 'workDetail',
+                    path: 'workContent',
+                    name: 'workContent',
                     meta: {
                         title: '工单详情',
                         menuCode: '05-02'
                     },
                     component: () =>
-                         import('@/views/workInfo/workDetail')
+                         import('@/views/workContent')
                 }
             ]
         },

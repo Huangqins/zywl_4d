@@ -58,7 +58,8 @@ export default {
                 IDCard: '',
                 company: '',
                 phone:'',
-                roleId: ''
+                roleId: '',
+                managerUser: ''
             },
             options: []
         }
@@ -68,14 +69,22 @@ export default {
         let params = {page:1,rows:10,user_name: this.$route.params.user_name,user_id: this.$route.params.user_id}
         console.log(this.$route.params)
         this.userList(params)
+        this.auditNameList()
     },
     methods: {
+        //获取上级
+        async auditNameList() {
+            let res = await this.$api.auditNameList()
+            if (res.data.result === 0) {
+
+            }
+        },
         async userList(params) {
            let res = await this.$api.userList(params);
            if (res.data.result === 0) {
                let data = res.data.rows[0];
                let {trueName,phone, email,company, IDCard } = data;
-               this.form = { trueName,phone, email,company, IDCard };
+            //    this.form = { trueName,phone, email,company, IDCard };
             //    this.form.roleId = data.role;
            }
        },

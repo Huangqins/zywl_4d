@@ -3,14 +3,14 @@
     <panel title='新建[漏洞整改]审批工单'>
       <div class="workAdd">
         <el-form ref="form" :model="form" label-width="110px" :rules="rules">
-          <el-form-item label="工单名称" prop="order_name">
-            <span>111</span>
+          <el-form-item label="工单名称">
+            <div class="content">{{order_info.order_name}}</div>
           </el-form-item>
-          <el-form-item label="工单类型" prop="order_type">
-           <span>222</span>
+          <el-form-item label="工单类型">
+            <div class="content">{{orderTypes[order_info.order_type -1]}}</div>
           </el-form-item>
-          <el-form-item label="工单内容" prop="order_content">
-            <span>333</span>
+          <el-form-item label="工单内容">
+            <div class="content">333</div>
           </el-form-item>
           <el-form-item label="漏洞列表">
             <el-table :data="tableData" style="width: 100%;" v-loading="tableLoading" @selection-change='selectVuln' max-height="198">
@@ -21,24 +21,27 @@
               <el-table-column prop="vuln_level" label="漏洞等级" align="center"></el-table-column>
             </el-table>
           </el-form-item>
-    
-          <el-form-item label="创建人" prop="audit_user">
-            <span>555</span>
+
+          <el-form-item label="创建人">
+            <div class="content">{{order_info.create_user}}</div>
           </el-form-item>
 
-          <el-form-item label="审核人" prop="audit_user">
-            <span>444</span>
+          <el-form-item label="审核人">
+            <div class="content">{{order_info.audit_user}}</div>
           </el-form-item>
 
-          <el-form-item label="工单紧急程度" prop="urgent_type">
-            <span>333</span>
+          <el-form-item label="工单紧急程度">
+            <div class="content">
+              <span v-if="order_info.urgent_type === 1">{{urgentTypes[order_info.urgent_type - 1]}}</span>
+              <span v-else style="color:red">{{urgentTypes[order_info.urgent_type - 1]}}</span>
+            </div>
           </el-form-item>
-         <el-form-item label="审批意见" prop="urgent_type">
-            <span>333</span>
+          <el-form-item label="审批意见" prop="order_remark">
+            <el-input type="textarea" autosize placeholder="请输入内容" v-model="order_remark" style="width:100%;"></el-input>
           </el-form-item>
           <el-form-item style="margin:0 auto;width:50%">
-            <el-button @click="submitForm(form,'1')" v-if="$auth('05-01-07')">保存</el-button>
-            <el-button type="primary" @click="submitForm(form, '2')" v-if="$auth('05-01-06')">保存并提交</el-button>
+            <el-button @click="updateOrderStatus(form, 4)" v-if="$auth('05-01-03')">驳回</el-button>
+            <el-button type="primary" @click="updateOrderStatus(form, 3)" v-if="$auth('05-01-03')">通过</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -48,21 +51,30 @@
 <script>
 import Panel from "@/components/panel";
 import { fomatterTime } from "@/utils";
+import route from "@/mixins/route";
+
+const orderTypes = ["整改", "任务"]
+const urgentTypes = ["一般", "紧急"]
+
 export default {
+  mixins: [route],
   components: {
     Panel
   },
+
   data() {
     return {
       form: {
-        order_name: "",
-        audit_user: "",
-        order_type: "",
-        order_content: [],
-        expire_time: "",
-        urgent_type: "",
-        flag: ""
+        order_id: "",
+        order_remark: "",
+        order_status: "",
+        order_content: []
       },
+      orderTypes,
+      urgentTypes,
+      order_content: "",
+      order_info: {},
+      order_remark: "",
       tableLoading: false,
       tableData: [],
       selectData: [],
@@ -104,17 +116,57 @@ export default {
     };
   },
   created() {
-    this.taskname();
+    // this.taskname();
+    let {
+      order_id,
+      order_name,
+      order_type,
+      audit_user,
+      urgent_type,
+      create_user,
+      order_content,
+      order_remark
+    } = this.pageInfo;
+    this.order_info = {
+      order_id,
+      order_name,
+      order_type,
+      audit_user,
+      urgent_type,
+      create_user,
+      order_content,
+      order_remark
+    };
+    this.order_remark = order_remark
+    this.getVulnSearch(this.pageInfo.order_content)
   },
   methods: {
     orderChange(value) {
       this.getVulnSearch(value);
     },
+    // 获取漏洞列表
+    async getVulnSearch(order_content) {
+      let res = await this.$api.vulnSearch({ order_content });
+      if (res.data.result === 0) {
+        this.tableData = res.data.rows;
+      }
+    },
+    // 驳回/通过
+    async updateOrderStatus(form, status) {
+      console.log(status)
+      let params = {
+        order_id: this.pageInfo.order_id,
+        order_status: status,
+        order_content: this.order_content,
+        order_remark: this.order_remark
+      };
+      let res = await this.$api.updateOrderStatus(params);
+      if (res.data.result === 0 ) {
+        this.$message.success('操作成功')
+      }
+    },
     selectVuln(row) {
-      this.form.order_content = row.map(item => {
-        return item.vuln_id;
-      }).join(',');
-      // this.selectData = sel.map(item => item.vuln_id);
+      this.order_content = row.map(item => item.vuln_id).join(",");
     },
     async taskname() {
       let res = await this.$api.taskname();
@@ -122,21 +174,6 @@ export default {
         this.orders = res.data.targets.map(item => {
           return { label: item.target_name, value: item.target_id };
         });
-      }
-    },
-    // 获取漏洞列表
-    async getVulnSearch(id) {
-      let res = await this.$api.vulnSearch({ target_id: id });
-      if (res.data.result === 0) {
-        this.tableData = res.data.rows;
-      }
-    },
-    async submitForm(form, type) {
-      form.flag = type;
-      form.expire_time = fomatterTime(form.expire_time);
-      let res = await this.$api.addOrder(form);
-      if (res.data.result === 0) {
-        this.$message.success('创建工单成功');
       }
     }
   }
@@ -147,5 +184,9 @@ export default {
   padding: 20px;
   width: 50%;
   margin: 0 auto;
+}
+.content {
+  height: 40px;
+  line-height: 40px;
 }
 </style>

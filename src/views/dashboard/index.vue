@@ -197,7 +197,6 @@
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="text" size="small">详情</el-button>
-
                 </template>
               </el-table-column>
             </el-table>
@@ -228,9 +227,7 @@
           </div>
         </panel>
       </div>
-
     </div>
-
   </div>
 
 </template>
@@ -375,46 +372,60 @@ export default {
     },
     async getInformation() {
       let res = await this.$api.getInformation();
-      this.outsideInfo = res.data.kb[0].kb_vuln_name;
+      if (res.data.result === 0 && res.data.kb.length > 0) {
+        this.outsideInfo = res.data.kb[0].kb_vuln_name;
+      }
     },
     async vulnrepair(param) {
       let res = await this.$api.vulnrepair(param);
-      this.option.series[0].data[0].value = res.data.handle;
-      this.option.series[0].data[1].value = res.data.pending;
+      if (res.data.result === 0) {
+        this.option.series[0].data[0].value = res.data.handle;
+        this.option.series[0].data[1].value = res.data.pending;
+      }
     },
     async assetsInfo(param) {
       let res = await this.$api.assetsInfo(param);
-      this.assetsList = res.data.rows;
+      if (res.data.result === 0) {
+        this.assetsList = res.data.rows;
+      }
     },
     async targetInfo(params) {
       let res = await this.$api.targetInfo(params);
-      this.TasksInExecution = res.data.targets;
+      if (res.data.result === 0) {
+        this.TasksInExecution = res.data.targets;
+      }
     },
     async vulnTotal(params) {
       let res = await this.$api.vulnTotal(params);
-      this.chartData.series[0].data = res.data.vulns.map(item => {
-        this.vuln_level_num[item.vuln_level] = item.vuln_total;
-        return {
-          value: item.vuln_total,
-          name: levelSchema[item.vuln_level].name,
-          itemStyle: {
-            color: levelSchema[item.vuln_level].color
-          }
-        };
-      });
+      if (res.data.result === 0 && res.data.vulns.length > 0) {
+        this.chartData.series[0].data = res.data.vulns.map(item => {
+          this.vuln_level_num[item.vuln_level] = item.vuln_total;
+          return {
+            value: item.vuln_total,
+            name: levelSchema[item.vuln_level].name,
+            itemStyle: {
+              color: levelSchema[item.vuln_level].color
+            }
+          };
+        });
+      }
     },
     async serviceTotal(params) {
       let res = await this.$api.serviceTotal(params);
-      this.serviceLists = res.data.lists;
+      if (res.data.result === 0) {
+        this.serviceLists = res.data.lists;
+      }
     },
 
     //任务数据
     async vulnTypeTotal(params) {
       let res = await this.$api.vulnTypeTotal(params);
-      let data = res.data.vulns;
-      this.webvulnTotal = data[0].vuln_total;
-      this.ywvulnTotal = data.length > 1 ? data[1].vuln_total : 0;
-      this.vulnTotalS = Number(this.webvulnTotal) + Number(this.ywvulnTotal);
+      if (res.data.result === 0) {
+        let data = res.data.vulns;
+        this.webvulnTotal = data[0].vuln_total;
+        this.ywvulnTotal = data.length > 1 ? data[1].vuln_total : 0;
+        this.vulnTotalS = Number(this.webvulnTotal) + Number(this.ywvulnTotal);
+      }
     }
   }
 };
