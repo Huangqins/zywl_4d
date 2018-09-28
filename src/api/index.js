@@ -18,10 +18,11 @@ const ApiSchema = {
         method: 'post',
         keys: ''
     },
+    //最新资讯
     getInformation: {
         url: `${path}kb/getInformation`,
         method: 'post',
-        keys: ['']
+        keys: ['is_page', 'page', 'rows']
     },
     vulnrepair: {
         url: `${path}vuln/repairRate`,
@@ -496,7 +497,7 @@ const ApiSchema = {
     getLogicByAsset: {
         url: `${path}logic/getLogicByAsset`,
         method: 'post',
-        keys: ['assets_id']
+        keys: ['assets_id', 'page', 'rows']
     },
     //资产总数
     getAssetsNum: {
@@ -635,7 +636,7 @@ const ApiSchema = {
     reportList: {
         url: `${path}report/reportList`,
         method: 'post',
-        keys: ['page', 'rows'],
+        keys: ['page', 'rows','start_time','end_time','reports_name'],
         title: '报告管理'
     },
     //删除报告
@@ -719,6 +720,31 @@ const ApiSchema = {
         keys: [''],
         title: '漏洞库导出'
     },
+    //风险添加
+    addInfoVuln: {
+        url: `${path}vuln/addInfoVuln`,
+        method: 'post',
+        keys: ['vuln_url', 'assets_id', 'vuln_name', 'vuln_cve', 'vuln_level', 'vuln_port',
+            'vuln_type', 'vuln_use_type', 'vuln_useInfo', 'vuln_class', 'vuln_tool', 'vuln_atme', 'vuln_veme', 'vuln_payload', 'vuln_des', 'vuln_ref'
+        ],
+        title: '风险添加'
+    },
+    //风险修改
+    updateVulnInfo: {
+        url: `${path}vuln/updateVulnInfo`,
+        method: 'post',
+        keys: ['vuln_url', 'assets_id', 'vuln_name', 'vuln_cve', 'vuln_level', 'vuln_port',
+            'vuln_type', 'vuln_use_type', 'vuln_useInfo', 'vuln_class', 'vuln_tool', 'vuln_atme', 'vuln_veme', 'vuln_payload', 'vuln_des', 'vuln_ref'
+        ],
+        title: '风险修改'
+    },
+    //风险导入
+    importVuln: {
+        url: `${path}vuln/importVuln`,
+        method: 'post',
+        keys: ['excelFile'],
+        title: '风险导入'
+    },
     //策略配置   
     strategyList: {
         url: `${path}strategy/strategyList`,
@@ -767,10 +793,10 @@ const ApiSchema = {
         type: 'img'
     },
     // 创建工单
-    addOrder:{
+    addOrder: {
         url: `${path}order/addOrder`,
         method: 'post',
-        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time','flag'],
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag'],
         title: '创建工单'
     }
 }

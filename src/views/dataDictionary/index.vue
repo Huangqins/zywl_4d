@@ -4,7 +4,7 @@
            <section >
                <panel title="资产区域配置">
               <el-button type="text" style="float:right;margin-right:20px" @click="addAssetareas"><i class="el-icon-plus"></i>新增</el-button>
-              <el-table :data="assetData" style="width: 100%;height:219px;overflow:auto;" >
+              <el-table :data="assetData" style="width: 100%;overflow:auto;" height='219px'>
                 <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
                 <el-table-column prop="area_name" label="区域名称" align="center"></el-table-column>
                 <el-table-column prop="create_time" label="创建时间" align="center">
@@ -32,7 +32,7 @@
            <section>
                <panel title="资产类型配置">
                    <el-button type="text" style="float:right;margin-right:50px" @click="addAssettypes"><i class="el-icon-plus"></i>新增</el-button>
-                   <el-table :data="assetTypeData" style="width: 100%;height:219px;overflow:auto;" >
+                   <el-table :data="assetTypeData" style="width: 100%;overflow:auto;" height='219px'>
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column prop="name" label="资产类型" align="center"></el-table-column>
                     <el-table-column prop="desc" label="描述" align="center"></el-table-column>
@@ -54,7 +54,7 @@
           <section>
            <panel title="风险类型配置">
                 <el-button type="text" style="float:right;margin-right:20px" @click="addvulntype"><i class="el-icon-plus" ></i>新增</el-button>
-                   <el-table :data="vulnTypeData" style="width: 100%;height:214px;overflow:auto;" >
+                   <el-table :data="vulnTypeData" style="width: 100%;overflow:auto;" height='214px'>
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column prop="vuln_type_name" label="风险名称" align="center"></el-table-column>
                     <el-table-column prop="vuln_type_keyword" label="类型编码" align="center"></el-table-column>

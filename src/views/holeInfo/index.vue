@@ -49,8 +49,8 @@
             <panel>
                 <div class="assets-content-btn">
                     <el-button type="primary" @click="addvuln">添加风险</el-button>
-                    <el-button type="primary" >导入风险</el-button>
-                    <el-button type="primary">导出风险</el-button>
+                    <el-button type="primary" @click="vulnImportVisible=true">导入风险</el-button>
+                    <el-button type="primary" @click="exportVuln">导出风险</el-button>
                 </div>
                    <div class="vulnConent">                        
                         <el-table :data="vulnData" style="width: 100%;"  v-loading="tableLoading">
@@ -84,6 +84,16 @@
                    </div>
             </panel>
         </div>
+        <el-dialog title="漏洞库导入" :visible.sync="vulnImportVisible" width="21%">
+            <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;" @click="importTem">下载资产模板</p>
+            <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
+                    <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或
+                        <em>点击上传</em>
+                        </div>
+                    </el-upload>            
+      </el-dialog>
          <pages :total="pageTotal" @pageChange="pageChange"></pages>
     </div>
 </template>
@@ -91,6 +101,7 @@
 import Panel from '@/components/panel';
 import Pages from "@/components/Pages";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import { getUserName, getToken } from "@/utils/auth";
 export default {
     components:{
         Panel,
@@ -105,6 +116,12 @@ export default {
             "4": "极高风险"
         }
         return{
+            headers: {
+                token: getToken(),
+                userName: getUserName(),
+                menuCode: vm._route.meta.menuCode
+            },
+            vulnImportVisible:false,
             fomatterTime:fomatterTime,
             vulnlevelStrust:vulnlevelStrust,
             taskNameS:[],
@@ -144,7 +161,8 @@ export default {
             params: {
                 page: "1",
                 rows: "10"
-            }
+            },
+            file:''
             
         }
     },
@@ -155,6 +173,46 @@ export default {
         this._getAssetURL()
     },
     methods:{
+        // async exportVuln() {
+        // let res = await this.$api.exportExcel({});
+        // if (res.data.result === 0) {
+        //     let result = await this.$api.exportFile(res.data.path);
+        //     createDownload(result, '导出', '.xls')
+        // }
+        // }, 
+        // 导入回调
+            fileUpload(res) {
+                console.log(res)
+            this.file = res;
+            },
+            upload() {
+            let formData = new FormData();
+            formData.append("excelFile", this.file.raw);
+            this.$api.importVuln(formData).then(res => {
+                this.areaImportVisible = false;
+                if (res.data.result === 0) {
+                this.$message.success("文件导入成功");
+                } else {
+                this.$message.error("文件导入失败，请查看文件项填写是否完整或正确");
+                }
+            });
+            }, 
+        async importTem() {
+            let assetUrl = "ZR/excel/vuln_import.xls";
+            let res = await this.$api.exportFile(assetUrl);
+            if (res.data.size) {
+                let url = window.URL.createObjectURL(new Blob([res.data]));
+                let link = document.createElement("a");
+                link.style.display = "none";
+                link.href = url;
+                link.setAttribute("download", "风险导入模板" + ".xls");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                this.$message.error(`模板文件下载失败`);
+            }
+        },
         addvuln(){
             this.$router.push('./vulnAdd')
         },
@@ -184,7 +242,7 @@ export default {
             let res =await this.$api.vulnSearch(params);
             if(res.data.result=='0'){
               this.vulnData=res.data.rows;
-              this.pageTotal=this.vulnData.length
+              this.pageTotal=res.data.total
             }
         },
         async _getAssetURL(){
@@ -199,10 +257,10 @@ export default {
             }
         },
         // 操作框
-        detailVuln(params) {
+        detailVuln(row) {
         this.$router.push({
-            name: "vulnDetail",
-            params:params
+            name: "vulnAdd",
+            params:Object.assign({},row,{status: 'detail'})
         });
         },
         //修改
@@ -221,7 +279,7 @@ export default {
         let { page, rows } = pageObj,
             params = { page, rows, is_page: 0 };
         this.params = params;
-        this.assetsInfo(params);
+        this._vulnSearch(params);
         },
         searchVuln(){   
             let data = Object.assign({}, this.params, {
@@ -230,8 +288,8 @@ export default {
                 vuln_level: this.vulnLevel,
                 vuln_type:this.vulnType,
                 assets_id:this.assets_id,
-                start_time:fomatterTime(this.start_time),
-                end_time:fomatterTime(this.end_time)
+                start_time:this.start_time==''?'':fomatterTime(this.start_time),
+                end_time:this.end_time==''?'':fomatterTime(this.end_time)
             });
             this._vulnSearch(data);
          },

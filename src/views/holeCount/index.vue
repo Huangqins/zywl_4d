@@ -402,6 +402,7 @@ export default {
               value: [item.vuln_urgent,item.vuln_high,item.vuln_medium,item.vuln_low,item.vuln_tips],
               name: item.name
             });
+            console.log( this.assetsType.series[0].data)
             this.assetsType.xAxis[0].data.push(item.name);
             this.assetsType.legend.data.push(item.vuln_type);
           });
