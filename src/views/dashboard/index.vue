@@ -66,7 +66,7 @@
         <div class='sectionTwo-state'>
             <panel title="服务情况">
                 <el-scrollbar  style="height: 100%">
-                <div class="hole-record-types" style="overflow:auto;margin-top:30px;">            
+                <div class="hole-record-types" style="margin-top:30px;">            
                     <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
                         <h3>{{item.total_num}}</h3>
                         <h5>{{item.info}}</h5>
@@ -134,13 +134,15 @@
         <div class='sectionThree-state'>
             <panel title="最新风险">
                 <div class="">
+                  <el-scrollbar  style="height: 100%">
                     <el-table :data="latestRisk" style="width: 100%">
-                            <el-table-column prop="date" label="风险等级" ></el-table-column>
-                            <el-table-column prop="name" label="目标资产" ></el-table-column>
-                            <el-table-column prop="date" label="风险名称" ></el-table-column>
-                            <el-table-column prop="date" label="发现时间" ></el-table-column>
-                            <el-table-column prop="date" label="利用情况" ></el-table-column>
+                            <el-table-column prop="vuln_level" label="风险等级" align="center"></el-table-column>
+                            <el-table-column prop="assets_url" label="目标资产" align="center"></el-table-column>
+                            <el-table-column prop="vuln_name" label="风险名称" align="center"></el-table-column>
+                            <el-table-column prop="vuln_ftime" label="发现时间" align="center"></el-table-column>
+                            <el-table-column prop="vuln_useInfo" label="利用情况" align="center"></el-table-column>
                     </el-table>
+                  </el-scrollbar>
                 </div>
             </panel>    
         </div>       
@@ -357,9 +359,14 @@ export default {
     this.vulnrepair({ target_id: 0 });
     this.vulnTotal({ target_id: 0 });
     this.serviceTotal({ target_id: 0 });
-    this.vulnTypeTotal({ target_id: 0 })
+    this.vulnTypeTotal({ target_id: 0 });
+    this.vulnSearch()
   },
   methods: {
+    async vulnSearch(){
+      let res = await this.$api.vulnSearch();
+      this.latestRisk=res.data.rows
+    },
     async getInformation() {
       let res = await this.$api.getInformation();
       this.outsideInfo = res.data.kb[0].kb_vuln_name;
