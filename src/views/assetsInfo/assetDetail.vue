@@ -77,16 +77,16 @@
                <el-tabs v-model="activeName" @tab-click="handleClick" style="height:100%">
                     <el-tab-pane label="端口服务" name="first" style="height:100%">
                          <panel title="" style="height:100%">
-                           <div>
-                              <el-table :data="serviceData" style="width: 100%;" >
-                                <el-table-column prop="service_name" label="服务名称" align="center"></el-table-column>
-                                <el-table-column prop="port" label="端口" align="center"></el-table-column>
-                                <el-table-column prop="protocol" label="协议" align="center"></el-table-column>
-                                <el-table-column prop="state" label="状态" align="center"></el-table-column>
-                                <el-table-column prop="info" label="服务信息" align="center"></el-table-column>
-                              </el-table>
-                           </div>
-                             
+                            <div>
+                                <el-table :data="serviceData" style="width: 100%;" >
+                                  <el-table-column prop="service_name" label="服务名称" align="center"></el-table-column>
+                                  <el-table-column prop="port" label="端口" align="center"></el-table-column>
+                                  <el-table-column prop="protocol" label="协议" align="center"></el-table-column>
+                                  <el-table-column prop="state" label="状态" align="center"></el-table-column>
+                                  <el-table-column prop="info" label="服务信息" align="center"></el-table-column>
+                                </el-table>
+                            </div>  
+                               <pages :total="pageTotal" @pageChange="pageChange"></pages>                        
                           </panel>
                     </el-tab-pane>
                     <el-tab-pane label="风险信息" name="second" style="height:100%;color:#d8d8d8;">
@@ -125,6 +125,8 @@
                            
                           </el-table>
                        </div>
+                        <pages :total="pageTotalvuln" @pageChange="pageChangevuln"></pages>      
+                       
                          </panel>
                     </el-tab-pane>
                     <el-tab-pane label="业务功能" name="three" style="height:100%;color:#d8d8d8;">
@@ -137,6 +139,7 @@
                             
                           </el-table>
                        </div>
+                        <pages :total="pageTotallogic" @pageChange="pageChangelogic"></pages> 
                          </panel>
                     </el-tab-pane>
                 </el-tabs>
@@ -149,6 +152,7 @@
 import Panel from "@/components/panel";
 import { fomatterTime, deepClone } from "@/utils";
 import route from 'mixins/route';
+import Pages from "@/components/Pages";
 const vulnLevel = {
   "4": "极高风险",
   "3": "高风险",
@@ -192,10 +196,22 @@ const vulnLevelS = {
 export default {
   mixins:[route],
   components: {
-    Panel
+    Panel,
+    Pages
   },
   data() {
     return {
+      params:{
+        rows:'10',
+        page:'1'
+      },
+      paramlogic:{
+        rows:'10',
+        page:'1'
+      },
+      pageTotalvuln:0,
+      pageTotal:0,
+      pageTotallogic:0,
       vulnMap,
       fomatterTime: fomatterTime,
       vulnLevelS: vulnLevelS,
@@ -236,33 +252,60 @@ export default {
       (this.assets_type = assetTypestruts[this.pageInfo.row.assets_type]),
       (this.assets_important =
         assetImportantruts[this.pageInfo.row.assets_important]);
-    this.assets_manger = this.pageInfo.row.assets_manger;
+    this.assets_manger = this.pageInfo.row.assets_manger;      
+    let assets_id = this.pageInfo.assets_id;
+    let data=Object.assign({},this.params,{assets_id:assets_id})
+    this.vulnList(data);
     this.serviceList();
-    this.vulnList();
-    this.getLogicByAsset();
+    let datas=Object.assign({},this.paramlogic,{assets_id:assets_id})
+    this.getLogicByAsset(datas);
     this.vulnTotal();
   },
   methods: {
+    //端口分页
+    pageChange(pageObj){
+        this.pageObj = pageObj;
+        let { page, rows } = pageObj,
+            params = { page, rows, is_page: 0 };
+        this.params = params;
+        this.serviceList(params);
+    },
+    //端口分页
+    pageChangevuln(pageObj){
+        this.pageObj = pageObj;
+        let { page, rows } = pageObj,
+            params = { page, rows, is_page: 0 };
+        this.params = params;
+        this.vulnList(params);
+    },
+    pageChangelogic(pageObj){
+      this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+            params = { page, rows, is_page: 0 };
+      this.params = params;
+      this.vulnList(params);
+    },
     //端口服务
     serviceList() {
       let assets_id = this.pageInfo.assets_id;
       this.$api.getServiceList({ assets_id: assets_id ,is_new:-1}).then(res => {
         let data = res.data.lists;
         this.serviceData = data;
+        this.pageTotal=res.data.total
       });
     },
-    vulnList() {
-      let assets_id = this.pageInfo.assets_id;
-      this.$api.vulnSearch({ assets_id: assets_id }).then(res => {
+    vulnList(params) {    
+      this.$api.vulnSearch(params).then(res => {
         let data = res.data.rows;
         this.vulnData = data;
+        this.pageTotalvuln=res.data.total
       });
     },
-    getLogicByAsset(){
-      let assets_id = this.pageInfo.assets_id;
-      this.$api.getLogicByAsset({ assets_id: assets_id }).then(res => {
+    getLogicByAsset(params){
+      this.$api.getLogicByAsset(params).then(res => {
         let data = res.data.logics;
         this.bussfunction = data;
+        this.pageTotallogic=res.data.total
       });
     },
     vulnTotal(){

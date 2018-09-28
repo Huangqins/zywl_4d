@@ -56,129 +56,122 @@
       </div>
     </div>
     <div class="sectionTwo">
-      <div class='sectionTwo-left'>
-        <panel title="风险变化趋势">
-          <div class="">
-
-          </div>
-        </panel>
-      </div>
-      <div class='sectionTwo-state'>
-        <panel title="服务情况">
-          <el-scrollbar style="height: 100%">
-            <div class="hole-record-types" style="margin-top:30px;">
-              <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0">
-                <h3>{{item.total_num}}</h3>
-                <h5>{{item.info}}</h5>
-              </div>
-            </div>
-          </el-scrollbar>
-        </panel>
-      </div>
-      <div class='sectionTwo-vulnLeveal'>
-        <panel title="资产情况">
-          <div class="vulnChange-tasks">
-            <div>
-              <div class="task-data-1 vulnTotal"></div>
-              <p>{{vulnTotalS}}</p>
-              <p>漏洞总数</p>
-            </div>
-
-            <div style="margin-right:5px;">
-              <div class="task-data-1 host"></div>
-              <p>{{hostTotal}}</p>
-              <p>主机数</p>
-            </div>
-            <div>
-              <div class="task-data-1 riskTotal"></div>
-              <p>{{hostvulnTotal}}</p>
-              <p>风险总数</p>
-            </div>
-            <div>
-              <div class="task-data-1 hostvuln"></div>
-              <p>{{hostvulnTotal}}</p>
-              <p>主机漏洞总数</p>
-            </div>
-            <div>
-              <div class="task-data-1 webvuln"></div>
-              <p>{{webvulnTotal}}</p>
-              <p>WEB漏洞总数</p>
-            </div>
-            <div>
-              <div class="task-data-1 yw"></div>
-              <p>{{ywvulnTotal}}</p>
-              <p>业务风险总数</p>
-            </div>
-          </div>
-        </panel>
-      </div>
+        <div class='sectionTwo-left'>
+            <panel title="风险变化趋势">
+                <div class="">
+                    <charts :chartData="vulnchange" id="vulnchange" ></charts>
+                </div>
+            </panel>    
+        </div>
+        <div class='sectionTwo-state'>
+            <panel title="服务情况">
+                <el-scrollbar  style="height: 100%">
+                <div class="hole-record-types" style="overflow:auto;margin-top:30px;">            
+                    <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
+                        <h3>{{item.total_num}}</h3>
+                        <h5>{{item.info}}</h5>
+                    </div>          
+               </div>
+               </el-scrollbar>
+            </panel>    
+        </div>
+        <div class='sectionTwo-vulnLeveal'>
+            <panel title="资产情况">                
+                <div class="vulnChange-tasks">                       
+                        <div >
+                            <div class="task-data-1 vulnTotal"></div>                  
+                            <p>{{vulnTotalS}}</p>
+                            <p>漏洞总数</p>
+                        </div>
+                        <div  style="margin-right:5px;">
+                            <div class="task-data-1 host"></div>
+                            <p>{{hostTotal}}</p>
+                            <p>主机数</p>
+                        </div>
+                         <div>
+                            <div class="task-data-1 riskTotal"></div>
+                            <p>{{hostvulnTotal}}</p>
+                            <p>风险总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 hostvuln"></div>
+                            <p>{{hostvulnTotal}}</p>
+                            <p>主机漏洞总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 webvuln"></div>
+                            <p>{{webvulnTotal}}</p>
+                            <p>WEB漏洞总数</p>
+                        </div>
+                        <div>
+                            <div class="task-data-1 yw"></div>
+                            <p>{{ywvulnTotal}}</p>
+                            <p>业务风险总数</p>
+                        </div>
+             </div>
+            </panel>    
+        </div>
     </div>
     <div class="sectionThree">
-      <div class='sectionThree-left'>
-        <panel title="资产列表">
-          <div class="">
-            <el-table :data="assetsList" style="width: 100%">
-              <el-table-column prop="assets_url" label="域名"></el-table-column>
-              <el-table-column prop="assets_ip" label="IP"></el-table-column>
-              <el-table-column prop="assets_os_type" label="操作系统"></el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" size="small">删除</el-button>
-                  <el-button type="text" size="small">修改</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </panel>
-      </div>
-      <div class='sectionThree-state'>
-        <panel title="最新风险">
-          <div class="">
-            <el-scrollbar style="height: 100%">
-              <el-table :data="latestRisk" style="width: 100%">
-                <el-table-column prop="vuln_level" label="风险等级" align="center">
-                  <template slot-scope="scope">
-                    <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="assets_url" label="目标资产" align="center"></el-table-column>
-                <el-table-column prop="vuln_name" label="风险名称" align="center"></el-table-column>
-                <el-table-column prop="vuln_ftime" label="发现时间" align="center"></el-table-column>
-                <el-table-column prop="vuln_useInfo" label="利用情况" align="center"></el-table-column>
-              </el-table>
-            </el-scrollbar>
-          </div>
-        </panel>
-      </div>
+        <div class='sectionThree-left'>
+            <panel title="资产列表">
+                <div class="">
+                    <el-table :data="assetsList" style="width: 100%;" height="220px">
+                        <el-table-column prop="assets_url" label="域名" ></el-table-column>
+                        <el-table-column prop="assets_ip" label="IP" ></el-table-column>
+                        <el-table-column prop="assets_os_type" label="操作系统" ></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">删除</el-button>
+                                <el-button type="text" size="small">修改</el-button>
+                            </template>
+                       </el-table-column>
+                    </el-table>
+                </div>
+            </panel>    
+        </div>
+        <div class='sectionThree-state'>
+            <panel title="最新风险">
+                <div class="">
+                    <el-table :data="latestRisk" style="width: 100%;" height="220px">
+                            <el-table-column prop="vuln_level" label="风险等级" align="center"></el-table-column>
+                            <el-table-column prop="assets_url" label="目标资产" align="center"></el-table-column>
+                            <el-table-column prop="vuln_name" label="风险名称" align="center"></el-table-column>
+                            <el-table-column prop="vuln_ftime" label="发现时间" align="center"></el-table-column>
+                            <el-table-column prop="vuln_useInfo" label="利用情况" align="center"></el-table-column>
+                    </el-table>
+                </div>
+            </panel>    
+        </div>       
     </div>
     <div class="sectionFour">
-      <div class='sectionFour-left'>
-        <panel title="正在执行的任务">
-          <div class="">
-            <el-table :data="TasksInExecution" style="width: 100%">
-              <el-table-column prop="target_name" label="任务名称"></el-table-column>
-              <el-table-column prop="target_url" label="任务目标"></el-table-column>
-              <el-table-column prop="target_teststra" label="策略"></el-table-column>
-              <el-table-column prop="target_starttime" label="开始时间">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.target_starttime != null">
-                    {{ fomatterTime(new Date(scope.row.target_starttime.time)) }}
-                  </span>
-                  <span v-else>
-                    {{scope.row.target_starttime}}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="target_endtime" label="结束时间">
-                <template slot-scope="scope">
-                  <el-button type="text" size="mini" style="border:none;" v-if="scope.row.target_endtime != null">
-                    {{ fomatterTime(new Date(scope.row.target_endtime.time)) }}
-                  </el-button>
-                  <span v-else>
-                    {{scope.row.target_endtime}}
-                  </span>
-                </template>
-                <!-- <template slot-scope="scope">
+        <div class='sectionFour-left'>
+            <panel title="正在执行的任务">
+                <div class="">
+                   <el-table :data="TasksInExecution" style="width: 100%" height="210px">
+                            <el-table-column prop="target_name" label="任务名称" align="center"></el-table-column>
+                            <el-table-column prop="target_url" label="任务目标" align="center"></el-table-column>
+                            <el-table-column prop="target_teststra" label="策略" align="center"></el-table-column>
+                            <el-table-column prop="target_starttime" label="开始时间" align="center">                             
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.target_starttime != null">
+                                    {{ fomatterTime(new Date(scope.row.target_starttime.time)) }}
+                                  </span>
+                                  <span v-else>
+                                    {{scope.row.target_starttime}}
+                                  </span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="target_endtime" label="结束时间" align="center">
+                               <template slot-scope="scope">
+                                  <el-button type="text" size="mini" style="border:none;" v-if="scope.row.target_endtime != null">
+                                    {{ fomatterTime(new Date(scope.row.target_endtime.time))  }}
+                                  </el-button>
+                                  <span v-else>
+                                    {{scope.row.target_endtime}}
+                                  </span>
+                                </template>
+                         <!-- <template slot-scope="scope">
                                 <span v-if="scope.row.target_endtime != 'null'">{{ fomatterTime(new Date(scope.row.target_endtime.time))  }}</span>
                                 <span v-else> {{scope.row.target_endtime}}</span>
                               </template>
@@ -186,47 +179,49 @@
                                 <span v-if="scope.row.target_endtime != 'null'">{{ fomatterTime(new Date(scope.row.target_endtime.time))  }}</span>
                                 <span v-else> {{scope.row.target_endtime}}</span>
                               </template> -->
-              </el-table-column>
-              <el-table-column prop="target_struts" label="任务状态">
-                <template slot-scope="scope">
-                  <span>
-                    {{targetState[scope.row.target_struts]}}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" size="small">详情</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </panel>
-      </div>
-
+                            </el-table-column>
+                            <el-table-column prop="target_struts" label="任务状态" align="center">
+                              <template slot-scope="scope">                                  
+                                  <span>
+                                    {{targetState[scope.row.target_struts]}}
+                                  </span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">详情</el-button>
+                                
+                            </template>
+                       </el-table-column>
+                    </el-table>
+                </div>
+            </panel>    
+        </div>
+             
     </div>
     <div class="sectionFive">
-      <div class='sectionFive-left'>
-        <panel title="待办事项">
-          <div class="">
-            <el-table :data="todoList" style="width: 100%">
-              <el-table-column prop="date" label="工单名称"></el-table-column>
-              <el-table-column prop="name" label="工单紧急程度"></el-table-column>
-              <el-table-column prop="date" label="工单类型"></el-table-column>
-              <el-table-column prop="date" label="工单状态"></el-table-column>
-              <el-table-column prop="date" label="发起时间"></el-table-column>
-              <el-table-column prop="date" label="审批时间"></el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" size="small">查看</el-button>
-                  <el-button type="text" size="small">驳回</el-button>
-                  <el-button type="text" size="small">通过</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </panel>
-      </div>
+        <div class='sectionFive-left'>
+            <panel title="待办事项">
+                <div class="">
+                    <el-table :data="todoList" style="width: 100%">
+                            <el-table-column prop="date" label="工单名称" align="center"></el-table-column>
+                            <el-table-column prop="name" label="工单紧急程度" align="center"></el-table-column>
+                            <el-table-column prop="date" label="工单类型" align="center"></el-table-column>
+                            <el-table-column prop="date" label="工单状态" align="center"></el-table-column>
+                            <el-table-column prop="date" label="发起时间" align="center"></el-table-column>
+                            <el-table-column prop="date" label="审批时间" align="center" ></el-table-column>
+                            <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button  type="text" size="small">查看</el-button>
+                                <el-button  type="text" size="small">驳回</el-button>
+                                <el-button  type="text" size="small">通过</el-button>                                
+                            </template>
+                       </el-table-column>
+                    </el-table>
+                </div>
+            </panel>    
+        </div>
+             
     </div>
   </div>
 
@@ -258,8 +253,12 @@ export default {
   },
   data() {
     return {
-      targetState: targetState,
-      fomatterTime: fomatterTime,
+      params: {
+                page: "1",
+                rows: "10"
+      },
+      targetState:targetState,
+      fomatterTime:fomatterTime,
       assetsList: [],
       latestRisk: [],
       TasksInExecution: [],
@@ -272,6 +271,42 @@ export default {
       ywvulnTotal: 0,
       outsideInfo: "",
       kb_vuln_ref: "",
+      vulnchange: {
+        xAxis: {
+          type: "category",
+          data: [],
+          axisLabel: {
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#CCCCCC"
+            }
+          }
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#CCCCCC"
+            }
+          }
+        },
+        series: [
+          {
+            data: [],
+            type: "line",
+            smooth: true
+          }
+        ]
+      },
       option: {
         title: {
           text: "漏洞修复状态(开放/关闭)",
@@ -356,9 +391,10 @@ export default {
     };
   },
   created() {
+    let data=Object.assign({},this.params,{is_page:0})
+    this.getInformation(data);
     this.assetsInfo({ is_page: 1 });
-    this.targetInfo({ target_struts: 0 });
-    this.getInformation();
+    this.targetInfo({ target_struts: 0 });    
     this.vulnrepair({ target_id: 0 });
     this.vulnTotal({ target_id: 0 });
     this.serviceTotal({ target_id: 0 });
@@ -484,12 +520,12 @@ export default {
     }
   }
 }
+.sectionTwo >div{
+ height: 300px;
+}
 .sectionTwo {
   display: flex;
   overflow: hidden;
-  & div {
-    height: 300px;
-  }
   &-left {
     flex: 2;
     margin-right: 10px;

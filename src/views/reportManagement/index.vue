@@ -108,7 +108,14 @@ export default {
             this.params = params;
            this._reportList(this.params)
         },
-        searchReport(){},
+        searchReport(){
+            let data = Object.assign({}, this.params, {
+                reports_name:this.reportName,
+                start_time:this.start_time==''?'':fomatterTime(this.start_time),
+                end_time:this.end_time==''?'':fomatterTime(this.end_time)
+            });
+            this._reportList(data);
+        },
         addreport(){
            this.$router.push('./addReport')
         },

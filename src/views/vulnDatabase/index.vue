@@ -172,8 +172,8 @@ export default {
     searchAsset() {
       let data = Object.assign({}, this.params, {
         vuln_name:this.vuln_name,
-        start_time:fomatterTime(this.start_time),
-        end_time:fomatterTime(this.end_time)
+        start_time:this.start_time==''?'':fomatterTime(this.start_time),
+        end_time:this.end_time==''?'':fomatterTime(this.end_time)
       });
        this.kbInfo(data);
     },
