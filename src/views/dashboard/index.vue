@@ -1,59 +1,59 @@
 <template>
-<div class="homePage">
+  <div class="homePage">
     <div class="outsideInfo">
-        <div>外部资讯:</div>
-        <div>{{outsideInfo}}</div>
-        <div>更多...</div>
+      <div>外部资讯:</div>
+      <div>{{outsideInfo}}</div>
+      <div>更多...</div>
     </div>
     <div class="sectionOne">
-        <div class='sectionOne-left'>
-            <panel >
-                <div class="deviceType">
-                
-                </div>
-            </panel>    
-        </div>
-        <div class='sectionOne-state'>
-            <panel>
-                <div class="deviceType">
-                <charts :chartData="option" id="canvas" height="100%"></charts>
-                </div>
-            </panel>    
-        </div>
-        <div class='sectionOne-vulnLeveal'>
-            <panel>   
-                <div class="sectionOne-vulnLeveal-left">                   
-                    <charts :chartData="chartData" height="100%"  id="chartData"></charts>
-                </div>
-             <div class="vulntext" >
-              <div>                
-                <p><span>极</span>极高风险数</p>
-                <p>{{vuln_level_num[4]}}</p>
-              </div>
-              <div>
-                
-                <p><span style="background: #DD7C35;">高</span>高风险数</p>
-                <p>{{vuln_level_num[3]}}</p>
-              </div>
-              <div>
-                
-                <p><span style="background: #E2B928;">中</span>中风险数</p>
-                <p>{{vuln_level_num[2]}}</p>
+      <div class='sectionOne-left'>
+        <panel>
+          <div class="deviceType">
 
-              </div>
-              <div>
-               
-                <p> <span style="background: #51B323;">低</span>低风险数</p>
-                <p>{{vuln_level_num[1]}}</p>
-              </div>
-              <div>
-               
-                <p><span style="background: #46A5C0;">末</span>极低风险数</p>
-                <p>{{vuln_level_num[0]}}</p>
-              </div>
-             </div>
-            </panel>    
-        </div>
+          </div>
+        </panel>
+      </div>
+      <div class='sectionOne-state'>
+        <panel>
+          <div class="deviceType">
+            <charts :chartData="option" id="canvas" height="100%"></charts>
+          </div>
+        </panel>
+      </div>
+      <div class='sectionOne-vulnLeveal'>
+        <panel>
+          <div class="sectionOne-vulnLeveal-left">
+            <charts :chartData="chartData" height="100%" id="chartData"></charts>
+          </div>
+          <div class="vulntext">
+            <div>
+              <p><span>极</span>极高风险数</p>
+              <p>{{vuln_level_num[4]}}</p>
+            </div>
+            <div>
+
+              <p><span style="background: #DD7C35;">高</span>高风险数</p>
+              <p>{{vuln_level_num[3]}}</p>
+            </div>
+            <div>
+
+              <p><span style="background: #E2B928;">中</span>中风险数</p>
+              <p>{{vuln_level_num[2]}}</p>
+
+            </div>
+            <div>
+
+              <p> <span style="background: #51B323;">低</span>低风险数</p>
+              <p>{{vuln_level_num[1]}}</p>
+            </div>
+            <div>
+
+              <p><span style="background: #46A5C0;">末</span>极低风险数</p>
+              <p>{{vuln_level_num[0]}}</p>
+            </div>
+          </div>
+        </panel>
+      </div>
     </div>
     <div class="sectionTwo">
         <div class='sectionTwo-left'>
@@ -223,14 +223,15 @@
         </div>
              
     </div>
-    
-</div>
-    
+
+  </div>
+
 </template>
 <script>
 import Panel from "@/components/panel";
 import Charts from "@/components/Charts";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import vulnDegree from "@/components/vulnDegree";
 const levelSchema = {
   "4": { name: "极高风险", color: "red" },
   "3": { name: "高风险", color: "#DD7C35" },
@@ -238,17 +239,18 @@ const levelSchema = {
   "1": { name: "低风险", color: "#51B323" },
   "0": { name: "极低风险", color: "#46A5C0" }
 };
-const targetState={
-  "2": '待执行',
-  "-2": '目标确立失败',
-  "-1": '取消',
-  "1": '已完成',
-  "0": '执行中'
-}
+const targetState = {
+  "2": "待执行",
+  "-2": "目标确立失败",
+  "-1": "取消",
+  "1": "已完成",
+  "0": "执行中"
+};
 export default {
   components: {
     Panel,
-    Charts
+    Charts,
+    vulnDegree
   },
   data() {
     return {
@@ -398,12 +400,12 @@ export default {
     this.vulnTotal({ target_id: 0 });
     this.serviceTotal({ target_id: 0 });
     this.vulnTypeTotal({ target_id: 0 });
-    this.vulnSearch()
+    this.vulnSearch();
   },
   methods: {
-    async vulnSearch(){
+    async vulnSearch() {
       let res = await this.$api.vulnSearch();
-      this.latestRisk=res.data.rows
+      this.latestRisk = res.data.rows;
     },
     async getInformation(params) {
       let res = await this.$api.getInformation(params);
@@ -439,7 +441,7 @@ export default {
       let res = await this.$api.serviceTotal(params);
       this.serviceLists = res.data.lists;
     },
-    
+
     //任务数据
     async vulnTypeTotal(params) {
       let res = await this.$api.vulnTypeTotal(params);      
@@ -613,16 +615,16 @@ export default {
     flex: 1;
     line-height: 23px;
   }
-  &-tasks{
+  &-tasks {
     width: 100%;
     height: 100%;
-    & > div{
+    & > div {
       width: 33%;
       height: 44%;
       text-align: center;
       float: left;
       overflow: hidden;
-      padding-left:12px;
+      padding-left: 12px;
       p:nth-of-type(1) {
         text-align: center;
         margin-top: 29px;
@@ -631,32 +633,35 @@ export default {
       p:nth-of-type(2) {
         text-align: center;
         color: #d8d8d8;
-        
+
         font-size: 13px;
       }
-      p{
+      p {
         font-size: 13px;
       }
     }
   }
 }
-.riskTotal{
-  background: url('../../../public/img/png/riskToatl.png') center center no-repeat;
+.riskTotal {
+  background: url("../../../public/img/png/riskToatl.png") center center
+    no-repeat;
 }
-.vulnTotal{
-  background: url('../../../public/img/png/vulnTotal.png') center center no-repeat;
+.vulnTotal {
+  background: url("../../../public/img/png/vulnTotal.png") center center
+    no-repeat;
 }
-.host{
-  background: url('../../../public/img/png/host.png') center center no-repeat;
+.host {
+  background: url("../../../public/img/png/host.png") center center no-repeat;
 }
-.hostvuln{
-  background: url('../../../public/img/png/hostvuln.png') center center  no-repeat;
+.hostvuln {
+  background: url("../../../public/img/png/hostvuln.png") center center
+    no-repeat;
 }
-.webvuln{
-  background: url('../../../public/img/png/web.png') center center no-repeat;
+.webvuln {
+  background: url("../../../public/img/png/web.png") center center no-repeat;
 }
-.yw{
-  background: url('../../../public/img/png/yw.png') center center no-repeat;
+.yw {
+  background: url("../../../public/img/png/yw.png") center center no-repeat;
 }
 </style>
 

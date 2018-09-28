@@ -6,7 +6,6 @@
           <el-form-item label="工单名称" prop="order_name">
             <span>111</span>
           </el-form-item>
-
           <el-form-item label="工单类型" prop="order_type">
            <span>222</span>
           </el-form-item>
