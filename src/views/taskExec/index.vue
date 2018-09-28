@@ -190,9 +190,7 @@
           <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_level" label="风险等级" align="center">
             <template slot-scope="scope">
-              <el-tooltip effect="dark" :content="vulnMap[scope.row.vuln_level].slice(0,-1)" placement="top">
-                <div :class="['vuln-level-tag',`vuln-level-${scope.row.vuln_level}`]"></div>
-              </el-tooltip>
+                <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
             </template>
           </el-table-column>
           <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
@@ -209,6 +207,7 @@
 </template>
 <script>
 import panel from "@/components/panel";
+import vulnDegree from "@/components/vulnDegree";
 import { formatTime, fomatterTime } from "@/utils";
 import route from "mixins/route";
 import Charts from "@/components/Charts";
@@ -233,7 +232,8 @@ export default {
   mixins: [route],
   components: {
     panel,
-    Charts
+    Charts,
+    vulnDegree
   },
   created() {
     let { target_id } = this.pageInfo;

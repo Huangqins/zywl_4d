@@ -60,7 +60,7 @@
                             <el-table-column prop="vuln_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="vuln_level" label="风险等级" align="center">
                                  <template slot-scope="scope">
-                                <span>{{vulnlevelStrust[scope.row.vuln_level]}}</span>
+                                     <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="kb_vuln_cnvd" label="CNVD" align="center"></el-table-column>
@@ -90,11 +90,13 @@
 <script>
 import Panel from '@/components/panel';
 import Pages from "@/components/Pages";
+import vulnDegree from "@/components/vulnDegree";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 export default {
     components:{
         Panel,
-        Pages
+        Pages,
+        vulnDegree
     },
     data(){
         const vulnlevelStrust={
