@@ -11,27 +11,7 @@
                   <section  v-for="(item,index) in assetsType" :key="index+'1'">
                      <p>{{item.assets_os_type}}</p>
                      <p>{{item.name===''?'未知类型':item.name}}</p>
-                 </section>
-                 <!--<section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section>
-                 <section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section>
-                 <section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section>
-                 <section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section>
-                 <section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section> -->
+                 </section>                
              </div>
              <div class="assetAddtrend">
                  <panel title="资产增加趋势">
@@ -58,14 +38,14 @@
                             <el-table :data="doMainName" style="width: 100%" height="333">
                                 <el-table-column prop="assets_url" label="域名" ></el-table-column>
                                 <el-table-column prop="assets_create_time" label="创建时间" >
-                                <template slot-scope="scope">
-                                  <span v-if="scope.row.assets_create_time != null">
-                                            {{ fomatterTime(new Date(scope.row.assets_create_time.time)) }}
-                                  </span>
-                                  <span v-else>
-                                            {{scope.row.assets_create_time}}
-                                  </span>
-                                </template>
+                                  <template slot-scope="scope">
+                                    <span v-if="scope.row.assets_create_time != null">
+                                              {{ fomatterTime(new Date(scope.row.assets_create_time.time)) }}
+                                    </span>
+                                    <span v-else>
+                                              {{scope.row.assets_create_time}}
+                                    </span>
+                                  </template>
                                 </el-table-column>
                                 <el-table-column prop="assets_creatuser" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
@@ -76,14 +56,23 @@
                             </el-table>
                         </div>
                     </panel>
+                     <pages :total="doMainNamepageTotal" @pageChange="doMainNamepageChange"></pages>
              </div>
              <div>
                    <panel title="新发现IP信息">
                         <el-table :data="ipInfo" style="width: 100%" height="333">
-                                <el-table-column prop="date" label="IP地址" ></el-table-column>
-                                 <el-table-column prop="name" label="发现时间" ></el-table-column>
-                                <el-table-column prop="date" label="发现方式" ></el-table-column>
-                                <el-table-column prop="date" label="发现人" ></el-table-column>
+                                <el-table-column prop="assets_ip" label="域名" ></el-table-column>
+                                 <el-table-column prop="assets_create_time" label="发现时间" >
+                                   <template slot-scope="scope">
+                                    <span v-if="scope.row.assets_create_time != null">
+                                              {{ fomatterTime(new Date(scope.row.assets_create_time.time)) }}
+                                    </span>
+                                    <span v-else>
+                                              {{scope.row.assets_create_time}}
+                                    </span>
+                                  </template>
+                                 </el-table-column>
+                                <el-table-column prop="assets_creatuser" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
                                     <el-button  type="text" size="small">修改</el-button>                                                                 
@@ -91,6 +80,7 @@
                                 </el-table-column>
                         </el-table>
                    </panel>
+                    <pages :total="ipInfopageTotal" @pageChange="ipInfopageChange"></pages>
              </div>
          </div>
          <div class="assetscount-secThree">
@@ -98,17 +88,16 @@
                     <panel title="新发现应用信息">
                         <el-table :data="newapplicmessage" style="width: 100%;" height="330">
                                 <el-table-column prop="application" label="应用名称" ></el-table-column>
-                                 <el-table-column prop="assets_modify_time" label="发现时间" >
+                                 <el-table-column prop="assets_create_time" label="发现时间" >
                                      <template slot-scope="scope">
-                                        <span v-if="scope.row.assets_modify_time != null">
-                                            {{ fomatterTime(new Date(scope.row.assets_modify_time.time)) }}
+                                        <span v-if="scope.row.assets_create_time != null">
+                                            {{ fomatterTime(new Date(scope.row.assets_create_time.time)) }}
                                         </span>
                                         <span v-else>
-                                            {{scope.row.assets_modify_time}}
+                                            {{scope.row.assets_create_time}}
                                         </span>
                                     </template>
                                  </el-table-column>
-                                <el-table-column prop="date" label="发现方式" ></el-table-column>
                                 <el-table-column prop="assets_creatuser" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
@@ -123,8 +112,16 @@
                    <panel title="新发现服务信息">
                        <el-table :data="newserviceInfo" style="width: 100%" height="330">
                                 <el-table-column prop="service_name" label="服务名称" ></el-table-column>
-                                 <el-table-column prop="create_time" label="发现时间" ></el-table-column>
-                                <el-table-column prop="date" label="发现方式" ></el-table-column>
+                                 <el-table-column prop="create_time" label="发现时间" >
+                                   <template slot-scope="scope">
+                                        <span v-if="scope.row.create_time != null">
+                                            {{ fomatterTime(new Date(scope.row.create_time.time)) }}
+                                        </span>
+                                        <span v-else>
+                                            {{scope.row.create_time}}
+                                        </span>
+                                    </template>
+                                 </el-table-column>
                                 <el-table-column prop="create_user" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
@@ -133,6 +130,7 @@
                                 </el-table-column>
                         </el-table>
                    </panel>
+                   <pages :total="servicepageTotal" @pageChange="servicepageChange"></pages>
              </div>
          </div>
        
@@ -153,12 +151,15 @@ export default {
   data() {
     const icon=''
     return {
+      doMainNamepageTotal:0,
+      servicepageTotal:0,
+      ipInfopageTotal:0,
       assetsType: [],
       newData: [],
       fomatterTime: fomatterTime,
       formatTime: formatTime,
       params: {},
-      defaultPage: {
+      params: {
         page: 1,
         rows: 10
       },
@@ -232,21 +233,7 @@ export default {
                 borderColor: "#00ceff"
               }
             },
-            data: [
-              // {
-              //   name: "APT",
-              //   value: [5, 10, 100],
-              //   symbol: icon
-              // },
-              // {
-              //   name: "海莲花",
-              //   value: [
-              //     [2, 3][Math.round(Math.random())],
-              //     [14, 15, 16, 17][Math.round(Math.random() * 3)],
-              //     100
-              //   ]
-              // },
-             
+            data: [         
             ]
           }
         ]
@@ -280,10 +267,11 @@ export default {
     };
   },
   created() {
+    
     this.getAssetsNum();
     this.getAssetsClass();
-    this.getNewAssets();
-    this.getServiceList();
+    this.getNewAssets({ flag: 1 });
+    this.getServiceList({ is_new: 1 ,page:1,rows:10});
     this.getAssetsTrend();
     this.getAssetsApplication();
     this.getAssetsClass({ flag: 2 });
@@ -315,23 +303,46 @@ export default {
       this.params = Object.assign({}, this.params, params);
       this.getAssetsApplication(this.params);
     },
+    doMainNamepageChange(pageObj){
+      this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0 };
+      this.params = params;
+      this.getNewAssets(params);
+    },
+    ipInfopageChange(pageObj){
+       this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0 };
+      this.params = params;
+      this.getNewAssets(params);
+    },
+    servicepageChange(pageObj){
+      this.pageObj = pageObj;
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0 };
+      this.params = params;
+      this.getServiceList(params);
+    },
     getAssetsNum() {
       this.$api.getAssetsNum().then(res => {
         this.assetsNum = res.data.assetsNum;
       });
     },
     //域名信息
-    getNewAssets() {
-      this.$api.getNewAssets({ flag: 1 }).then(res => {
+    getNewAssets(params) {
+      this.$api.getNewAssets(params).then(res => {
         this.doMainName = res.data.assets;
+        this.doMainNamepageTotal=res.data.total
       });
       //IP信息
       this.$api.getNewAssets({ flag: 2 }).then(res => {
         this.ipInfo = res.data.assets;
+        this.ipInfopageTotal=res.data.total
       });
     },
-    getServiceList() {
-      this.$api.getServiceList({ is_new: 1 }).then(res => {
+    getServiceList(params) {
+      this.$api.getServiceList(params).then(res => {
         this.newserviceInfo = res.data.lists;
       });
     },
@@ -350,7 +361,7 @@ export default {
       });
     },
     getAssetsApplication() {
-      let data = Object.assign({}, this.defaultPage, { flag: 3 });
+      let data = Object.assign({}, this.params, { flag: 3,is_page:0 });
       this.$api.getAssetsApplication(data).then(res => {
         this.newapplicmessage = res.data.rows;
         this.pageTotal = res.data.total;
