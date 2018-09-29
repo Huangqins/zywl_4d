@@ -10,7 +10,7 @@
             <div class="content">{{orderTypes[order_info.order_type -1]}}</div>
           </el-form-item>
           <el-form-item label="工单内容">
-            <div class="content">333</div>
+            <div class="content">{{target_name}}</div>
           </el-form-item>
           <el-form-item label="漏洞列表">
             <el-table :data="tableData" style="width: 100%;" v-loading="tableLoading" @selection-change='selectVuln' max-height="198">
@@ -53,8 +53,8 @@ import Panel from "@/components/panel";
 import { fomatterTime } from "@/utils";
 import route from "@/mixins/route";
 
-const orderTypes = ["整改", "任务"]
-const urgentTypes = ["一般", "紧急"]
+const orderTypes = ["整改", "任务"];
+const urgentTypes = ["一般", "紧急"];
 
 export default {
   mixins: [route],
@@ -70,6 +70,7 @@ export default {
         order_status: "",
         order_content: []
       },
+      target_name: "",
       orderTypes,
       urgentTypes,
       order_content: "",
@@ -116,7 +117,7 @@ export default {
     };
   },
   created() {
-    // this.taskname();
+    this.taskname()
     let {
       order_id,
       order_name,
@@ -136,45 +137,48 @@ export default {
       create_user,
       order_content,
       order_remark
-    };
+    }
     this.order_remark = order_remark
     this.getVulnSearch(this.pageInfo.order_content)
   },
   methods: {
     orderChange(value) {
-      this.getVulnSearch(value);
+      this.getVulnSearch(value)
     },
     // 获取漏洞列表
     async getVulnSearch(order_content) {
-      let res = await this.$api.vulnSearch({ order_content });
+      let res = await this.$api.vulnSearch({ order_content })
       if (res.data.result === 0) {
-        this.tableData = res.data.rows;
+        this.tableData = res.data.rows
+      }
+    },
+    async taskname() {
+      let res = await this.$api.taskname()
+      if (res.data.result === 0) {
+        this.target_name = res.data.targets
+          .map(item => {
+            return { label: item.target_name, value: item.target_id }
+          })
+          .filter(item => {
+            return item.value == this.pageInfo.target_id
+          })[0].label
       }
     },
     // 驳回/通过
     async updateOrderStatus(form, status) {
-      console.log(status)
       let params = {
         order_id: this.pageInfo.order_id,
         order_status: status,
         order_content: this.order_content,
         order_remark: this.order_remark
       };
-      let res = await this.$api.updateOrderStatus(params);
-      if (res.data.result === 0 ) {
-        this.$message.success('操作成功')
+      let res = await this.$api.updateOrderStatus(params)
+      if (res.data.result === 0) {
+        this.$message.success("操作成功");
       }
     },
     selectVuln(row) {
-      this.order_content = row.map(item => item.vuln_id).join(",");
-    },
-    async taskname() {
-      let res = await this.$api.taskname();
-      if (res.data.result === 0) {
-        this.orders = res.data.targets.map(item => {
-          return { label: item.target_name, value: item.target_id };
-        });
-      }
+      this.order_content = row.map(item => item.vuln_id).join(",")
     }
   }
 };

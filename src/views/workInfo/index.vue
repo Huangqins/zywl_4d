@@ -4,14 +4,22 @@
             <div class="form">
                 <el-form :inline="true" :model="form">
                     <el-form-item label="工单搜索:">
-                        <!-- <el-autocomplete class="inline-input" v-model="state1" :fetch-suggestions="querySearch" placeholder="请输入内容" @select="handleSelect"></el-autocomplete> -->
-                        <el-input placeholder="工单名称" clearable v-model="form.order_name"></el-input>
+                        <el-select v-model="form.order_name" filterable placeholder="工单名称" clearable>
+                            <el-option v-for="item in orderNames" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="工单类型" clearable v-model="form.order_type"></el-input>
+                        <el-select v-model="form.order_type" filterable placeholder="工单类型" clearable>
+                            <el-option v-for="item in orderTypeList" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="工单状态" clearable v-model="form.order_status"></el-input>
+                        <el-select v-model="form.order_status" filterable placeholder="工单状态" clearable>
+                            <el-option v-for="item in orderStatusList" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="search(form)">查询</el-button>
@@ -52,8 +60,8 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button type="text" size="mini" v-if="scope.row.order_status === 1">修改</el-button>
-                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status !== 3" @click="check(scope.row)">审核</el-button>
+                            <el-button type="text" size="mini" v-if="scope.row.order_status === 1" @click="update(scope.row)">修改</el-button>
+                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status !== 3 &&  scope.row.order_status !== 1" @click="check(scope.row)">审核</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -75,12 +83,45 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+        order_name: "",
+        order_type: "",
+        order_status: ""
+      },
       tableData: [],
       fomatterTime,
       orderTypes,
       urgentTypes,
-      orderStatus
+      orderStatus,
+      orderNames: [],
+      orderTypeList: [
+        {
+          label: "整改",
+          value: 1
+        },
+        {
+          label: "任务",
+          value: 2
+        }
+      ],
+      orderStatusList: [
+        {
+          label: "待提交",
+          value: 1
+        },
+        {
+          label: "待审核",
+          value: 2
+        },
+        {
+          label: "完成",
+          value: 3
+        },
+        {
+          label: "驳回",
+          value: 4
+        }
+      ]
     };
   },
   created() {
@@ -88,7 +129,14 @@ export default {
   },
   methods: {
     search(form) {
-        this.getOrderList(form)
+      this.getOrderList(form);
+    },
+    // 修改
+    update(row) {
+      this.$router.push({
+        name: "workAdd",
+        params: row
+      });
     },
     createWork() {
       this.$router.push("./workAdd");
@@ -98,6 +146,10 @@ export default {
       let res = await this.$api.getOrderList(params);
       if (res.data.result === 0) {
         this.tableData = res.data.lists;
+        // 工单名称列表，查询用
+        this.orderNames = res.data.lists.map(item => {
+          return { label: item.order_name, value: item.order_name };
+        });
       }
     },
     check(row) {

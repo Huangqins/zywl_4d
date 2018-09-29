@@ -16,11 +16,20 @@
             <svg-icon icon-class="password"></svg-icon>
           </span>
           <el-input v-model="loginForm.password" placeholder="密码" style="width:92%;border-bottom: 1px solid #fff;"  type="password" name="password"></el-input>
+
+        </el-form-item>
+        <el-form-item  v-if="errorNum >= 3" style="background: transparent;border:0">
+          <span class="svg-container">
+            <svg-icon icon-class="verifyCode"></svg-icon>
+          </span>
+              <el-input v-model="loginForm.verifyCode" placeholder="验证码"  style="width: 65%; border-bottom: 1px solid #fff;" name="verifyCode"></el-input>
+              <img width="100" height="42" class="fr pointer" style="margin-top:2px;" :src="codeSrc" @click="getIdentifyCode">
         </el-form-item>
         <el-form-item style="background: transparent;border:none;margin-top:56px;">
-          <el-button type="primary" :loading="loading"  @click.native.prevent="handleLogin"  style="width:100%;background:#05c1d2;height:46px;border-color:#05c1d2;">
+          <el-button type="primary" :loading="loading" @click.native.prevent="handleLogin" style="width:100%;background:#05c1d2;height:46px;border-color:#05c1d2;">
             登录
           </el-button>
+
         </el-form-item>
       </el-form>
     </div>
@@ -31,20 +40,32 @@
 
 <script>
 import saltedMd5  from 'md5-js'
-import { mapActions } from 'vuex'
+import animationCircle from "components/animationCircle";
 import { getUserName } from "@/utils/auth";
-import { debounce } from "@/utils";
+import { debounce } from "utils";
 const host=process.env.NODE_ENV === "development" ? "http://192.168.10.104:8080//ZY" : "http://localhost:8080";
 export default {
   name: "login",
+  components: {
+    animationCircle
+  },
   data() {
-   return {
-       loading: false,
-				loginForm: {
-					userName: "",
-					password: ""
-				}
-			}
+    return {
+      loginForm: {
+        userName: "",
+        password: "",
+        verifyCode: ""
+      },
+      loading: false,
+      rules: {
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      },
+      codeSrc: "",
+      errorNum: 0
+    };
   },
   beforeDestroy() {
     window.removeEventListener("resize", this._canvas);
@@ -398,46 +419,58 @@ export default {
     window.addEventListener("resize", this._canvas);
   },
   methods: {
-    ...mapActions(['Login']),
-			async _login() {
-				let salt = 'zywl', // 密码加盐
-					params = {...this.loginForm},
-					res;
-					params.password = saltedMd5(params.password, salt);
-          res = await this.Login(params);
-          this.loading = false
-					switch (res.data.result) {
-						case 0: 
-							this.$message.success('登录成功')
-							this.$router.push('/dashboard')
-							break;
-						case 1:
-							this.$message.error(`用户名不存在`);
-							break;
-						case 2:
-							this.$message.error(`密码错误`);
-							break;
-						 case 3:
-							this.$message.error(`验证码错误`);
-							break;
-						case 4:
-							this.$message.error(`验证码失效`);
-							break;
-						case -1:
-							this.$message.error(`登录失败`);
-							break;
-						case -2:
-							this.$message.error(`用户尚无权限,请 联系管理员分配`);
-							break;
-						default:
-							this.$message.error(`用户尚未被授权或者授权文件过期`);
-							break;
-						}			
-			},
-			handleLogin() {
-        this.loading = true
-				this._login();
-			},
+    async getIdentifyCode() {
+      const res = await this.$api.getIdentifyCode({ phone: 0 });
+      this.codeSrc = host + `${res.code}`;
+      console.log(process.env.HOST_URL);
+    },
+    async handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          let salt = 'zywl'
+          this.loading = true;
+          this.loginForm.password = saltedMd5(this.loginForm.password, salt)
+          this.$store.dispatch("Login", this.loginForm).then(res => {
+            this.loading = false;
+            console.log(res.result)
+            switch (res.result) {
+              case 0:
+                this.$message.success(`登录成功`);
+                this.$router.push({ path: "/" });
+                break;
+              case 1:
+                this.$message.error(`用户名不存在`);
+                break;
+              case 2:
+                this.$message.error(`密码错误`);
+                this.errorNum = res.errorNum;
+                if (res.errorNum >= 3) this.getIdentifyCode();
+                break;
+              case 3:
+                this.$message.error(`验证码错误`);
+                break;
+              case 4:
+                this.$message.error(`验证码失效`);
+                break;
+              case -1:
+                this.$message.error(`登录失败`);
+                break;
+              case -2:
+                this.$message.error(`用户尚无权限,请 联系管理员分配`);
+                this.$router.push('/login')
+                break;
+              default:
+                this.$message.error(`用户尚未被授权或者授权文件过期`);
+                this.$router.push({name: 'loginAuthorize',params: {status : res.result } });
+                break;
+            }
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
@@ -496,7 +529,7 @@ $light_gray: #eee;
     line-height: 84px;
     padding-left: 84px;
     font-size: 30px;
-    background: url(../../../public/img/png/logo.png) left center no-repeat;
+    background: url(../../../public/img/png/logoS.png) left center no-repeat;
     background-size: 84px 84px;
     position: absolute;
     left: 50%;
