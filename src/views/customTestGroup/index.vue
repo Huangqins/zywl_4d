@@ -141,7 +141,12 @@ export default {
               if (res.data.result === 0) {
                 this.dialogFormVisible = false;
                 this.$message.success("任务添加成功");
-                this.$router.push("/taskManage/taskExec");
+                this.$router.push({
+                  name: 'taskExec',
+                  params:  {
+                    target_id: res.data.target_id
+                  }
+                });
               } else if (res.result === 1) {
                 this.$message.error("任务添加失败");
               } else if (res.result === 2) {

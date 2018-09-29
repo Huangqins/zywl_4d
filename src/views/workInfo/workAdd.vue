@@ -12,8 +12,8 @@
               <el-option v-for="item in workTypeS" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="工单内容" prop="order_content">
-            <el-select v-model="form.order_content" filterable placeholder="请输入任务名称" style="width:100%" @change="orderChange">
+          <el-form-item label="工单内容" prop="target_id">
+            <el-select v-model="form.target_id" filterable placeholder="请输入任务名称" style="width:100%" @change="orderChange">
               <el-option v-for="item in orders" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -53,7 +53,10 @@
 <script>
 import Panel from "@/components/panel";
 import { fomatterTime } from "@/utils";
+import route from "@/mixins/route";
+
 export default {
+  mixins: [route],
   components: {
     Panel
   },
@@ -66,6 +69,7 @@ export default {
         order_content: [],
         expire_time: "",
         urgent_type: "",
+        target_id: "",
         flag: ""
       },
       tableLoading: false,
@@ -110,6 +114,7 @@ export default {
   },
   created() {
     this.taskname();
+
   },
   methods: {
     orderChange(value) {
@@ -142,6 +147,7 @@ export default {
       let res = await this.$api.addOrder(form);
       if (res.data.result === 0) {
         this.$message.success('创建工单成功');
+        this.$router.push('/workManage/workInfo');
       }
     }
   }

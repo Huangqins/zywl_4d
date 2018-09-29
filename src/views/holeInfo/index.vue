@@ -69,7 +69,7 @@
                             <el-table-column prop="vuln_class" label="风险状态" align="center"></el-table-column>
                             <el-table-column prop="vuln_ftime" label="发现时间" align="center">
                                 <template slot-scope="scope">
-                                <span>{{fomatterTime[scope.row.vuln_ftime]}}</span>
+                                   <span>{{fomatterTime[scope.row.vuln_ftime]}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="" label="操作人" align="center" width="100"></el-table-column>                            

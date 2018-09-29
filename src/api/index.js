@@ -217,7 +217,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time']
+        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
     },
     // 风险top10
     vulnTopTen: {
@@ -273,8 +273,14 @@ const ApiSchema = {
         url: `${path}order/getOrderList`,
         method: 'post',
         title: '工单信息--任务名称',
-
         keys: ''
+    },
+    // 工单审核
+    updateOrderStatus: {
+        url: `${path}order/updateOrderStatus`,
+        method: 'post',
+        title: '工单审核',
+        keys: ['order_id', 'order_content', 'order_status', 'order_remark']
     },
     //资产
     getAssetURL: {
@@ -803,8 +809,15 @@ const ApiSchema = {
     addOrder: {
         url: `${path}order/addOrder`,
         method: 'post',
-        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag'],
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time','flag', 'target_id'],
         title: '创建工单'
+    },
+    // 上级领导
+    auditNameList: {
+        url: `${path}user/auditNameList`,
+        method: 'post',
+        keys: '',
+        title: '上级领导'
     }
 }
 // filter keys

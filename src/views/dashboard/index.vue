@@ -224,7 +224,6 @@
         </div>
              
     </div>
-
   </div>
 
 </template>
@@ -561,39 +560,51 @@ export default {
       let res = await this.$api.vulnSearch();
       this.latestRisk = res.data.rows;
     },
-    async getInformation(params) {
-      let res = await this.$api.getInformation(params);
-      this.outsideInfo = res.data.kb[0].kb_vuln_name;
+    async getInformation() {
+      let res = await this.$api.getInformation();
+      if (res.data.result === 0 && res.data.kb.length > 0) {
+        this.outsideInfo = res.data.kb[0].kb_vuln_name;
+      }
     },
     async vulnrepair(param) {
       let res = await this.$api.vulnrepair(param);
-      this.option.series[0].data[0].value = res.data.handle;
-      this.option.series[0].data[1].value = res.data.pending;
+      if (res.data.result === 0) {
+        this.option.series[0].data[0].value = res.data.handle;
+        this.option.series[0].data[1].value = res.data.pending;
+      }
     },
     async assetsInfo(param) {
       let res = await this.$api.assetsInfo(param);
-      this.assetsList = res.data.rows;
+      if (res.data.result === 0) {
+        this.assetsList = res.data.rows;
+      }
     },
     async targetInfo(params) {
       let res = await this.$api.targetInfo(params);
-      this.TasksInExecution = res.data.targets;
+      if (res.data.result === 0) {
+        this.TasksInExecution = res.data.targets;
+      }
     },
     async vulnTotal(params) {
       let res = await this.$api.vulnTotal(params);
-      this.chartData.series[0].data = res.data.vulns.map(item => {
-        this.vuln_level_num[item.vuln_level] = item.vuln_total;
-        return {
-          value: item.vuln_total,
-          name: levelSchema[item.vuln_level].name,
-          itemStyle: {
-            color: levelSchema[item.vuln_level].color
-          }
-        };
-      });
+      if (res.data.result === 0 && res.data.vulns.length > 0) {
+        this.chartData.series[0].data = res.data.vulns.map(item => {
+          this.vuln_level_num[item.vuln_level] = item.vuln_total;
+          return {
+            value: item.vuln_total,
+            name: levelSchema[item.vuln_level].name,
+            itemStyle: {
+              color: levelSchema[item.vuln_level].color
+            }
+          };
+        });
+      }
     },
     async serviceTotal(params) {
       let res = await this.$api.serviceTotal(params);
-      this.serviceLists = res.data.lists;
+      if (res.data.result === 0) {
+        this.serviceLists = res.data.lists;
+      }
     },
     //设备类型风险统计
     getVulnLevel() {
@@ -650,21 +661,23 @@ export default {
     },
     //任务数据
     async vulnTypeTotal(params) {
-      let res = await this.$api.vulnTypeTotal(params);
-      let data = res.data.vulns;
-      data.forEach(item => {
-        if (item.vuln_class == "web漏洞") {
-          this.webvulnTotal = item.vuln_Num;
-        } else if (item.vuln_class == "业务风险") {
-          this.ywvulnTotal = item.vuln_Num;
-        } else if (item.vuln_class == "主机漏洞") {
-          this.mainvulnTotal = item.vuln_Num;
-        }
-      });
-      this.holeTotal =
-        Number(this.mainvulnTotal) +
-        Number(this.ywvulnTotal) +
-        Number(this.webvulnTotal);
+      let res = await this.$api.vulnTypeTotal(params);      
+      if (res.data.result == 0 && res.data.vulns.length > 0) {
+        let data = res.data.vulns;
+        data.forEach(item => {
+          if (item.vuln_class == "web漏洞") {
+            this.webvulnTotal = item.vuln_Num;
+          } else if (item.vuln_class == "业务风险") {
+            this.ywvulnTotal = item.vuln_Num;
+          } else if (item.vuln_class == "主机漏洞") {
+            this.mainvulnTotal = item.vuln_Num;
+          }
+        });
+        this.holeTotal =
+          Number(this.mainvulnTotal) +
+          Number(this.ywvulnTotal) +
+          Number(this.webvulnTotal);
+      }
     }
   }
 };
