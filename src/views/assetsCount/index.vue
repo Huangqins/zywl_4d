@@ -8,7 +8,11 @@
                      <p>{{assetsNum}}</p>
                      <p>总资产</p>
                  </section>
-                 <section>
+                  <section  v-for="(item,index) in assetsType" :key="index+'1'">
+                     <p>{{item.assets_os_type}}</p>
+                     <p>{{item.name===''?'未知类型':item.name}}</p>
+                 </section>
+                 <!--<section>
                      <p>1212</p>
                      <p>总资产</p>
                  </section>
@@ -27,11 +31,7 @@
                  <section>
                      <p>1212</p>
                      <p>总资产</p>
-                 </section>
-                 <section>
-                     <p>1212</p>
-                     <p>总资产</p>
-                 </section>
+                 </section> -->
              </div>
              <div class="assetAddtrend">
                  <panel title="资产增加趋势">
@@ -45,7 +45,7 @@
          <div>
            <panel title="区域资产数量统计">
               <div class="areaAssetNum">
-                 
+                  <Charts :chartData="areaOption" id="areaOption" height="100%"></Charts> 
               </div>
            </panel>
          </div>
@@ -56,10 +56,18 @@
                     <panel title="新发现域名信息">
                         <div class="doMainName">
                             <el-table :data="doMainName" style="width: 100%" height="333">
-                                <el-table-column prop="date" label="域名" ></el-table-column>
-                                 <el-table-column prop="name" label="发现时间" ></el-table-column>
-                                <el-table-column prop="date" label="发现方式" ></el-table-column>
-                                <el-table-column prop="date" label="发现人" ></el-table-column>
+                                <el-table-column prop="assets_url" label="域名" ></el-table-column>
+                                <el-table-column prop="assets_create_time" label="创建时间" >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.assets_create_time != null">
+                                            {{ fomatterTime(new Date(scope.row.assets_create_time.time)) }}
+                                  </span>
+                                  <span v-else>
+                                            {{scope.row.assets_create_time}}
+                                  </span>
+                                </template>
+                                </el-table-column>
+                                <el-table-column prop="assets_creatuser" label="发现人" ></el-table-column>
                                 <el-table-column label="操作">
                                     <template slot-scope="scope">
                                     <el-button  type="text" size="small">修改</el-button>                                                                 
@@ -143,10 +151,12 @@ export default {
     Pages
   },
   data() {
+    const icon=''
     return {
-        newData:[],
-      fomatterTime:fomatterTime,
-      formatTime:formatTime,
+      assetsType: [],
+      newData: [],
+      fomatterTime: fomatterTime,
+      formatTime: formatTime,
       params: {},
       defaultPage: {
         page: 1,
@@ -158,6 +168,89 @@ export default {
       ipInfo: [],
       newapplicmessage: [],
       newserviceInfo: [],
+      areaOption: {
+        backgroundColor: "#263143",
+        xAxis: {
+          show: false,
+          min: 0,
+          max: 10
+        },
+        yAxis: {
+          show: false,
+          scale: true,
+          min: 0,
+          max: 20
+        },
+        series: [
+          {
+            type: "scatter",
+            symbolSize: (d, i) =>
+              i.dataIndex > 4
+                ? Math.random() * 20
+                : i.dataIndex === 0
+                  ? 70
+                  : 50,
+            label: {
+              normal: {
+                show: true,
+                position: "inside",
+                formatter(p) {
+                  let { dataIndex, value, name } = p;
+                  return dataIndex === 0
+                    ? `{b0|${value[2]}}\n{c|${
+                        name.length > 4 ? name.substr(0, 4) + "..." : name
+                      }}`
+                    : dataIndex < 5
+                      ? `{b|${value[2]}}\n{c|${
+                          name.length > 4 ? name.substr(0, 4) + "..." : name
+                        }}`
+                      : "";
+                },
+                color: "#01FDFF",
+                rich: {
+                  b0: {
+                    color: "#02F6F6",
+                    align: "center",
+                    fontWeight: "bold",
+                    fontSize: 32
+                  },
+                  b: {
+                    color: "#02F6F6",
+                    align: "center"
+                  },
+                  c: {
+                    fontWeight: "bold",
+                    color: "#00CEFF",
+                    align: "center"
+                  }
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "rgba(6,33,41,1)",
+                borderColor: "#00ceff"
+              }
+            },
+            data: [
+              // {
+              //   name: "APT",
+              //   value: [5, 10, 100],
+              //   symbol: icon
+              // },
+              // {
+              //   name: "海莲花",
+              //   value: [
+              //     [2, 3][Math.round(Math.random())],
+              //     [14, 15, 16, 17][Math.round(Math.random() * 3)],
+              //     100
+              //   ]
+              // },
+             
+            ]
+          }
+        ]
+      },
       option: {
         xAxis: {
           type: "category",
@@ -193,8 +286,31 @@ export default {
     this.getServiceList();
     this.getAssetsTrend();
     this.getAssetsApplication();
+    this.getAssetsClass({ flag: 2 });
+    this.getAssetsArea()
   },
   methods: {
+    getAssetsArea(){
+      this.$api.getAssetsArea().then(res =>{
+        let data=res.data.lists;
+        data.forEach(item =>{
+          this.areaOption.series[0].data.push({
+             value:[  
+               [Math.round(Math.random()*10),Math.round(Math.random()*10)][Math.round(Math.random())],
+               [Math.round(Math.random()*10+10),Math.round(Math.random()*10+10),Math.round(Math.random()*10+10),Math.round(Math.random()*10+10)][Math.round(Math.random() * 3)],
+               item.assets_zone
+             ],
+             name:item.assets_name
+          })
+        })
+      })
+    },
+    getAssetsClass(params) {
+      this.$api.getAssetsClass(params).then(res => {
+        let data = res.data.lists;
+        this.assetsType = data;
+      });
+    },
     pageChange(params) {
       this.params = Object.assign({}, this.params, params);
       this.getAssetsApplication(this.params);
@@ -202,11 +318,6 @@ export default {
     getAssetsNum() {
       this.$api.getAssetsNum().then(res => {
         this.assetsNum = res.data.assetsNum;
-      });
-    },
-    getAssetsClass() {
-      this.$api.getAssetsClass({ flag: 2 }).then(res => {
-        let data = res.data.lists;
       });
     },
     //域名信息
@@ -228,20 +339,21 @@ export default {
       this.$api.getAssetsTrend().then(res => {
         let data = res.data.assets;
         data.forEach(item => {
-            //  console.log(fomatterTime[item.assets_create_time.time])
-        this.option.series[0].data.push({
+          this.option.series[0].data.push({
             value: item.assets_os_type,
             name: item.name
-         });
-          this.option.xAxis.data.push(fomatterTime(new Date(item.assets_create_time.time)));
-         });
+          });
+          this.option.xAxis.data.push(
+            fomatterTime(new Date(item.assets_create_time.time))
+          );
+        });
       });
     },
     getAssetsApplication() {
-    let data=Object.assign({},this.defaultPage,{ flag: 3})
+      let data = Object.assign({}, this.defaultPage, { flag: 3 });
       this.$api.getAssetsApplication(data).then(res => {
         this.newapplicmessage = res.data.rows;
-        this.pageTotal=res.data.total;
+        this.pageTotal = res.data.total;
       });
     }
   }

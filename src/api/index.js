@@ -181,6 +181,7 @@ const ApiSchema = {
             'assets_zone'
         ]
     },
+    
     //资产删除
     deleteAssets: {
         url: `${path}asset/deleteAssets`,
@@ -511,6 +512,12 @@ const ApiSchema = {
         method: 'post',
         keys: ['flag']
     },
+    //区域资产数量统计
+    getAssetsArea: {
+        url: `${path}asset/getAssetsArea`,
+        method: 'post',
+        keys: ['']
+    },       
     //新发现域名信息
     getNewAssets: {
         url: `${path}asset/getNewAssets`,

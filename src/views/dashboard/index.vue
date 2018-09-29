@@ -9,7 +9,7 @@
       <div class='sectionOne-left'>
         <panel>
           <div class="deviceType">
-
+              <charts :chartData="assetsoption" id="assetsoption" height="100%"></charts>
           </div>
         </panel>
       </div>
@@ -66,7 +66,7 @@
         <div class='sectionTwo-state'>
             <panel title="服务情况">
                 <el-scrollbar  style="height: 100%">
-                <div class="hole-record-types" style="overflow:auto;margin-top:30px;">            
+                <div class="hole-record-types" style="overflow:auto;margin-top:17px;height:240px">            
                     <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
                         <h3>{{item.total_num}}</h3>
                         <h5>{{item.info}}</h5>
@@ -77,25 +77,26 @@
         </div>
         <div class='sectionTwo-vulnLeveal'>
             <panel title="资产情况">                
-                <div class="vulnChange-tasks">                       
-                        <div >
-                            <div class="task-data-1 vulnTotal"></div>                  
-                            <p>{{vulnTotalS}}</p>
-                            <p>漏洞总数</p>
-                        </div>
-                        <div  style="margin-right:5px;">
+                <div class="vulnChange-tasks">
+                         <div >
                             <div class="task-data-1 host"></div>
                             <p>{{hostTotal}}</p>
                             <p>主机数</p>
+                        </div>                       
+                        <div >
+                            <div class="task-data-1 vulnTotal"></div>                  
+                            <p>{{vulnTotalS}}</p>
+                            <p>开放服务</p>
                         </div>
+                       
                          <div>
                             <div class="task-data-1 riskTotal"></div>
-                            <p>{{hostvulnTotal}}</p>
+                            <p>{{holeTotal}}</p>
                             <p>风险总数</p>
                         </div>
                         <div>
                             <div class="task-data-1 hostvuln"></div>
-                            <p>{{hostvulnTotal}}</p>
+                            <p>{{mainvulnTotal}}</p>
                             <p>主机漏洞总数</p>
                         </div>
                         <div>
@@ -246,6 +247,7 @@ const targetState = {
   "1": "已完成",
   "0": "执行中"
 };
+const colors = ["#36A5C1", "#47B30D", "#E5B918", "#E27C32", "#C33936"];
 export default {
   components: {
     Panel,
@@ -255,23 +257,168 @@ export default {
   data() {
     return {
       params: {
-                page: "1",
-                rows: "10"
+        page: "1",
+        rows: "10"
       },
-      targetState:targetState,
-      fomatterTime:fomatterTime,
+      targetState: targetState,
+      fomatterTime: fomatterTime,
       assetsList: [],
       latestRisk: [],
       TasksInExecution: [],
       todoList: [],
       serviceLists: [],
+      holeTotal: 0,
       vulnTotalS: 0,
       hostTotal: 0,
       hostvulnTotal: 0,
       webvulnTotal: 0,
       ywvulnTotal: 0,
+      mainvulnTotal: 0,
       outsideInfo: "",
       kb_vuln_ref: "",
+      assetsoption: {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        backgroundColor: "#263143",
+        color: ["#36A5C1", "#47B30D", "#E5B918", "#E27C32", "#C33936"],
+        legend: {
+          data: ["极低", "低", "中", "高", "极高"],
+          bottom: "2%",
+          right: "5%",
+          icon: "circle",
+          // itemWidth: 26,
+          // itemHeight: 26,
+          textStyle: {
+            color: "#c6e5ff"
+            // fontSize: 32
+          }
+        },
+        grid: {
+          left: "3%",
+          right: "5%",
+          bottom: "5%",
+          top: "5%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "value",
+            show: false
+          },
+          {
+            type: "value",
+            show: false
+          }
+        ],
+        yAxis: [
+          {
+            type: "category",
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              color: "#fff",
+              // fontSize: 36,
+              // fontWeight: 400,
+              interval: 0
+            },
+            // offset: 40,
+            // data: ['安监','卫计委','水利部','名航','海洋局']
+            data: []
+          },
+          {
+            type: "category",
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              color: "#fff",
+              // fontSize: 36,
+              // fontWeight: 300,
+              interval: 0
+            }
+            // data: [123, "312", "3123", "3123", "1231"]
+          }
+        ],
+        series: [
+          {
+            name: "极低",
+            type: "bar",
+            barWidth: 25,
+            stack: "总量",
+            itemStyle: {
+              normal: {
+                barBorderRadius: [30, 0, 0, 30],
+                shadowColor: colors[0]
+              }
+            },
+            data: []
+          },
+          {
+            name: "低",
+            type: "bar",
+            barWidth: 25,
+            stack: "总量",
+            itemStyle: {
+              normal: {
+                shadowColor: colors[1]
+              }
+            },
+            data: []
+          },
+          {
+            name: "中",
+            type: "bar",
+            stack: "总量",
+            barWidth: 25,
+            itemStyle: {
+              normal: {
+                shadowColor: colors[2]
+              }
+            },
+            data: []
+          },
+          {
+            name: "高",
+            type: "bar",
+            barWidth: 25,
+            stack: "总量",
+            itemStyle: {
+              normal: {
+                shadowColor: colors[3]
+              }
+            },
+            // data: [120, 132, 101, 134, 90]
+            data: []
+          },
+          {
+            name: "极高",
+            type: "bar",
+            barWidth: 25,
+            stack: "总量",
+            itemStyle: {
+              normal: {
+                barBorderRadius: [0, 15, 15, 0],
+                shadowColor: colors[4]
+              }
+            },
+            // data: [120, 132, 101, 134, 90]
+            // data: [320, 302, 301, 334, 390]
+            data: []
+          }
+        ]
+      },
       vulnchange: {
         xAxis: {
           type: "category",
@@ -392,17 +539,24 @@ export default {
     };
   },
   created() {
-    let data=Object.assign({},this.params,{is_page:0})
+    let data = Object.assign({}, this.params, { is_page: 0 });
     this.getInformation(data);
     this.assetsInfo({ is_page: 1 });
-    this.targetInfo({ target_struts: 0 });    
+    this.targetInfo({ target_struts: 0 });
     this.vulnrepair({ target_id: 0 });
     this.vulnTotal({ target_id: 0 });
     this.serviceTotal({ target_id: 0 });
     this.vulnTypeTotal({ target_id: 0 });
     this.vulnSearch();
+    this.getAssetsNum({ target_id: 0 });
+    this.getServiceList({ is_new: -1 });
+    this.getVulnLevel();
   },
   methods: {
+    async getServiceList(params) {
+      let res = await this.$api.getServiceList(params);
+      this.vulnTotalS = res.data.lists.length;
+    },
     async vulnSearch() {
       let res = await this.$api.vulnSearch();
       this.latestRisk = res.data.rows;
@@ -441,16 +595,76 @@ export default {
       let res = await this.$api.serviceTotal(params);
       this.serviceLists = res.data.lists;
     },
+    //设备类型风险统计
+    getVulnLevel() {
+      this.$api.getVulnLevel().then(res => {
+        let data = res.data.assets;
 
+        this.assetsoption.series[0].data.push(
+          data[0].vuln_tips,
+          data[1].vuln_tips,
+          data[2].vuln_tips,
+          data[3].vuln_tips
+        );
+        this.assetsoption.series[1].data.push(
+          data[0].vuln_low,
+          data[1].vuln_low,
+          data[2].vuln_low,
+          data[3].vuln_low
+        );
+        this.assetsoption.series[2].data.push(
+          data[0].vuln_medium,
+          data[1].vuln_medium,
+          data[2].vuln_medium,
+          data[3].vuln_medium
+        );
+        this.assetsoption.series[3].data.push(
+          data[0].vuln_high,
+          data[1].vuln_high,
+          data[2].vuln_high,
+          data[3].vuln_high
+        );
+        this.assetsoption.series[4].data.push(
+          data[0].vuln_urgent,
+          data[1].vuln_urgent,
+          data[2].vuln_urgent,
+          data[3].vuln_urgent
+        );
+
+        data.forEach(item => {
+          // this.assetsoption.series[0].data.push({
+          //    value:[item.vuln_tips],
+
+          // })
+
+          this.assetsoption.yAxis[0].data.push(item.name);
+        });
+
+        console.log(this.assetsoption.yAxis[0].data);
+      });
+    },
+    //资产情况
+    async getAssetsNum(params) {
+      let res = await this.$api.getAssetsNum(params);
+      this.hostTotal = res.data.assetsNum;
+    },
     //任务数据
     async vulnTypeTotal(params) {
-      let res = await this.$api.vulnTypeTotal(params);      
-        let data = res.data.vulns;
-        this.webvulnTotal =data.length > 1 ? data[0].vuln_total : 0;
-        //  data[0].vuln_total == ''? 0 :data[0].vuln_total;
-        this.ywvulnTotal = data.length > 1 ? data[1].vuln_total : 0;
-        this.vulnTotalS = Number(this.webvulnTotal) + Number(this.ywvulnTotal);
-      
+      let res = await this.$api.vulnTypeTotal(params);
+      let data = res.data.vulns;
+      data.forEach(item => {
+        if (item.vuln_class == "web漏洞") {
+          this.webvulnTotal = item.vuln_Num;
+        } else if (item.vuln_class == "业务风险") {
+          this.ywvulnTotal = item.vuln_Num;
+        } else if (item.vuln_class == "主机漏洞") {
+          this.mainvulnTotal = item.vuln_Num;
+        }
+      });
+      this.holeTotal =
+        Number(this.mainvulnTotal) +
+        Number(this.ywvulnTotal) +
+        Number(this.webvulnTotal);
     }
   }
 };
@@ -509,8 +723,8 @@ export default {
     }
   }
 }
-.sectionTwo >div{
- height: 300px;
+.sectionTwo > div {
+  height: 300px;
 }
 .sectionTwo {
   display: flex;
@@ -584,12 +798,12 @@ export default {
   & > div {
     float: left;
     width: 25%;
-    height: 50%;
     background: url(../../../public/img/png/servicePic.png) center top no-repeat;
   }
   .hole-pic {
     overflow: hidden;
     position: relative;
+    margin-bottom: 10px;
     & > h5,
     h3 {
       font-weight: normal;
@@ -603,7 +817,7 @@ export default {
       transform: translateX(-50%);
     }
     & > h5 {
-      margin-top: 75px;
+      margin-top: 53px;
       color: #d8d8d8;
     }
   }
@@ -618,12 +832,14 @@ export default {
   &-tasks {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     & > div {
       width: 33%;
       height: 44%;
       text-align: center;
       float: left;
       overflow: hidden;
+      padding-bottom: 38px;
       padding-left: 12px;
       p:nth-of-type(1) {
         text-align: center;
@@ -645,23 +861,47 @@ export default {
 .riskTotal {
   background: url("../../../public/img/png/riskToatl.png") center center
     no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 .vulnTotal {
   background: url("../../../public/img/png/vulnTotal.png") center center
     no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 .host {
   background: url("../../../public/img/png/host.png") center center no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 .hostvuln {
   background: url("../../../public/img/png/hostvuln.png") center center
     no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 .webvuln {
   background: url("../../../public/img/png/web.png") center center no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 .yw {
   background: url("../../../public/img/png/yw.png") center center no-repeat;
+  width: 47px;
+  height: 52px;
+  float: left;
+  margin-top: 20px;
 }
 </style>
 
