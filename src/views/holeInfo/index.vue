@@ -5,7 +5,7 @@
                 <div class="vulnSearch">  
                 
                     <span>筛选条件:</span>
-                     <el-select v-model="taskName" filterable placeholder="任务名称" class="select">
+                     <el-select v-model="task_name_id" filterable placeholder="任务名称" class="select">
                     <el-option
                     v-for="item in taskNameS"
                     :key="item.value"
@@ -63,16 +63,19 @@
                                      <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="kb_vuln_cnvd" label="CNVD" align="center"></el-table-column>
-                            <el-table-column prop="kb_vuln_cve" label="CVE" align="center"></el-table-column>
-                            <el-table-column prop="assets_os_type" label="风险类型" align="center" :show-overflow-tooltip="true"></el-table-column>
-                            <el-table-column prop="vuln_class" label="风险状态" align="center"></el-table-column>
-                            <el-table-column prop="vuln_ftime" label="发现时间" align="center">
-                                <template slot-scope="scope">
-                                   <span>{{fomatterTime[scope.row.vuln_ftime]}}</span>
+                            <el-table-column prop="vuln_class" label="风险类型" align="center" :show-overflow-tooltip="true"></el-table-column>
+                            <el-table-column prop="vuln_status" label="风险状态" align="center">
+                                 <template slot-scope="scope">
+                                   <span>{{scope.row.vuln_status==='0'?'未确认':'已确认'}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="" label="操作人" align="center" width="100"></el-table-column>                            
+
+                            <el-table-column prop="vuln_ftime" label="发现时间" align="center">
+                                <template slot-scope="scope">
+                                   <span>{{scope.row.vuln_ftime}}</span>
+                                </template>
+                            </el-table-column>
+                            <!-- <el-table-column prop="" label="操作人" align="center" width="100"></el-table-column>                             -->
                             <el-table-column label="操作" align="center" width="190">
                                 <template slot-scope="scope">
                                     <el-button type="text"  size="mini" @click="taskedit(scope.row)">修改</el-button>
@@ -127,7 +130,7 @@ export default {
             fomatterTime:fomatterTime,
             vulnlevelStrust:vulnlevelStrust,
             taskNameS:[],
-            taskName:'',
+            task_name_id:'',
             vulnLevelS:[
                 {
                     value:0,
@@ -284,8 +287,9 @@ export default {
         this._vulnSearch(params);
         },
         searchVuln(){   
+            console.log(this.task_name_id)
             let data = Object.assign({}, this.params, {
-                target_id:this.taskname,
+                target_id:this.task_name_id,
                 vuln_name:this.vulnName,
                 vuln_level: this.vulnLevel,
                 vuln_type:this.vulnType,
@@ -293,6 +297,7 @@ export default {
                 start_time:this.start_time==''?'':fomatterTime(this.start_time),
                 end_time:this.end_time==''?'':fomatterTime(this.end_time)
             });
+            
             this._vulnSearch(data);
          },
         handle(){},
