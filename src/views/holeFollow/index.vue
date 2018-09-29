@@ -207,8 +207,8 @@ export default {
                 vuln_level: this.vulnLevel,
                 vuln_type:this.vulnType,
                 assets_id: this.assets_id,
-                vuln_time:fomatterTime(this.vuln_time),
-                end_time:fomatterTime(this.end_time)
+                vuln_time:this.vuln_time !==''?fomatterTime(this.vuln_time):this.vuln_time,
+                end_time:this.end_time !==''?fomatterTime(this.end_time):this.end_time
             });
             this._vulnSearch(data);
         },

@@ -147,7 +147,12 @@
                             <el-table-column prop="assets_url" label="目标资产" align="center"></el-table-column>
                             <el-table-column prop="vuln_name" label="风险名称" align="center"></el-table-column>
                             <el-table-column prop="vuln_ftime" label="发现时间" align="center"></el-table-column>
-                            <el-table-column prop="vuln_useInfo" label="利用情况" align="center"></el-table-column>
+                            <el-table-column prop="vuln_useInfo" label="利用情况" align="center">
+                              <template slot-scope="scope">
+                                  <span v-if="scope.row.vuln_useInfo===''" style="color:#38CB7B">未利用</span>
+                                  <span v-if="scope.row.vuln_useInfo !==''" style="color:#ff5e5e">已利用</span>
+                              </template>
+                            </el-table-column>
                     </el-table>
                 </div>
             </panel>    

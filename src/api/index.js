@@ -231,11 +231,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-<<<<<<< HEAD
         keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
-=======
-        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time', 'order_content']
->>>>>>> 6767138e446d1014e1cceb2c3e615afe15622716
     },
     // 风险top10
     vulnTopTen: {
