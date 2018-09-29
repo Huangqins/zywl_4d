@@ -1,6 +1,6 @@
 <template>
   <div>
-    <panel title='新建[漏洞整改]审批工单'>
+    <panel :title="pageInfo.order_id ?  '修改[漏洞整改]审批工单' : '新建[漏洞整改]审批工单'">
       <div class="workAdd">
         <el-form ref="form" :model="form" label-width="110px" :rules="rules">
           <el-form-item label="工单名称" prop="order_name">
@@ -31,8 +31,10 @@
             <el-date-picker v-model="form.expire_time" type="datetime" placeholder="选择到期时间" style="width:100%">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="审核人" prop="audit_user">
-            <el-input v-model="form.audit_user"></el-input>
+          <el-form-item label="处理人" prop="audit_user">
+            <el-select v-model="form.audit_user" style="width:100%">
+              <el-option v-for="item in auditUserList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item label="工单紧急程度" prop="urgent_type">
@@ -59,6 +61,17 @@ export default {
   mixins: [route],
   components: {
     Panel
+  },
+  watch: {
+    "form.target_id": {
+      immediate: true,
+      handler(value) {
+        // console.log(this)
+        if (this.pageInfo.order_id) {
+          this.getVulnSearch(value);
+        }
+      }
+    }
   },
   data() {
     return {
@@ -109,21 +122,55 @@ export default {
         urgent_type: [
           { required: true, message: "请选择工单紧急程度", trigger: "change" }
         ]
-      }
+      },
+      // 处理人列表
+      auditUserList: []
     };
   },
   created() {
     this.taskname();
-
+    this.getAuditList();
+    if (this.pageInfo.order_id) {
+      let {
+        order_name,
+        audit_user,
+        order_type,
+        order_content,
+        expire_time,
+        urgent_type,
+        target_id,
+        receive_user,
+        flag
+      } = this.pageInfo;
+      this.form = {
+        order_name,
+        audit_user: receive_user,
+        order_type,
+        target_id: Number(target_id),
+        expire_time: new Date(expire_time),
+        urgent_type: Number(urgent_type),
+        flag
+      };
+    }
   },
   methods: {
     orderChange(value) {
       this.getVulnSearch(value);
     },
+    async getAuditList() {
+      let res = await this.$api.getAuditList();
+      if (res.data.result === 0) {
+        this.auditUserList = res.data.lists.map(item => {
+          return { label: item.userName, value: item.userName };
+        });
+      }
+    },
     selectVuln(row) {
-      this.form.order_content = row.map(item => {
-        return item.vuln_id;
-      }).join(',');
+      this.form.order_content = row
+        .map(item => {
+          return item.vuln_id;
+        })
+        .join(",");
       // this.selectData = sel.map(item => item.vuln_id);
     },
     async taskname() {
@@ -144,10 +191,20 @@ export default {
     async submitForm(form, type) {
       form.flag = type;
       form.expire_time = fomatterTime(form.expire_time);
-      let res = await this.$api.addOrder(form);
-      if (res.data.result === 0) {
-        this.$message.success('创建工单成功');
-        this.$router.push('/workManage/workInfo');
+      if (!this.pageInfo.order_id) {
+        let res = await this.$api.addOrder(form);
+        if (res.data.result === 0) {
+          this.$message.success("创建工单成功");
+          this.$router.push("/workManage/workInfo");
+        }
+      } else {
+        let res = await this.$api.updateOrder(
+          Object.assign({}, form, { order_id: this.pageInfo.order_id })
+        );
+        if (res.data.result === 0) {
+          this.$message.success("修改工单成功");
+          this.$router.push("/workManage/workInfo");
+        }
       }
     }
   }

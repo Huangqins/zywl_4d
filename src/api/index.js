@@ -126,6 +126,13 @@ const ApiSchema = {
         title: '业务功能结构图',
         keys: ['target_id']
     },
+    // 获取操作人
+    getAuditList: {
+        url: `${path}order/getAuditList`,
+        method: 'post',
+        title: '获取操作人',
+        keys: ''
+    },
     // 业务功能
     getLogic: {
         url: `${path}logic/getLogic`,
@@ -216,7 +223,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
+        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time', 'order_content']
     },
     // 风险top10
     vulnTopTen: {
@@ -279,7 +286,14 @@ const ApiSchema = {
         url: `${path}order/updateOrderStatus`,
         method: 'post',
         title: '工单审核',
-        keys: ['order_id', 'order_content', 'order_status', 'order_remark']
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag', 'target_id']
+    },
+    // 修改工单
+    updateOrder: {
+        url: `${path}order/updateOrder`,
+        method: 'post',
+        title: '修改工单',
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag', 'target_id', 'order_id'],
     },
     //资产
     getAssetURL: {
@@ -305,7 +319,7 @@ const ApiSchema = {
         url: `${path}user/addUser`,
         method: 'post',
         menuCode: '09-02-01',
-        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId']
+        keys: ['userName', 'trueName', 'email', 'phone', 'company', 'IDCard', 'roleId', 'managerUser']
     },
     // 修改用户
     updateUser: {
@@ -642,7 +656,7 @@ const ApiSchema = {
     reportList: {
         url: `${path}report/reportList`,
         method: 'post',
-        keys: ['page', 'rows','start_time','end_time','reports_name'],
+        keys: ['page', 'rows', 'start_time', 'end_time', 'reports_name'],
         title: '报告管理'
     },
     //删除报告
@@ -802,7 +816,7 @@ const ApiSchema = {
     addOrder: {
         url: `${path}order/addOrder`,
         method: 'post',
-        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time','flag', 'target_id'],
+        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag', 'target_id'],
         title: '创建工单'
     },
     // 上级领导

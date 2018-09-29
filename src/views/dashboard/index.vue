@@ -456,7 +456,7 @@ export default {
     //任务数据
     async vulnTypeTotal(params) {
       let res = await this.$api.vulnTypeTotal(params);
-      if (res.data.result === 0) {
+      if (res.data.result === 0 &&  res.data.vulns.length > 0) {
         let data = res.data.vulns;
         this.webvulnTotal = data[0].vuln_total;
         this.ywvulnTotal = data.length > 1 ? data[1].vuln_total : 0;
