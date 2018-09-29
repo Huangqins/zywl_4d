@@ -30,6 +30,13 @@ const ApiSchema = {
         title: '修复率',
         keys: ['target_id']
     },
+    //风险变化趋势    
+    vulnScore: {
+        url: `${path}vuln/vulnScore`,
+        method: 'post',
+        title: '风险变化趋势',
+        keys: ['']
+    },
     // 高中低风险状况/总览
     vulnTotal: {
         url: `${path}vuln/vulnTotal`,
@@ -217,7 +224,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-        keys: ['is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
+        keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
     },
     // 风险top10
     vulnTopTen: {
@@ -481,7 +488,7 @@ const ApiSchema = {
     getServiceList: {
         url: `${path}asset/getServiceList`,
         method: 'post',
-        keys: ['assets_id', 'is_new']
+        keys: ['assets_id', 'is_new','page','rows']
     },
     // 文件下载
     exportFile: {
@@ -542,7 +549,7 @@ const ApiSchema = {
     getAssetsApplication: {
         url: `${path}asset/getAssetsApplication`,
         method: 'post',
-        keys: ['flag', 'rows', 'page'],
+        keys: ['flag', 'rows', 'page','is_page'],
         title: '新发现应用信息'
     },
     //用户认证配置查询

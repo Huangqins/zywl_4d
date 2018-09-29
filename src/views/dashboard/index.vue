@@ -59,7 +59,7 @@
         <div class='sectionTwo-left'>
             <panel title="风险变化趋势">
                 <div class="">
-                    <charts :chartData="vulnchange" id="vulnchange" ></charts>
+                    <charts :chartData="vulnchange" id="vulnchange" height="254px"></charts>
                 </div>
             </panel>    
         </div>
@@ -69,7 +69,11 @@
                 <div class="hole-record-types" style="overflow:auto;margin-top:17px;height:240px">            
                     <div class="hole-pic" v-for="(item,index) in serviceLists" :key="index" v-if="serviceLists.length>0" >
                         <h3>{{item.total_num}}</h3>
-                        <h5>{{item.info}}</h5>
+                        <h5>
+                          <el-tooltip :content='item.info' placement="bottom" effect="light">
+                            <span>{{item.info.length>12?item.info.slice(0,6):item.info}}</span>
+                          </el-tooltip>                          
+                        </h5>
                     </div>          
                </div>
                </el-scrollbar>
@@ -117,16 +121,16 @@
         <div class='sectionThree-left'>
             <panel title="资产列表">
                 <div class="">
-                    <el-table :data="assetsList" style="width: 100%;" height="220px">
+                    <el-table :data="assetsList" style="width: 100%;" height="528px">
                         <el-table-column prop="assets_url" label="域名" ></el-table-column>
                         <el-table-column prop="assets_ip" label="IP" ></el-table-column>
                         <el-table-column prop="assets_os_type" label="操作系统" ></el-table-column>
-                        <el-table-column label="操作">
+                        <!-- <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <el-button  type="text" size="small">删除</el-button>
                                 <el-button type="text" size="small">修改</el-button>
                             </template>
-                       </el-table-column>
+                       </el-table-column> -->
                     </el-table>
                 </div>
             </panel>    
@@ -134,8 +138,12 @@
         <div class='sectionThree-state'>
             <panel title="最新风险">
                 <div class="">
-                    <el-table :data="latestRisk" style="width: 100%;" height="220px">
-                            <el-table-column prop="vuln_level" label="风险等级" align="center"></el-table-column>
+                    <el-table :data="latestRisk" style="width: 100%;" height="528px">
+                            <el-table-column prop="vuln_level" label="风险等级" align="center">
+                               <template slot-scope="scope">
+                                     <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="assets_url" label="目标资产" align="center"></el-table-column>
                             <el-table-column prop="vuln_name" label="风险名称" align="center"></el-table-column>
                             <el-table-column prop="vuln_ftime" label="发现时间" align="center"></el-table-column>
@@ -149,7 +157,7 @@
         <div class='sectionFour-left'>
             <panel title="正在执行的任务">
                 <div class="">
-                   <el-table :data="TasksInExecution" style="width: 100%" height="210px">
+                   <el-table :data="TasksInExecution" style="width: 100%" height="618px">
                             <el-table-column prop="target_name" label="任务名称" align="center"></el-table-column>
                             <el-table-column prop="target_url" label="任务目标" align="center"></el-table-column>
                             <el-table-column prop="target_teststra" label="策略" align="center"></el-table-column>
@@ -259,6 +267,7 @@ export default {
         page: "1",
         rows: "10"
       },
+      shebeidata: [],
       targetState: targetState,
       fomatterTime: fomatterTime,
       assetsList: [],
@@ -284,19 +293,23 @@ export default {
           }
         },
         backgroundColor: "#263143",
-        color: ["#36A5C1", "#47B30D", "#E5B918", "#E27C32", "#C33936"],
-        legend: {
-          data: ["极低", "低", "中", "高", "极高"],
-          bottom: "2%",
-          right: "5%",
-          icon: "circle",
-          // itemWidth: 26,
-          // itemHeight: 26,
-          textStyle: {
-            color: "#c6e5ff"
-            // fontSize: 32
-          }
-        },
+        color: [
+          "#36A5C1",
+          "#47B30D",
+          "#E5B918",
+          "#E27C32",
+          "#C33936",
+          "#CAD5DB"
+        ],
+        // legend: {
+        //   data: ["极低", "低", "中", "高", "极高"],
+        //   bottom: "2%",
+        //   right: "5%",
+        //   icon: "circle",
+        //   textStyle: {
+        //     color: "#c6e5ff"
+        //   }
+        // },
         grid: {
           left: "3%",
           right: "5%",
@@ -330,7 +343,6 @@ export default {
               interval: 0
             },
             // offset: 40,
-            // data: ['安监','卫计委','水利部','名航','海洋局']
             data: []
           },
           {
@@ -433,6 +445,13 @@ export default {
             }
           }
         },
+        // grid: {
+        //   left: "8%",
+        //   right: "0%",
+        //   bottom: "20%",
+        //   top: "10%",
+        //   containLabel: false
+        // },
         yAxis: {
           type: "value",
           axisLabel: {
@@ -546,22 +565,44 @@ export default {
     this.vulnTotal({ target_id: 0 });
     this.serviceTotal({ target_id: 0 });
     this.vulnTypeTotal({ target_id: 0 });
-    this.vulnSearch();
+    this.vulnSearch({ flag: 1 });
     this.getAssetsNum({ target_id: 0 });
     this.getServiceList({ is_new: -1 });
     this.getVulnLevel();
+    this.vulnScore();
   },
   methods: {
+    //风险变化趋势
+    vulnScore() {
+      this.$api.vulnScore().then(res => {
+        let data = res.data.vulns;
+        if (res.data.result == "0") {
+          let data = res.data.vulns;
+          data.forEach(item => {
+            this.vulnchange.series[0].data.push({
+              value: item.vuln_score,
+              name: item.vuln_ftime
+            });
+            this.vulnchange.xAxis.data.push(item.vuln_ftime);
+          });
+        }
+      });
+    },
     async getServiceList(params) {
       let res = await this.$api.getServiceList(params);
       this.vulnTotalS = res.data.lists.length;
     },
-    async vulnSearch() {
-      let res = await this.$api.vulnSearch();
+    async vulnSearch(params) {
+      let res = await this.$api.vulnSearch(params);
       this.latestRisk = res.data.rows;
+      if(res.data.rows.length>10){
+       this.latestRisk=res.data.rows.slice(0,10)
+      }else{
+        this.latestRisk=res.data.rows
+      }
     },
-    async getInformation() {
-      let res = await this.$api.getInformation();
+    async getInformation(params) {
+      let res = await this.$api.getInformation(params);
       if (res.data.result === 0 && res.data.kb.length > 0) {
         this.outsideInfo = res.data.kb[0].kb_vuln_name;
       }
@@ -576,13 +617,23 @@ export default {
     async assetsInfo(param) {
       let res = await this.$api.assetsInfo(param);
       if (res.data.result === 0) {
-        this.assetsList = res.data.rows;
+        if(res.data.rows.length>10){
+          this.assetsList = res.data.rows.slice(0,10);
+        }else{
+           this.assetsList = res.data.rows
+        }
+        
       }
     },
     async targetInfo(params) {
       let res = await this.$api.targetInfo(params);
       if (res.data.result === 0) {
-        this.TasksInExecution = res.data.targets;
+        if(res.data.targets.length >10){
+            this.TasksInExecution = res.data.targets.slice(0,10)
+        }else{
+            this.TasksInExecution = res.data.targets;
+        }
+        
       }
     },
     async vulnTotal(params) {
@@ -610,7 +661,6 @@ export default {
     getVulnLevel() {
       this.$api.getVulnLevel().then(res => {
         let data = res.data.assets;
-
         this.assetsoption.series[0].data.push(
           data[0].vuln_tips,
           data[1].vuln_tips,
@@ -641,17 +691,20 @@ export default {
           data[2].vuln_urgent,
           data[3].vuln_urgent
         );
-
         data.forEach(item => {
-          // this.assetsoption.series[0].data.push({
-          //    value:[item.vuln_tips],
-
-          // })
-
-          this.assetsoption.yAxis[0].data.push(item.name);
+          if (!item.name) {
+            item.name = "未知设备";
+          }
         });
-
-        console.log(this.assetsoption.yAxis[0].data);
+        if (data.length < 5) {
+          this.shebeidata = data;
+          this.shebeidata.push({ name: "数据库" });
+          this.shebeidata.forEach(item => {
+            this.assetsoption.yAxis[0].data.push(item.name);
+          });
+        } else {
+          this.assetsoption.yAxis[0].data.push(item.name);
+        }
       });
     },
     //资产情况
@@ -661,7 +714,7 @@ export default {
     },
     //任务数据
     async vulnTypeTotal(params) {
-      let res = await this.$api.vulnTypeTotal(params);      
+      let res = await this.$api.vulnTypeTotal(params);
       if (res.data.result == 0 && res.data.vulns.length > 0) {
         let data = res.data.vulns;
         data.forEach(item => {
@@ -758,7 +811,7 @@ export default {
   display: flex;
   overflow: hidden;
   & div {
-    height: 270px;
+    // height: 270px;
   }
   &-left {
     flex: 1;
@@ -771,7 +824,7 @@ export default {
 .sectionFour {
   overflow: hidden;
   & div {
-    height: 238px;
+    // height: 238px;
   }
 }
 .sectionFive {
