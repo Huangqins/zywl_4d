@@ -72,7 +72,7 @@
               })  
             },
             deleteItem() {
-                console.log(this.item)
+                 this.$emit('deletItem', this.item)
             },
             addTask() {
                 // this.dialogTableVisible = true;

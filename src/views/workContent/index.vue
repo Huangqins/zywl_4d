@@ -175,6 +175,7 @@ export default {
       let res = await this.$api.updateOrderStatus(params)
       if (res.data.result === 0) {
         this.$message.success("操作成功");
+        this.$router.push('/workManage/workInfo')
       }
     },
     selectVuln(row) {

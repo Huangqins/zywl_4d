@@ -83,12 +83,12 @@ export function debounce(func, wait, immediate) {
     return `${days}天${hours}小时${mins}分钟${secs}秒`;
   }
   //创建下载
-  export function createDownload(blob = new Blob(),filename,type = '.pdf') {
+  export function createDownload(blob = new Blob(),filename,type = 'pdf') {
     let url = window.URL.createObjectURL(new Blob([blob])),
     link = document.createElement("a");
     link.style.display = "none";
     link.href = url;
-    link.setAttribute("download", filename + type);
+    link.setAttribute("download", filename + '.' + type);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

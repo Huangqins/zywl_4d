@@ -63,7 +63,9 @@
 <script>
 import Panel from '@/components/panel';
 import Pages from "@/components/Pages";
-import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import { fomatterTime, deepClone, formatTime, staticAssetPath, createDownload } from "@/utils";
+
+
 export default {
     components:{
         Panel,
@@ -124,9 +126,13 @@ export default {
             reports_name:row.reports_name,
             reports_id:row.reports_id
         }
-         this.$api.downloadReport(data).then(res =>{
+        let url = row.download_url,
+             name = row.reports_name,
+             type = row.report_type.toLocaleLowerCase()
+         this.$api.exportFile(url).then(res =>{
             if(res.data.result===0){
                 this.$message.success(`下载成功`)
+                createDownload(res,name,type)
             }
          })
         },
