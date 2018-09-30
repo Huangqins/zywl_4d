@@ -1,6 +1,6 @@
 <template>
     <div class="customTestGroup">
-        <asset-panel :panelData="panelData" @add="add"></asset-panel>
+        <asset-panel :panelData="panelData" @add="add" @deletItem="deletItem"></asset-panel>
         <!-- <asset-panel></asset-panel> -->
 
         <!--  弹框 -->
@@ -122,7 +122,16 @@ export default {
     this.getRule({ flag: 1 });
     this.getTargetType();
   },
+
+
   methods: {
+    async deletItem({ group_code, group_name }) {
+      let res = await this.$api.deleteAssetsGroup({ group_code, group_name });
+      if (res.data.result === 0) {
+        this.$message.success('删除成功')
+           this.assetsGroupTotal();
+      }
+    },
     addTask(params) {
       this.$refs.form.validate(valid => {
         if (valid) {

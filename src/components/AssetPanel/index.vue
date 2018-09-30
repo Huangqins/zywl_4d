@@ -57,6 +57,7 @@
                 this.$emit('add',item)
             },
             deletItem(item) {
+                console.log('组件上级')
                 this.$emit('deletItem',item)
             }
         }
