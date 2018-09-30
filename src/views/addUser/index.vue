@@ -2,7 +2,7 @@
     <div class="addUser">
         <panel :title="$route.params.user_name?'修改用户':'添加用户'">
             <div class="form">
-                <el-form ref="form" :model="form" label-width="100px">
+                <el-form ref="form" :model="form" label-width="100px" :rules="rules">
                     <el-form-item label="用户名">
                         <el-input placeholder="填写用户名" v-model="form.userName" v-if="!$route.params.user_name"></el-input>
                         <span v-else>{{$route.params.user_name}}</span>
@@ -13,13 +13,13 @@
                     <el-form-item label="真实姓名">
                         <el-input placeholder="请填写姓名" v-model="form.trueName"></el-input>
                     </el-form-item>
-                    <el-form-item label="身份证号码">
+                    <el-form-item label="身份证号码" prop="IDCard">
                         <el-input placeholder="请填写身份证号码" v-model="form.IDCard"></el-input>
                     </el-form-item>
                     <el-form-item label="公司/部门">
                         <el-input placeholder="请填写公司/部门" v-model="form.company"></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号码">
+                    <el-form-item label="手机号码" prop="phone">
                         <el-input placeholder="请填写手机号码" v-model="form.phone"></el-input>
                     </el-form-item>
                     <el-form-item label="角色">
@@ -51,8 +51,21 @@ export default {
   components: {
     panel
   },
+  
   data() {
-    return {
+    const isPoneAvailable=(rule,value,callback)=>{ 
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
+        if (!myreg.test(value)) { 
+          return callback(new Error("请输入正确的手机号"));; 
+        } else { return callback() } 
+    };
+    const isIDAvailable=(rule,value,callback)=>{ 
+        var myreg=/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;  
+        if (!myreg.test(value)) { 
+          return callback(new Error("请输入正确的身份证号"));; 
+        } else { return callback() } 
+    };
+   return {
       form: {
         userName: "",
         email: "",
@@ -64,7 +77,15 @@ export default {
         managerUser: ""
       },
       managerUserList: [],
-      options: []
+      options: [],
+      rules:{
+        IDCard: [
+            { validator:isIDAvailable,required: true, message: '请正确填写身份证号', trigger: 'blur' }
+        ],
+        phone: [
+            {validator:isPoneAvailable, required: true, message: '请正确填写手机号', trigger: 'blur' }
+        ],
+      }
     };
   },
   created() {
