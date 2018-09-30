@@ -20,7 +20,15 @@
                 编辑
             </li>
         </ul>
-       
+       <!-- 确认删除 -->
+        <el-dialog title="删除确认" :visible.sync="deleteVisible" width="30%">
+        <p style="font-size:18px;overflow:hidden;">
+            <i class="el-icon-warning" style="color:#FFCC33;font-size:30px;display:inline-block;vertical-align:middle;margin-right:5px;"></i>该操作不可撤回,是否确认删除该条数据?</p>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteVisible = false">取 消</el-button>
+            <el-button type="primary" @click="deletesure">确 定</el-button>
+        </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -36,6 +44,7 @@
         },
         data() {
             return {
+                deleteVisible:false,
                 typeArr: [],
                 cycleArr: [],
                 strageArr: [],
@@ -72,7 +81,11 @@
               })  
             },
             deleteItem() {
-                console.log(this.item)
+                this.deleteVisible=true;
+                // console.log(this.item)
+            },
+            deletesure(){
+                
             },
             addTask() {
                 // this.dialogTableVisible = true;

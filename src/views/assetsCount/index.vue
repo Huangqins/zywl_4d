@@ -140,7 +140,7 @@
 <script>
 import Panel from "@/components/panel";
 import Charts from "@/components/Charts";
-import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import { fomatterTime,fomatterYearTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 import Pages from "@/components/Pages";
 export default {
   components: {
@@ -157,6 +157,7 @@ export default {
       assetsType: [],
       newData: [],
       fomatterTime: fomatterTime,
+      fomatterYearTime:fomatterYearTime,
       formatTime: formatTime,
       params: {},
       params: {
@@ -332,13 +333,35 @@ export default {
     //域名信息
     getNewAssets(params) {
       this.$api.getNewAssets(params).then(res => {
-        this.doMainName = res.data.assets;
-        this.doMainNamepageTotal=res.data.total
+        let datas=[]
+        res.data.assets.forEach(item =>{
+          if(item.assets_url !=''){   
+            console.log(item)
+            datas.push(item)
+            this.doMainName=datas
+            // this.doMainName = []  
+            //  this.doMainName = res.data.assets; 
+             this.doMainNamepageTotal=datas.length         
+          }else if(item.assets_url ==''){
+            //  console.log('13') 
+            //  console.log(item)
+            //  this.doMainName = res.data.assets;
+          }
+        })
+        // 
       });
       //IP信息
       this.$api.getNewAssets({ flag: 2 }).then(res => {
-        this.ipInfo = res.data.assets;
-        this.ipInfopageTotal=res.data.total
+        let data=res.data.assets
+        let datas=[]
+        data.forEach(item=>{
+          if(item.assets_ip !=''){
+                 datas.push(item) 
+                 this.ipInfo=datas
+                 this.ipInfopageTotal=datas.length
+           }
+        })        
+        
       });
     },
     getServiceList(params) {
@@ -355,7 +378,7 @@ export default {
             name: item.name
           });
           this.option.xAxis.data.push(
-            fomatterTime(new Date(item.assets_create_time.time))
+            fomatterYearTime(new Date(item.assets_create_time.time))
           );
         });
       });
@@ -363,8 +386,17 @@ export default {
     getAssetsApplication() {
       let data = Object.assign({}, this.params, { flag: 3,is_page:0 });
       this.$api.getAssetsApplication(data).then(res => {
-        this.newapplicmessage = res.data.rows;
-        this.pageTotal = res.data.total;
+        let data=res.data.rows;
+        let datas=[]
+        data.forEach(item =>{
+          if(item.application !=''){
+             datas.push(item)
+             this.newapplicmessage =datas
+             this.pageTotal = dataslength
+          }
+        })
+        // = ;
+       
       });
     }
   }
@@ -416,12 +448,12 @@ export default {
     width: 141px;
     height: 86px;
     margin-right: 38px;
-    background: url("../../../public/img/png/assetCount.png") no-repeat;
+    background: url("../../../public/img/png/assets.png") no-repeat;
   }
   section:nth-child(1) {
     width: 141px;
     height: 86px;
-    background: #11a284;
+    background: url("../../../public/img/png/assetsTotal.png") no-repeat;
     border-radius: 6px;
   }
   section:last-child {
