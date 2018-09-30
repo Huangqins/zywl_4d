@@ -266,7 +266,7 @@ export default new Router({
                     name: 'workAdd',
                     meta: {
                         title: '创建工单',
-                        menuCode: '05-02'
+                        menuCode: '05-01-01'
                     },
                     component: () =>
                          import('@/views/workInfo/workAdd')
@@ -276,7 +276,7 @@ export default new Router({
                     name: 'workContent',
                     meta: {
                         title: '工单详情',
-                        menuCode: '05-02'
+                        menuCode: '05-01-02'
                     },
                     component: () =>
                          import('@/views/workContent')

@@ -68,15 +68,20 @@
         <div class="tables">
           <panel title="任务目标情况" style="height:281px;" :num="targetGoalLength">
             <div style="height:230px;background:#263143">
-              <el-table :data="targetGoal">
-                <el-table-column label="目标" align="center"></el-table-column>
-                <el-table-column label="是否可访问" align="center"></el-table-column>
+              <el-table :data="targetGoal" max-height="230">
+                <el-table-column label="目标" align="center" prop="goal"></el-table-column>
+                <el-table-column label="是否可访问" align="center" prop="access">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.access">可访问</div>
+                    <div v-else>不可访问</div>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
           </panel>
           <panel title="新发现资产/域名" style="height:281px;" :num="newAssetLength">
             <div style="height:230px;background:#263143">
-              <el-table :data="newAsset">
+              <el-table :data="newAsset" max-height="230">
                 <el-table-column label="域名" align="center"></el-table-column>
                 <el-table-column label="IP" align="center"></el-table-column>
               </el-table>
@@ -240,14 +245,13 @@ export default {
     this.getVulnType(target_id);
     this.getVulnTypeTotal(target_id);
     // this.targetGoalSure(target_id);
-
   },
 
   data() {
     return {
       activeName: "all",
       newAsset: [],
-      newAssetLength:0,
+      newAssetLength: 0,
       targetGoal: [],
       targetGoalLength: 0,
       tableData: [],
@@ -545,7 +549,7 @@ export default {
         target_createtime: "",
         target_starttime: {},
         target_endtime: {},
-        target_alltime:''
+        target_alltime: ""
       },
       vulnMap: [
         {
@@ -572,7 +576,6 @@ export default {
     async getVulnTypeTotal(id) {
       let res = await this.$api.vulnTypeTotal({ target_id: id });
       if (res.data.result === 0) {
-
       }
     },
     // 风险类型
@@ -653,9 +656,16 @@ export default {
     },
     async targetProgress(id) {
       let res = await this.$api.targetProgress({ target_id: id });
-         
+
       if (res.data.result === 0) {
-        // this.targetGoal = 
+        let  responseInfo  = res.data.target.response_info,
+          targetGoalMap = JSON.parse(responseInfo);
+        for (let key in targetGoalMap) {
+          this.targetGoal.push({
+            goal: key,
+            access: targetGoalMap[key] === "up" ? true : false
+          });
+        }
         let {
           target_task_num,
           response_info,
@@ -669,7 +679,9 @@ export default {
           target_name,
           target_createtime: fomatterTime(new Date(target_createtime.time)),
           target_endtime: fomatterTime(new Date(target_endtime.time)),
-          target_alltime: formatTime(target_endtime.time - target_createtime.time)
+          target_alltime: formatTime(
+            target_endtime.time - target_createtime.time
+          )
         };
       }
     }
@@ -718,7 +730,7 @@ export default {
         margin-right: 20px;
         height: 380px;
         .taskInfoColor {
-          color: #A5FDD5;
+          color: #a5fdd5;
         }
       }
       .pic {
