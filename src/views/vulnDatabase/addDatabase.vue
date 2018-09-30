@@ -95,6 +95,7 @@
 <script>
 import Panel from "@/components/panel";
 import route from 'mixins/route';
+
 const titlestruts={
   '0':'漏洞录入',
   '1':'修改漏洞'

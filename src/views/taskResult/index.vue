@@ -104,16 +104,16 @@
     <!-- 风险总览 -->
     <div class="vuln-panorama">
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="item.label" :name="item.name" v-for="(item, index) in vulnTabs" :key="index+ 'tabs'">
+        <el-tab-pane :label="item.label + '(' +item.value + ')'" :name="item.name" v-for="(item, index) in vulnTabs" :key="index+ 'tabs'" @tab-click="tabChange">
           <template v-if="item.name === 'all'">
             <div class="table-group">
               <div class="margin-right">
                 <panel title="漏洞风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableOne">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -121,10 +121,10 @@
               <div>
                 <panel title="配置风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="风险地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableTwo">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -132,10 +132,10 @@
               <div class="margin-right">
                 <panel title="内容风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableThree">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -143,10 +143,10 @@
               <div>
                 <panel title="数据风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableFour">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -154,10 +154,10 @@
               <div class="margin-right">
                 <panel title="业务风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableFive">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -165,10 +165,10 @@
               <div>
                 <panel title="应用风险">
                   <div class="vuln-table">
-                    <el-table>
-                      <el-table-column prop="date" label="漏洞地址" align="center"></el-table-column>
-                      <el-table-column prop="date" label="漏洞类型" align="center"></el-table-column>
-                      <el-table-column prop="date" label="发现时间" align="center"></el-table-column>
+                    <el-table :data="tableSix">
+                      <el-table-column prop="vuln_URL" label="漏洞地址" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_class" label="漏洞类型" align="center" show-overflow-tooltip></el-table-column>
+                      <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
                     </el-table>
                   </div>
                 </panel>
@@ -176,7 +176,26 @@
             </div>
           </template>
           <template v-else>
-            其他的
+            <el-table :data="scanTypeTable">
+              <el-table-column prop="vuln_Num" label="风险编号" align="center"> </el-table-column>
+              <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="vuln_level" label="风险等级" align="center">
+                <template slot-scope="scope">
+                  <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
+                </template>
+              </el-table-column>
+              <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="vuln_URL" label="风险地址" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="vuln_useInfo" label="利用情况" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="image_path" label="取证情况" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="vuln_ftime" label="发现时间" align="center" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="vuln_modifytime" label="利用时间" align="center" show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <span>{{scope.row.vuln_modifytime === null ? '' : fomatterTime(new Date(scope.row.vuln_modifytime.time))}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center"> </el-table-column>
+            </el-table>
           </template>
         </el-tab-pane>
       </el-tabs>
@@ -189,6 +208,7 @@ import { formatTime, fomatterTime } from "@/utils";
 import route from "mixins/route";
 import echarts from "echarts";
 import Charts from "@/components/Charts";
+import vulnDegree from "@/components/vulnDegree";
 
 const vulnMap = [
   "极低风险数",
@@ -232,7 +252,13 @@ export default {
   mixins: [route],
   components: {
     panel,
-    Charts
+    Charts,
+    vulnDegree
+  },
+  watch: {
+    activeName(val) {
+      this.getVulnSearch(this.pageInfo.target_id, val === "all" ? "" : val);
+    }
   },
   created() {
     let { target_id } = this.pageInfo;
@@ -240,15 +266,19 @@ export default {
     this.targetProgress(target_id);
     this.getLogic(target_id);
     this.targetNewAsset(target_id);
-    this.getVulnSearch(target_id, "");
+    this.getAllVuln(target_id);
+    this.getVulnSearch(target_id, 1);
     // this.vulnNumTotal(target_id);
     this.getVulnType(target_id);
     this.getVulnTypeTotal(target_id);
+    this.vulnTypeRate(target_id)
     // this.targetGoalSure(target_id);
   },
 
   data() {
     return {
+      fomatterTime: fomatterTime,
+      scanTypeTable: [],
       activeName: "all",
       newAsset: [],
       newAssetLength: 0,
@@ -378,8 +408,7 @@ export default {
             name: "访问来源",
             type: "pie",
             selectedMode: "single",
-            radius: [0, "38%"],
-
+            radius: [0, "28%"],
             label: {
               normal: {
                 show: false,
@@ -388,7 +417,7 @@ export default {
                 textStyle: {
                   color: "#fff",
                   fontWeight: "normal",
-                  fontSize: 12
+                  fontSize: 10
                 }
               }
             },
@@ -397,51 +426,18 @@ export default {
                 show: false
               }
             },
-            data: [
-              {
-                value: 100,
-                name: "独居"
-              },
-              {
-                value: 100,
-                name: "与配偶同住"
-              },
-              {
-                value: 100,
-                name: "与子女同住"
-              },
-              {
-                value: 100,
-                name: "仅与重度残疾子女共同居住"
-              },
-              {
-                value: 100,
-                name: "与配偶及子女同住"
-              },
-              {
-                value: 100,
-                name: "与其他亲属同住"
-              },
-              {
-                value: 100,
-                name: "与父母同住"
-              },
-              {
-                value: 100,
-                name: "与其他人同住"
-              }
-            ]
+            data: [ ]
           },
           {
             name: "访问来源",
             type: "pie",
-            radius: ["40%", "42%"],
+            radius: ["30%", "32%"],
             label: {
               normal: {
                 formatter: "{b|{b}}\n{hr|}\n{d|{d}%}",
                 rich: {
                   b: {
-                    fontSize: 12,
+                    fontSize: 10,
                     color: "#fff",
                     align: "left",
                     padding: 4
@@ -478,40 +474,7 @@ export default {
                 }
               }
             },
-            data: [
-              {
-                value: 100,
-                name: "独居"
-              },
-              {
-                value: 100,
-                name: "与配偶同住"
-              },
-              {
-                value: 100,
-                name: "与子女同住"
-              },
-              {
-                value: 100,
-                name: "仅与重度残疾子女共同居住"
-              },
-              {
-                value: 100,
-                name: "与配偶及子女同住"
-              },
-              {
-                value: 100,
-                name: "与其他亲属同住"
-              },
-              {
-                value: 100,
-                name: "与父母同住"
-              },
-              {
-                value: 100,
-                name: "与其他人同住"
-              }
-            ]
+            data: []
           }
         ]
       },
@@ -568,14 +531,77 @@ export default {
           vuln_total: 0
         }
       ],
-      vulnTabs: []
+      vulnTabs: [
+        {
+          label: "风险总览",
+          name: "all",
+          value: 0
+        },
+        {
+          label: "漏洞风险",
+          name: "1",
+          value: 0
+        },
+        {
+          label: "配置风险",
+          name: "2",
+          value: 0
+        },
+        {
+          label: "内容风险",
+          name: "3",
+          value: 0
+        },
+        {
+          label: "数据风险",
+          name: "4",
+          value: 0
+        },
+        {
+          label: "业务风险",
+          name: "5",
+          value: 0
+        },
+        {
+          label: "应用风险",
+          name: "6",
+          value: 0
+        }
+      ],
+      tableOne: [],
+      tableTwo: [],
+      tableThree: [],
+      tableFour: [],
+      tableFive: [],
+      tableSix: []
     };
   },
   methods: {
+    // 列表切换
+    tabChange(val) {
+      console.log(val);
+    },
+    // 漏洞类型百分比
+    async vulnTypeRate(id) {
+      let res = await this.$api.vulnTypeRate({ target_id: id });
+      if (res.data.result === 0) {
+        let temp = res.data.vulns.map(item => {
+          return {name: item.vuln_type, value: item.vuln_total}
+        })
+          this.typeOptions.series[0].data = temp
+          this.typeOptions.series[1].data = temp
+      }
+    },
     // 统计
     async getVulnTypeTotal(id) {
       let res = await this.$api.vulnTypeTotal({ target_id: id });
       if (res.data.result === 0) {
+        let total = 0;
+        res.data.vulns.forEach(item => {
+          total += Number(item.vuln_Num);
+          this.vulnTabs[item.scan_type].value = item.vuln_Num;
+        });
+        this.vulnTabs[0].value = total;
       }
     },
     // 风险类型
@@ -595,6 +621,7 @@ export default {
       let vulnTotal = temp.reduce((a, b) => {
         return a.value + b.value;
       });
+      console.log(vulnTotal);
       vulnTabs.forEach(item => {
         let tempt = null;
         tempt = temp.find(i => {
@@ -604,11 +631,10 @@ export default {
           item.label = `${item.label.slice(0, -3)}(${tempt.value})`;
         }
       });
-      vulnTabs.unshift({
-        label: `风险总览(${vulnTotal})`,
-        name: "all"
-      });
-      this.vulnTabs = vulnTabs;
+      // vulnTabs.unshift({
+      //   label: `风险总览(0)`,
+      //   name: "all"
+      // });
     },
     // 漏洞数量统计
     async vulnNumTotal(id) {
@@ -629,7 +655,6 @@ export default {
     async targetNewAsset(id) {
       let res = await this.$api.targetNewAsset({ target_id: id });
       if (res.data.result === 0) {
-
       }
     },
     //业务功能
@@ -650,16 +675,37 @@ export default {
         });
       }
     },
-    async getVulnSearch(id, type) {
-      let res = await this.$api.vulnSearch({ target_id: id, vuln_type: type });
+    async getAllVuln(id) {
+      let res = await this.$api.vulnSearch({ target_id: id });
       if (res.data.result === 0) {
+        res.data.rows.forEach(item => {
+          if (item.scan_type === "1") {
+            this.tableOne.push(item);
+          } else if (item.scan_type === "2") {
+            this.tableTwo.push(item);
+          } else if (item.scan_type === "3") {
+            this.tableThree.push(item);
+          } else if (item.scan_type === "4") {
+            this.tableFour.push(item);
+          } else if (item.scan_type === "5") {
+            this.tableFive.push(item);
+          } else {
+            this.tableSix.push(item);
+          }
+        });
+      }
+    },
+    async getVulnSearch(id, type) {
+      let res = await this.$api.vulnSearch({ target_id: id, scan_type: type });
+      if (res.data.result === 0) {
+        this.scanTypeTable = res.data.rows;
       }
     },
     async targetProgress(id) {
       let res = await this.$api.targetProgress({ target_id: id });
 
       if (res.data.result === 0) {
-        let  responseInfo  = res.data.target.response_info,
+        let responseInfo = res.data.target.response_info,
           targetGoalMap = JSON.parse(responseInfo);
         for (let key in targetGoalMap) {
           this.targetGoal.push({

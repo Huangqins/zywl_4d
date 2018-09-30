@@ -55,6 +55,13 @@ const ApiSchema = {
         method: 'post',
         keys: ['target_id']
     },
+    // 漏洞分类百分比
+    vulnTypeRate: {
+        url: `${path}vuln/vulnTypeRate`,
+        method: 'post',
+        keys: ['target_id'],
+        title: '漏洞分类百分比'
+    },
     //任务周期
     getRule: {
         url: `${path}task/getRule`,
@@ -232,7 +239,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-        keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content']
+        keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content', 'scan_type']
     },
     // 风险top10
     vulnTopTen: {
@@ -882,34 +889,7 @@ const filterKey = (obj, keys) => {
     return ret
 }
 
-// create api function
-// const gernerater = () => {
-//     for (let key in ApiSchema) {
-//         if (!ApiSchema[key].type) {
-//             Api[key] = (params) => {
-//                 return _axios({
-//                     method: ApiSchema[key].method,
-//                     url: ApiSchema[key].url,
-//                     menuCode: ApiSchema[key].menuCode,
-//                     title: ApiSchema[key].title,
-//                     [ApiSchema[key].method === 'post' ? 'data' : 'params']: filterKey(params, ApiSchema[key].keys)
-//                 })
-//             }
-//         } else {
-//             Api[key] = (url) => {
-//                 return _axios({
-//                     method: 'get',
-//                     url: url,
-//                     baseURL: location.origin,
-//                     headers: {
-//                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-//                     },
-//                     responseType: 'blob'
-//                 })
-//             }
-//         }
-//     }
-// }
+
 
 function gernerater() {
     for (let key in ApiSchema) {

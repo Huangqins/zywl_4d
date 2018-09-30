@@ -1,64 +1,65 @@
 <template>
-    <div class="assets">
-        <div class="assets-header">
-        <panel>
-            <div class="assets-header-search">
-                <span>筛选条件:</span>
-                <el-input v-model="vuln_name" filterable placeholder="请输入漏洞名称" style="width:200px;margin-right:20px;"> </el-input>
-               <el-date-picker v-model="start_time" type="datetime" placeholder="选择日期" style="margin-right:15px;"></el-date-picker>
-               <el-date-picker v-model="end_time" type="datetime" placeholder="选择日期" style="margin-right:30px;"></el-date-picker>
-                <el-button class="btn" @click="searchAsset">查询</el-button>
-            </div>            
-        </panel>
-        </div>        
-        <div class="assets-content">           
-            <panel>
-                 <div class="assets-content-btn">
-                    <el-button type="primary" @click='addvulns'>添加漏洞</el-button>
-                    <el-button type="primary" @click="areaImportVisible=true">导入</el-button>
-                    <el-button type="primary" @click="exportVuln">导出</el-button>
-                </div>
-               <el-table :data="tableData" style="width: 100%;"  v-loading="tableLoading">
-                    <el-table-column type="selection" width="35"></el-table-column>
-                    <el-table-column prop="kb_vuln_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>                    
-                    <el-table-column prop="kb_vuln_cve" label="CVE/CNVD" align="center" :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="kb_vuln_level" label="风险级别" align="center" :show-overflow-tooltip="true">
-                      <template slot-scope="scope">
-                        <span> {{ vulntruts[scope.row.kb_vuln_level]}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="kb_vuln_port" label="利用端口" align="center"></el-table-column>
-                    <el-table-column prop="type_name" label="风险类型" align="center"></el-table-column> 
-                    <el-table-column prop="kb_vuln_ftime" label="发现时间" align="center">
-                       <template slot-scope="scope">
-                        <span> {{scope.row.kb_vuln_ftime}}</span>
-                        </template>
-                    </el-table-column>
-                                                                          
-                    <el-table-column label="操作" align="center" width="190">
-                        <template slot-scope="scope">
-                            <el-button type="text"  size="mini" @click="editAsset(scope.row)">编辑</el-button>
-                            <el-button type="text" size="mini" @click="detailvulnbase(scope.row)">详情</el-button>
-                            <el-button type="text" size="mini" @click="DeleteSelect(scope.row)">删除</el-button>
-                        </template>
-                    </el-table-column>
-                    </el-table>
-            </panel>
+  <div class="assets">
+    <div class="assets-header">
+      <panel>
+        <div class="assets-header-search">
+          <span>筛选条件:</span>
+          <el-input v-model="vuln_name" filterable placeholder="请输入漏洞名称" style="width:200px;margin-right:20px;"> </el-input>
+          <el-date-picker v-model="start_time" type="datetime" placeholder="选择日期" style="margin-right:15px;"></el-date-picker>
+          <el-date-picker v-model="end_time" type="datetime" placeholder="选择日期" style="margin-right:30px;"></el-date-picker>
+          <el-button class="btn" @click="searchAsset">查询</el-button>
         </div>
-        <!-- 添加框 -->
-    
-     <el-dialog title="漏洞库导入" :visible.sync="areaImportVisible" width="21%">
-       <p  style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;" @click="importTem">下载资产模板</p>
-       <p  style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
-            <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或
-                <em>点击上传</em>
-                </div>
-            </el-upload>
-            
-      </el-dialog>
-      <!-- 确认删除 -->
+      </panel>
+    </div>
+    <div class="assets-content">
+      <panel>
+        <div class="assets-content-btn">
+          <el-button type="primary" @click='addvulns'>添加漏洞</el-button>
+          <el-button type="primary" @click="areaImportVisible=true">导入</el-button>
+          <el-button type="primary" @click="exportVuln">导出</el-button>
+        </div>
+        <el-table :data="tableData" style="width: 100%;" v-loading="tableLoading">
+          <el-table-column type="selection" width="35"></el-table-column>
+          <el-table-column prop="kb_vuln_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="kb_vuln_cve" label="CVE" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="kb_vuln_cnvd" label="CNVD" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="kb_vuln_level" label="风险级别" align="center" :show-overflow-tooltip="true">
+            <template slot-scope="scope">
+              <vuln-degree :vuln_level="scope.row.kb_vuln_level"></vuln-degree>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="kb_vuln_port" label="利用端口" align="center"></el-table-column>
+                    <el-table-column prop="type_name" label="风险类型" align="center"></el-table-column>  -->
+          <el-table-column prop="kb_vuln_ftime" label="发现时间" align="center">
+            <template slot-scope="scope">
+              <span> {{scope.row.kb_vuln_ftime}}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作" align="center" width="190">
+            <template slot-scope="scope">
+              <el-button type="text" size="mini" @click="editAsset(scope.row)">编辑</el-button>
+              <el-button type="text" size="mini" @click="detailvulnbase(scope.row)">详情</el-button>
+              <el-button type="text" size="mini" @click="DeleteSelect(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </panel>
+    </div>
+    <!-- 添加框 -->
+
+    <el-dialog title="漏洞库导入" :visible.sync="areaImportVisible" width="21%">
+      <p style="line-height:20px;margin-bottom:10px;font-size:14px;color:#D1FFFF;cursor: pointer;" @click="importTem">下载资产模板</p>
+      <p style="line-height:20px;margin-bottom:10px;color:#ABB5BC;cursor: pointer;">为提高导入文件的成功率,请下载并使用系统提供的模板</p>
+      <el-upload drag action="*" :headers="headers" :show-file-list="false" :with-credentials="true" name="excelFile" :on-change="fileUpload" :http-request="upload">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+      </el-upload>
+
+    </el-dialog>
+    <!-- 确认删除 -->
     <el-dialog title="删除确认" :visible.sync="deleteAssetVisible" width="30%">
       <p style="font-size:18px;overflow:hidden;">
         <i class="el-icon-warning" style="color:#FFCC33;font-size:30px;display:inline-block;vertical-align:middle;margin-right:5px;"></i>该操作不可撤回,是否确认删除该条数据?</p>
@@ -67,14 +68,15 @@
         <el-button type="primary" @click="deleteItem">确 定</el-button>
       </span>
     </el-dialog>
-        <!--分页-->
-        <pages :total="pageTotal" @pageChange="pageChange"></pages>
-    </div>
+    <!--分页-->
+    <pages :total="pageTotal" @pageChange="pageChange"></pages>
+  </div>
 </template>
 
 <script>
 import Panel from "@/components/panel";
 import Pages from "@/components/Pages";
+import vulnDegree from "@/components/vulnDegree";
 import { getUserName, getToken } from "@/utils/auth";
 import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
 
@@ -105,7 +107,8 @@ const vulntruts = {
 export default {
   components: {
     Panel,
-    Pages
+    Pages,
+    vulnDegree
   },
   data() {
     var checkIp = (rule, value, callback) => {
@@ -129,16 +132,16 @@ export default {
       }
     };
     return {
-      file:{},
-      fomatterTime:fomatterTime,
-      vulntruts:vulntruts,
+      file: {},
+      fomatterTime: fomatterTime,
+      vulntruts: vulntruts,
       pageObj: {},
       defaultPage: {
         rows: 10,
         page: 1,
-        isOrder:1
+        isOrder: 1
       },
-       headers: {
+      headers: {
         token: getToken(),
         userName: getUserName(),
         menuCode: vm._route.meta.menuCode
@@ -155,10 +158,10 @@ export default {
       addPending: false,
       state: "1",
       status: "edit",
-      start_time:'',
-      end_time:'',
+      start_time: "",
+      end_time: "",
       vuln_name: "",
-      options: [],      
+      options: [],
       page: "",
       rows: "",
       pageTotal: 0,
@@ -166,25 +169,25 @@ export default {
     };
   },
   created() {
-   this.params=Object.assign({},this.defaultPage)
+    this.params = Object.assign({}, this.defaultPage);
     this.kbInfo(this.params);
   },
   methods: {
-     // 触发分页
+    // 触发分页
     pageChange(pageObj) {
-      this.pageObj = pageObj; 
+      this.pageObj = pageObj;
       let { page, rows } = pageObj,
-        params = { page, rows, is_page: 0,isOrder:1 };
+        params = { page, rows, is_page: 0, isOrder: 1 };
       this.params = params;
       this.kbInfo(params);
     },
     searchAsset() {
       let data = Object.assign({}, this.params, {
-        vuln_name:this.vuln_name,
-        start_time:this.start_time==''?'':fomatterTime(this.start_time),
-        end_time:this.end_time==''?'':fomatterTime(this.end_time)
+        vuln_name: this.vuln_name,
+        start_time: this.start_time == "" ? "" : fomatterTime(this.start_time),
+        end_time: this.end_time == "" ? "" : fomatterTime(this.end_time)
       });
-       this.kbInfo(data);
+      this.kbInfo(data);
     },
     // 导入回调
     fileUpload(res) {
@@ -206,9 +209,9 @@ export default {
       let res = await this.$api.exportExcel({});
       if (res.data.result === 0) {
         let result = await this.$api.exportFile(res.data.path);
-        createDownload(result, '导出', '.xls')
+        createDownload(result, "导出", ".xls");
       }
-    },    
+    },
     async importTem() {
       let assetUrl = "ZR/excel/kb_vuln.xls";
       let res = await this.$api.exportFile(assetUrl);
@@ -225,7 +228,7 @@ export default {
         this.$message.error(`模板文件下载失败`);
       }
     },
-   
+
     // 漏洞库列表
     async kbInfo(params) {
       let res = await this.$api.kbInfo(params);
@@ -233,7 +236,7 @@ export default {
       if (res.data.result === 0) {
         let data = res.data.rows;
         this.pageTotal = res.data.total;
-        this.tableData = data
+        this.tableData = data;
       }
     },
     // 选中删除项并且打开提示框
@@ -247,32 +250,37 @@ export default {
     },
     // 漏洞删除
     vulnDelete(row) {
-      this.$api.deleteKb({ kb_vuln_id: row.kb_vuln_id, kb_vuln_name:row.kb_vuln_name}).then(res => {
-        this.deleteAssetVisible = false;
-        if (res.data.result === 0) {
-          this.$message.success(`删除成功`);
-          this.kbInfo(this.defaultPage);
-        } else {
-          this.$message.error(`删除失败`);
-        }
-      });
+      this.$api
+        .deleteKb({
+          kb_vuln_id: row.kb_vuln_id,
+          kb_vuln_name: row.kb_vuln_name
+        })
+        .then(res => {
+          this.deleteAssetVisible = false;
+          if (res.data.result === 0) {
+            this.$message.success(`删除成功`);
+            this.kbInfo(this.defaultPage);
+          } else {
+            this.$message.error(`删除失败`);
+          }
+        });
     },
     //添加
     addvulns() {
       this.state = "1";
       this.$router.push({
-            name:'addDatabase',
-            params:Object.assign({},{status: 'edit'})
-        })
+        name: "addDatabase",
+        params: Object.assign({}, { status: "edit" })
+      });
     },
     // 编辑表格
     editAsset(row) {
-        this.status = "edit";
-        this.state = '2';
-        this.$router.push({
-            name:'addDatabase',
-            params:Object.assign({},row,{status: 'edit'})
-        })
+      this.status = "edit";
+      this.state = "2";
+      this.$router.push({
+        name: "addDatabase",
+        params: Object.assign({}, row, { status: "edit" })
+      });
     },
     // 详情
     detailvulnbase(row) {
@@ -281,7 +289,7 @@ export default {
         params: {
           assets_id: row.assets_id,
           row: row,
-          status: 'detail'
+          status: "detail"
         }
       });
     }
