@@ -16,6 +16,7 @@ const ApiSchema = {
     userExit: {
         url: `${path}/user/userExit`,
         method: 'post',
+        title:'退出操作',
         keys: ''
     },
     //最新资讯
@@ -943,19 +944,11 @@ function gernerater() {
                 return _axios({
                     method: 'get',
                     url: url,
-                    baseURL: 'http://192.168.10.104:8080',
+                    baseURL: location.origin,
                     headers: {
                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                     },
                     responseType: 'blob'
-                })
-            }
-        } else if (ApiSchema[key].type === 'img') {
-            console.log('你好啊', key)
-            Api[key] = (name) => {
-                return _axios({
-                    method: ApiSchema[key].method,
-                    url: `${ApiSchema[key].url}/${name}`
                 })
             }
         } else {

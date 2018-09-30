@@ -48,6 +48,7 @@ function setTree(list) {
   });
   return firstFloor;
 }
+
 // 找出下级所属的菜单
 function findMenu(list, menu_id) {
   let res = [];

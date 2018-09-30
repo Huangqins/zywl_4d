@@ -121,7 +121,7 @@ export default {
         addreport(){
            this.$router.push('./addReport')
         },
-        downLoadReport(row){         
+      async  downLoadReport(row){         
         let data={
             reports_name:row.reports_name,
             reports_id:row.reports_id
@@ -129,12 +129,15 @@ export default {
         let url = row.download_url,
              name = row.reports_name,
              type = row.report_type.toLocaleLowerCase()
-         this.$api.exportFile(url).then(res =>{
-            if(res.data.result===0){
-                this.$message.success(`下载成功`)
-                createDownload(res,name,type)
-            }
-         })
+       let res  = await  this.$api.exportFile(url);
+       console.log(res)
+        createDownload(res.data,name,type)
+        //  .then(res =>{
+        //     if(res.data.result===0){
+        //         this.$message.success(`下载成功`)
+        //         createDownload(res,name,type)
+        //     }
+        //  })
         },
         DeleteReport(row){
             this.reportid=row.reports_id;
