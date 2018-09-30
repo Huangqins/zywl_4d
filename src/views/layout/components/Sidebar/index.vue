@@ -3,7 +3,7 @@
         <!-- 侧边栏 -->
         <el-scrollbar style="height: 100%">
             <el-menu class="side-bar-menu" background-color="#2b3544" text-color="#18BB9A" active-text-color="#D1FFFF" :collapse="isCollapse">
-                <sideitem-bar v-for="(item, index) in menuList" :key="index" :item="item" :base-path="item.path"></sideitem-bar>
+                <sideitem-bar v-for="(item, index) in menuCodeList" :key="index" :item="item" :base-path="item.path"></sideitem-bar>
             </el-menu>
         </el-scrollbar>
     </div>
@@ -22,8 +22,7 @@ export default {
     sideitemBar
   },
   created() {
-    this.menuCode = JSON.parse(getMenu());
-    console.log(this.menuCode)
+    this.menuCode = JSON.parse(getMenu()).map(item => item.menu_code);
     this.menuGernerator()
   },
   data() {
