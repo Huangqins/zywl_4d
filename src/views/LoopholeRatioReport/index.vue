@@ -5,14 +5,14 @@
                  <div style="height:318px;">
                   <el-table :data="vulnData" style="width: 100%;height:274px;overflow:auto;" >
                     <el-table-column type="index" label="序号" width="50"></el-table-column>
-                    <el-table-column prop="vuln_type_name" label="系统名称" align="center"></el-table-column>
-                    <el-table-column prop="vuln_type_keyword" label="漏洞数量" align="center"></el-table-column>
-                    <el-table-column prop="vuln_type_creattime" label="本月新增漏洞数量" align="center"></el-table-column>   
-                    <el-table-column prop="vuln_type_creattime" label="上月遗漏漏洞数量" align="center"></el-table-column>  
-                    <el-table-column prop="vuln_type_creattime" label="完成整改书" align="center"></el-table-column>          
+                    <el-table-column prop="group_name" label="系统名称" align="center"></el-table-column>
+                    <el-table-column prop="vuln_total" label="漏洞数量" align="center"></el-table-column>
+                    <el-table-column prop="vuln_oper" label="本月新增漏洞数量" align="center"></el-table-column>   
+                    <el-table-column prop="vuln_Port" label="上月遗漏漏洞数量" align="center"></el-table-column>  
+                    <el-table-column prop="vuln_IP" label="完成整改数" align="center"></el-table-column>          
                    </el-table>
                     <div style="padding-bottom:5px;">
-                         <pages :total="vulnpageTotal" @pageChange="vulnpageChange"></pages>
+                         <!-- <pages :total="vulnpageTotal" @pageChange="vulnpageChange"></pages> -->
                     </div>  
                  </div>
              </panel>
@@ -80,6 +80,9 @@ export default {
   },
   data() {
     return {
+      input:'',
+      start_time:'',
+      end_time:'',
       tableData3:[
        {
            stop:'已整改漏洞',
@@ -160,7 +163,55 @@ export default {
       }
     };
   },
+  created(){
+    this.vulnMonthTotal();
+    this.vulnMonth()
+
+  },
   methods: {
+    async vulnMonthTotal(){
+     let res=await this.$api.vulnMonthTotal();
+     if(res.data.result == '0'){
+        this.vulnData=res.data.vulns
+     }
+    },
+    async vulnMonth(){
+     let res=await this.$api.vulnMonth();
+     if(res.data.result == '0'){
+       let data=res.data.vulns
+        let timeArr=[]   
+        let lastArr=[]     
+        timeArr=data.map(item => {
+          return item.vuln_IP
+        });
+        timeArr = Array.from(new Set(timeArr));
+        timeArr.forEach(item=>{
+          let typeArr=[]
+          typeArr=data.filter(i =>{
+            return i.vuln_IP === item
+          })
+          //  console.log(typeArr)
+          
+          // let Newtype=[] 
+          // Newtype=typeArr.map(item =>{          
+          //   return item.group_name  
+          // })                   
+          // Newtype=Array.from(new Set(Newtype));           
+          //console.log(Newtype)
+        
+          
+            let vulnstatus_one=[]            
+              vulnstatus_one=typeArr.filter(i =>{               
+                return i.vuln_status === item.vuln_status        
+              }) 
+              // typeArr=Array.from(new Set(typeArr));              
+         
+        })
+        
+        
+     }
+    },
+    
     vulnpageChange() {}
   }
 };

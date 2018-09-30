@@ -239,7 +239,7 @@ const ApiSchema = {
         url: `${path}vuln/vulnSearch`,
         method: 'post',
         title: '风险列表',
-        keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content', 'scan_type']
+        keys: ['flag','is_page', 'page', 'rows', 'target_id', 'vuln_level', 'vuln_type', 'assets_id', 'vuln_name', 'vuln_time', 'start_time', 'end_time','order_content', 'scan_type', 'vuln_URL']
     },
     // 风险top10
     vulnTopTen: {
@@ -588,6 +588,22 @@ const ApiSchema = {
         keys: ['flag', 'rows', 'page','is_page'],
         title: '新发现应用信息'
     },
+    //漏洞环比当月报表
+    vulnMonthTotal: {
+        url: `${path}vuln/vulnMonthTotal`,
+        method: 'post',
+        keys: [],
+        title: '新发现应用信息'
+    },
+    //漏洞环比月度报表 
+    vulnMonth: {
+        url: `${path}vuln/vulnMonth`,
+        method: 'post',
+        keys: [],
+        title: '漏洞环比月度报表'
+    },
+    
+    
     //用户认证配置查询
     getUserConfig: {
         url: `${path}user/getUserConfig`,

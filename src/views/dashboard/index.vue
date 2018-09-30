@@ -243,7 +243,7 @@
 <script>
 import Panel from "@/components/panel";
 import Charts from "@/components/Charts";
-import { fomatterTime, deepClone, formatTime, staticAssetPath } from "@/utils";
+import { fomatterTime, deepClone,fomatterYearTime, formatTime, staticAssetPath } from "@/utils";
 import vulnDegree from "@/components/vulnDegree";
 const levelSchema = {
   "4": { name: "极高风险", color: "red" },
@@ -275,6 +275,7 @@ export default {
       shebeidata: [],
       targetState: targetState,
       fomatterTime: fomatterTime,
+      fomatterYearTime:fomatterYearTime,
       assetsList: [],
       latestRisk: [],
       TasksInExecution: [],
@@ -584,9 +585,9 @@ export default {
           data.forEach(item => {
             this.vulnchange.series[0].data.push({
               value: item.vuln_score,
-              name: item.vuln_ftime
+              name: fomatterYearTime(new Date(item.vuln_modifytime.time))
             });
-            this.vulnchange.xAxis.data.push(item.vuln_ftime);
+            this.vulnchange.xAxis.data.push(fomatterYearTime(new Date(item.vuln_modifytime.time)));
           });
         }
       });
@@ -666,33 +667,33 @@ export default {
         let data = res.data.assets;
         this.assetsoption.series[0].data.push(
           data[0].vuln_tips,
-          data[1].vuln_tips,
-          data[2].vuln_tips,
-          data[3].vuln_tips
+          // data[1].vuln_tips,
+          // data[2].vuln_tips,
+          // data[3].vuln_tips
         );
         this.assetsoption.series[1].data.push(
           data[0].vuln_low,
           data[1].vuln_low,
-          data[2].vuln_low,
-          data[3].vuln_low
+          // data[2].vuln_low,
+          // data[3].vuln_low
         );
         this.assetsoption.series[2].data.push(
           data[0].vuln_medium,
           data[1].vuln_medium,
           data[2].vuln_medium,
-          data[3].vuln_medium
+          // data[3].vuln_medium
         );
         this.assetsoption.series[3].data.push(
           data[0].vuln_high,
           data[1].vuln_high,
-          data[2].vuln_high,
-          data[3].vuln_high
+          // data[2].vuln_high,
+          // data[3].vuln_high
         );
         this.assetsoption.series[4].data.push(
           data[0].vuln_urgent,
           data[1].vuln_urgent,
-          data[2].vuln_urgent,
-          data[3].vuln_urgent
+          // data[2].vuln_urgent,
+          // data[3].vuln_urgent
         );
         data.forEach(item => {
           if (!item.name) {
