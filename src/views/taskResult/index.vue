@@ -66,7 +66,7 @@
         </div>
         <!--  -->
         <div class="tables">
-          <panel title="任务目标情况" style="height:281px;" :num="targetGoalLength">
+          <panel title="任务目标情况" style="height:281px;" :num=" targetGoal.length">
             <div style="height:230px;background:#263143">
               <el-table :data="targetGoal" max-height="230">
                 <el-table-column label="目标" align="center" prop="goal"></el-table-column>
@@ -79,7 +79,7 @@
               </el-table>
             </div>
           </panel>
-          <panel title="新发现资产/域名" style="height:281px;" :num="newAssetLength">
+          <panel title="新发现资产/域名" style="height:281px;" :num="newAsset.length">
             <div style="height:230px;background:#263143">
               <el-table :data="newAsset" max-height="230">
                 <el-table-column label="域名" align="center"></el-table-column>
@@ -629,6 +629,7 @@ export default {
     async targetNewAsset(id) {
       let res = await this.$api.targetNewAsset({ target_id: id });
       if (res.data.result === 0) {
+
       }
     },
     //业务功能
