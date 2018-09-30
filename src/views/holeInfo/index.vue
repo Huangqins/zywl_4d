@@ -55,6 +55,8 @@
                    <div class="vulnConent">                        
                         <el-table :data="vulnData" style="width: 100%;"  v-loading="tableLoading">
                             <el-table-column type="selection" width="35"></el-table-column>
+                            
+                             <el-table-column prop="vuln_URL" label="风险地址" align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="assets_url" label="资产链接" align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="vuln_IP" label="风险IP" align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column prop="vuln_name" label="风险名称" align="center" :show-overflow-tooltip="true"></el-table-column>

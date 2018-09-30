@@ -177,7 +177,6 @@ export default {
       this.ruleForm.vuln_level = this.ruleForm.vuln_level.map(item => {
         return Number(item);
       });
-      console.log(this.ruleForm.vuln_level)
       this.ruleForm.vulnleveL = this.ruleForm.vuln_level.join(",");
       this.getVulnList({
         vuln_name: this.ruleForm.vuln_name,
@@ -200,18 +199,19 @@ export default {
             .filter(i => {
               return i.vuln_type_name === item;
             })
-            .map(t => {
-              return {
-                id: t.strategy_id,
-                label: t.vuln_name,
-                name: t.vuln_name,
-                vuln_des: t.vuln_des,
-                vuln_level: t.vuln_level
-              };
-            });
-          newData.push({ label: item, children: temp });
+            console.log(temp)
+            // .map(t => {
+            //   return {
+            //     id: t.strategy_id,
+            //     label: t.vuln_name,
+            //     name: t.vuln_name,
+            //     vuln_des: t.vuln_des,
+            //     vuln_level: t.vuln_level
+            //   };
+            // });
+          // newData.push({ label: item, children: temp });
         });
-        this.vuln_type = newData;
+        // this.vuln_type = newData;
       });
     }
   }

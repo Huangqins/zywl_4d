@@ -3,9 +3,9 @@
       <panel :title="$route.params.status === 'edit'? '漏洞修改' : '漏洞添加'">
           <div>                 
             <el-form :model="form" label-width="115px" :rules="rules" ref="form" style="overflow:hidden;margin:0 auto;width:70%;padding-top:50px;">
-              <el-form-item label="风险地址" prop="vuln_url" style="float:left;width:50%;">                
-                   <el-input  v-model="form.vuln_url" v-if="this.pageInfo.status==='edit'"></el-input>     
-                   <el-input  v-model="form.vuln_url" v-else :disabled="true"></el-input>               
+              <el-form-item label="风险地址" prop="vuln_URL" style="float:left;width:50%;">                
+                   <el-input  v-model="form.vuln_URL" v-if="this.pageInfo.status==='edit'"></el-input>     
+                   <el-input  v-model="form.vuln_URL" v-else :disabled="true"></el-input>               
               </el-form-item>
               <el-form-item label="资产地址" prop="assets_id" style="float:left;width:50%;">                
                   <el-select v-model="form.assets_id" filterable placeholder="" style="width:100%" v-if="this.pageInfo.status==='edit'">
