@@ -148,12 +148,12 @@ const ApiSchema = {
         keys: ['target_id']
     },
     // 任务目标情况 
-    // targetGoalSure: {
-    //     url: `${path}task/targetProgress`,
-    //     method: 'post',
-    //     title: '任务目标情况/扫描次数和执行阶段',
-    //     keys: ['target_id']
-    // },
+    targetGoalSure: {
+        url: `${path}task/targetProgress`,
+        method: 'post',
+        title: '任务目标情况/扫描次数和执行阶段',
+        keys: ['target_id']
+    },
     //新发现资产 
     targetNewAsset: {
         url: `${path}task/targetNewAsset`,
@@ -195,7 +195,7 @@ const ApiSchema = {
             'assets_zone'
         ]
     },
-    
+
     //资产删除
     deleteAssets: {
         url: `${path}asset/deleteAssets`,
@@ -294,7 +294,7 @@ const ApiSchema = {
         url: `${path}order/updateOrderStatus`,
         method: 'post',
         title: '工单审核',
-        keys: ['order_name', 'order_type', 'order_content', 'audit_user', 'urgent_type', 'expire_time', 'flag', 'target_id']
+        keys: ['order_content', 'order_id', 'order_status', 'order_remark']
     },
     // 修改工单
     updateOrder: {
@@ -544,7 +544,7 @@ const ApiSchema = {
         url: `${path}asset/getAssetsArea`,
         method: 'post',
         keys: ['']
-    },       
+    },
     //新发现域名信息
     getNewAssets: {
         url: `${path}asset/getNewAssets`,
@@ -839,6 +839,20 @@ const ApiSchema = {
         method: 'post',
         keys: '',
         title: '上级领导'
+    },
+    // 资产组删除
+    deleteAssetsGroup: {
+        url: `${path}asset/deleteAssetsGroup`,
+        method: 'post',
+        keys: ['group_code', 'group_name'],
+        title: '自定义资产组删除'
+    },
+    // 待办工单
+    remainOrderList: {
+        url: `${path}order/remainOrderList`,
+        method: 'post',
+        keys: ['order_name', 'order_type', 'order_status'],
+        title: '待办工单'
     }
 }
 // filter keys
@@ -899,7 +913,7 @@ function gernerater() {
                 return _axios({
                     method: 'get',
                     url: url,
-                    baseURL: location.origin,
+                    baseURL: 'http://192.168.10.104:8080',
                     headers: {
                         accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
                     },
@@ -907,6 +921,7 @@ function gernerater() {
                 })
             }
         } else if (ApiSchema[key].type === 'img') {
+            console.log('你好啊', key)
             Api[key] = (name) => {
                 return _axios({
                     method: ApiSchema[key].method,

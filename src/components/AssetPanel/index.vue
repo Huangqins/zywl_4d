@@ -8,7 +8,7 @@
                 </div>
             </li>
             <li v-for="(item, index) in panelData" :key="index" class="assetPanel">
-                <panel-item :item="item" @add="add"></panel-item>
+                <panel-item :item="item" @add="add" @deletItem="deletItem"></panel-item>
             </li>
         </ul>
     </div>
@@ -55,6 +55,9 @@
             },
             add(item) {
                 this.$emit('add',item)
+            },
+            deletItem(item) {
+                this.$emit('deletItem',item)
             }
         }
     }

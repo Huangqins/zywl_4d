@@ -13,7 +13,6 @@ let config = {
 const _axios = axios.create(config);
 _axios.interceptors.request.use(config => {
     let menuCode = config.menuCode ? config.menuCode : vm._route.meta.menuCode;
-    console.log(menuCode)
     let token = getToken(),
       userName = getUserName(),
       _key = `${menuCode};${token};${userName}`,

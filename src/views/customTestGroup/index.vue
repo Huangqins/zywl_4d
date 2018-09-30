@@ -1,46 +1,46 @@
 <template>
-    <div class="customTestGroup">
-        <asset-panel :panelData="panelData" @add="add"></asset-panel>
-        <!-- <asset-panel></asset-panel> -->
+  <div class="customTestGroup">
+    <asset-panel :panelData="panelData" @add="add" @deletItem="deletItem"></asset-panel>
+    <!-- <asset-panel></asset-panel> -->
 
-        <!--  弹框 -->
-        <el-dialog title="添加任务测试" :visible.sync="dialogTableVisible" width="28%">
-            <el-form :model="form" label-width="100px" ref="form" :rules="rules">
-                <el-form-item label="任务名称" prop="target_name">
-                    <el-input v-model="form.target_name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="任务策略" prop="target_teststra">
-                    <el-select v-model="form.target_teststra" placeholder="请选择任务测试" style="width:100%">
-                        <el-option v-for="(item,index) in strageArr" :key="index + 'e'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="任务类型" prop="type_id">
-                    <el-select v-model="form.type_id" placeholder="请选择任务类型" style="width:100%">
-                        <el-option v-for="(item,index) in taskType" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="任务周期" prop="target_cycle">
-                    <el-select v-model="form.target_cycle" placeholder="请选择任务周期" style="width:100%">
-                        <el-option v-for="(item, index) in cycleArr" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
+    <!--  弹框 -->
+    <el-dialog title="添加任务测试" :visible.sync="dialogTableVisible" width="28%">
+      <el-form :model="form" label-width="100px" ref="form" :rules="rules">
+        <el-form-item label="任务名称" prop="target_name">
+          <el-input v-model="form.target_name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="任务策略" prop="target_teststra">
+          <el-select v-model="form.target_teststra" placeholder="请选择任务测试" style="width:100%">
+            <el-option v-for="(item,index) in strageArr" :key="index + 'e'" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务类型" prop="type_id">
+          <el-select v-model="form.type_id" placeholder="请选择任务类型" style="width:100%">
+            <el-option v-for="(item,index) in taskType" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务周期" prop="target_cycle">
+          <el-select v-model="form.target_cycle" placeholder="请选择任务周期" style="width:100%">
+            <el-option v-for="(item, index) in cycleArr" :key="index + 'd'" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
 
-                <el-form-item label="测试类型" prop="type_name">
-                    <el-select v-model="form.type_name" placeholder="请选择测试类型" style="width:100%">
-                        <el-option v-for="(item,index) in typeArr" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="开始时间" prop="target_starttime">
-                    <el-date-picker v-model="form.target_starttime" type="datetime" placeholder="选择开始时间" style="width:100%">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogTableVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addTask(form)">添加任务</el-button>
-            </div>
-        </el-dialog>
-    </div>
+        <el-form-item label="测试类型" prop="type_name">
+          <el-select v-model="form.type_name" placeholder="请选择测试类型" style="width:100%">
+            <el-option v-for="(item,index) in typeArr" :key="index + 'a'" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="开始时间" prop="target_starttime">
+          <el-date-picker v-model="form.target_starttime" type="datetime" placeholder="选择开始时间" style="width:100%">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogTableVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addTask(form)">添加任务</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import AssetPanel from "@/components/AssetPanel";
@@ -142,8 +142,8 @@ export default {
                 this.dialogFormVisible = false;
                 this.$message.success("任务添加成功");
                 this.$router.push({
-                  name: 'taskExec',
-                  params:  {
+                  name: "taskExec",
+                  params: {
                     target_id: res.data.target_id
                   }
                 });
@@ -181,6 +181,13 @@ export default {
       this.form.group_code = item.group_code;
       this.dialogTableVisible = true;
       //   console.log(item, "item");
+    },
+    async deletItem({ group_code, group_name }) {
+      let res = await this.$api.deleteAssetsGroup({ group_code, group_name });
+      if (res.data.result === 0) {
+        this.$message.success('删除成功')
+           this.assetsGroupTotal();
+      }
     },
     // 获取策略规则
     async getRule(params) {

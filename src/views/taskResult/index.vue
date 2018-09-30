@@ -239,6 +239,7 @@ export default {
     // this.vulnNumTotal(target_id);
     this.getVulnType(target_id);
     this.getVulnTypeTotal(target_id);
+    // this.targetGoalSure(target_id);
 
   },
 
@@ -652,7 +653,9 @@ export default {
     },
     async targetProgress(id) {
       let res = await this.$api.targetProgress({ target_id: id });
+         
       if (res.data.result === 0) {
+        // this.targetGoal = 
         let {
           target_task_num,
           response_info,

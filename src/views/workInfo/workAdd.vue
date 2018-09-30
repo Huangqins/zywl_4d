@@ -143,8 +143,8 @@ export default {
         flag
       } = this.pageInfo;
       this.form = {
-        order_name,
-        audit_user: receive_user,
+        order_name, 
+        audit_user,
         order_type,
         target_id: Number(target_id),
         expire_time: new Date(expire_time),

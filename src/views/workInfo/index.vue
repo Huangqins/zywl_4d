@@ -5,7 +5,7 @@
                 <el-form :inline="true" :model="form">
                     <el-form-item label="工单搜索:">
                         <el-select v-model="form.order_name" filterable placeholder="工单名称" clearable>
-                            <el-option v-for="item in orderNames" :key="item.value" :label="item.label" :value="item.value">
+                            <el-option v-for="(item, index) in orderNames" :key="index + 'g'" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -46,7 +46,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="create_user" label="创建人" align="center"></el-table-column>
-                    <el-table-column prop="audit_user" label="审核人" align="center"></el-table-column>
+                    <el-table-column prop="audit_user" label="处理人" align="center"></el-table-column>
                     <el-table-column label="创建时间" align="center">
                         <template slot-scope="scope">
                             {{fomatterTime(new Date(scope.row.create_time.time))}}
@@ -61,7 +61,8 @@
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <el-button type="text" size="mini" v-if="scope.row.order_status === 1" @click="update(scope.row)">修改</el-button>
-                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status !== 3 &&  scope.row.order_status !== 1" @click="check(scope.row)">审核</el-button>
+                            <el-button type="text" size="mini" v-if="scope.row.order_status === 5" @click="update(scope.row)">查看</el-button>
+                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status !== 3 &&  scope.row.order_status !== 1 && scope.row.order_status !== 5" @click="check(scope.row)">审核</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -75,7 +76,7 @@ import { fomatterTime } from "@/utils";
 
 const orderTypes = ["整改", "任务"];
 const urgentTypes = ["一般", "紧急"];
-const orderStatus = ["待提交", "待审核", "完成", "驳回"];
+const orderStatus = ["待提交", "待审核", "完成", "驳回","下发"];
 
 export default {
   components: {
@@ -120,6 +121,10 @@ export default {
         {
           label: "驳回",
           value: 4
+        },
+        {
+          label: "下发",
+          value: 5
         }
       ]
     };
