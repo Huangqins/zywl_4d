@@ -429,8 +429,6 @@ export default {
                 shadowColor: colors[4]
               }
             },
-            // data: [120, 132, 101, 134, 90]
-            // data: [320, 302, 301, 334, 390]
             data: []
           }
         ]
@@ -466,7 +464,7 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: "#CCCCCC"
+              color: "#263143"
             }
           }
         },

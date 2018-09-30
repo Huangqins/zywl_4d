@@ -240,11 +240,18 @@ const ApiSchema = {
         title: '风险top10',
         keys: ''
     },
+    //漏洞修复统计
+    repairTotal: {
+        url: `${path}vuln/repairTotal`,
+        method: 'post',
+        title: '漏洞修复统计',
+        keys: ''
+    },    
     // 进展分析总体整改情况
     vulnCorrective: {
         url: `${path}vuln/vulnCorrective`,
         method: 'post',
-        title: '风险top10',
+        title: '进展分析总体整改情况',
         keys: ''
     },
     //资产类型风险分布
@@ -267,6 +274,13 @@ const ApiSchema = {
         method: 'post',
         title: '风险变化趋势',
         keys: ['startTime', 'endTime', 'area_id', 'assets_id', 'target_id']
+    },
+    //业务系统风险Top10
+    logicVuln: {
+        url: `${path}vuln/logicVuln`,
+        method: 'post',
+        title: '业务系统风险Top10',
+        keys: ''
     },
     // 漏洞数量统计 /风险类型分布
     vulnNumTotal: {

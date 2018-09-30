@@ -11,10 +11,9 @@
             <panel title="业务系统风险TOP10">
                 <div style="height:528px;background:#273143;">
                     <el-table :data="businessList" style="width: 100%">
-                    <el-table-column prop="" label="业务功能名称"></el-table-column>
-                    <el-table-column prop="" label="业务系统"></el-table-column>
-                    <el-table-column prop="" label="所属部门"></el-table-column>
-                    <el-table-column prop="" label="风险数量"></el-table-column>
+                    <el-table-column prop="logic_name" label="业务功能名称"></el-table-column>
+                    <el-table-column prop="assets_url" label="业务系统"></el-table-column>
+                    <el-table-column prop="vuln_Num" label="风险数量"></el-table-column>
                 </el-table>
                 </div>
             </panel>
@@ -55,12 +54,12 @@
         <div class="countTable">
             <panel title="漏洞修复统计表">
                 <el-table :data="countData" style="width: 100%">
-                    <el-table-column prop="" label="统计类型"></el-table-column>
-                    <el-table-column prop="" label="修复总数"></el-table-column>
-                    <el-table-column prop="" label="小于10天的修复数量"></el-table-column>
-                    <el-table-column prop="" label="10 - 30 天的修复数量"></el-table-column>
-                    <el-table-column prop="" label="大于30天的修复数量"></el-table-column>
-                    <el-table-column prop="" label="未修复总数"></el-table-column>
+                    <el-table-column prop="vuln_name" label="统计类型" align="center"></el-table-column>
+                    <el-table-column prop="vuln_Num" label="修复总数" align="center"></el-table-column>
+                    <el-table-column prop="vuln_class" label="小于10天的修复数量" align="center"></el-table-column>
+                    <el-table-column prop="vuln_type" label="10 - 30 天的修复数量" align="center"></el-table-column>
+                    <el-table-column prop="vuln_des" label="大于30天的修复数量" align="center"></el-table-column>
+                    <el-table-column prop="vuln_code" label="未修复总数" align="center"></el-table-column>
                 </el-table>
             </panel>
         </div>
@@ -95,6 +94,7 @@ export default {
           }
         },
         yAxis: {
+
           type: "value",
           axisLabel: {
             textStyle: {
@@ -103,7 +103,7 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: "#CCCCCC"
+              color: "#263143"
             }
           }
         },
@@ -150,7 +150,7 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: "#CCCCCC"
+              color: "#263143"
             }
           }
         },
@@ -196,12 +196,11 @@ export default {
             center: ["50%", "45%"],
             color: ["#c33936", "#e27c32", "#e5b918", "#47b30d", "#36a5c1"],
             data: [
-              { value: 0, name: "极高风险" },
-              { value: 0, name: "高风险" },
-              { value: 0, name: "中风险" },
-              { value: 0, name: "低风险" },
-              { value: 0, name: "极低风险" }
+              { value: 0, name: "接受风险" },
+              { value: 0, name: "已处理" },
+              { value: 0, name: "待处理" }
             ]
+            //  data: [    ]
           }
         ]
       },
@@ -214,7 +213,10 @@ export default {
           }
         },
         legend: {
-          data: ['极高风险','高风险','中风险','低风险','极低风险']
+          data: ["极高风险", "高风险", "中风险", "低风险", "极低风险"],
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: "3%",
@@ -248,21 +250,50 @@ export default {
             },
             axisLine: {
               lineStyle: {
-                color: "#CCCCCC"
+                color: "#263143"
               }
             }
           }
         ],
         series: [
-          {
-            name: "",
-            type: "bar",
-            stack: "",
-            data: []
+          {           
+                name: "极低",
+                type: "bar",
+                stack: "",
+                data: []             
+       
+          },
+          {           
+                name: "低",
+                type: "bar",
+                stack: "",
+                data: []           
+       
+          },
+          {           
+                name: "中",
+                type: "bar",
+                stack: "",
+                data: []            
+       
+          },
+          {           
+                name: "高",
+                type: "bar",
+                stack: "",
+                data: []            
+       
+          },
+          {     name: "极高",
+                type: "bar",
+                stack: "",
+                data: []        
+       
           }
+          
         ]
       },
-      areavuln:{
+      areavuln: {
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -271,8 +302,19 @@ export default {
           }
         },
         legend: {
-          data: ['极高风险','高风险','中风险','低风险','极低风险']
+          data: ["极低风险", "低风险", "中风险", "高风险", "极高"],
+          textStyle: {
+            color: "#fff"
+          }
         },
+         color: [
+          "#36A5C1",
+          "#47B30D",
+          "#E5B918",
+          "#E27C32",
+          "#C33936",
+          "#CAD5DB"
+        ],
         grid: {
           left: "3%",
           right: "4%",
@@ -305,17 +347,45 @@ export default {
             },
             axisLine: {
               lineStyle: {
-                color: "#CCCCCC"
+                color: "#263143"
               }
             }
           }
         ],
         series: [
-          {
-            name: "",
-            type: "bar",
-            stack: "",
-            data: []
+           {           
+                name: "极低",
+                type: "bar",
+                stack: "",
+                data: []             
+       
+          },
+          {           
+                name: "低",
+                type: "bar",
+                stack: "",
+                data: []           
+       
+          },
+          {           
+                name: "中",
+                type: "bar",
+                stack: "",
+                data: []            
+       
+          },
+          {           
+                name: "高",
+                type: "bar",
+                stack: "",
+                data: []            
+       
+          },
+          {     name: "极高",
+                type: "bar",
+                stack: "",
+                data: []        
+       
           }
         ]
       }
@@ -328,9 +398,67 @@ export default {
     this.vulnTotal();
     this.vulnCorrective();
     this.getVulnLevel();
-    this.getAreaVuln()
+    this.getAreaVuln();
+    this.logicVuln();
+    this.repairTotal()
   },
   methods: {
+    //漏洞修复统计表
+    async repairTotal(){
+      let res=await this.$api.repairTotal();
+      if(res.data.result==0){
+        let data=res.data.list
+        console.log(data)
+        this.countData=data
+      }
+    },
+    // 资产类型风险分布
+    async getVulnLevel() {
+      let res = await this.$api.getVulnLevel();
+      if (res.data.result === 0) {
+          let data = res.data.assets;      
+          this.assetsType.series[0].data.push(
+              data[0].vuln_tips,
+              data[1].vuln_tips,
+              data[2].vuln_tips
+              // item.vuln_tips,
+              // item.vuln_tips
+          )
+          this.assetsType.series[1].data.push(
+              data[0].vuln_low,
+              data[1].vuln_low,
+              data[2].vuln_low
+          )
+          this.assetsType.series[2].data.push(
+              data[0].vuln_medium,
+              data[1].vuln_medium,
+              data[2].vuln_medium
+          )
+          this.assetsType.series[3].data.push(
+              data[0].vuln_high,
+              data[1].vuln_high,
+              data[2].vuln_high
+          )
+          this.assetsType.series[4].data.push(
+              data[0].vuln_urgent,
+              data[1].vuln_urgent,
+              data[2].vuln_urgent
+          )    
+           data.forEach(item=>{
+             this.assetsType.xAxis[0].data.push(item.name);
+           })
+          
+      
+      }
+    },
+    //业务系统风险Top10
+    async logicVuln() {
+      let res = await this.$api.logicVuln();
+      if (res.data.result == 0) {
+        let data = res.data.vulns;
+        this.businessList = data;
+      }
+    },
     //风险Top10
     async vulnTopTen() {
       let res = await this.$api.vulnTopTen();
@@ -386,42 +514,49 @@ export default {
     async vulnCorrective() {
       let res = await this.$api.vulnCorrective();
       if (res.data.result === 0) {
-        //  res.data.vulns.forEach(item => {
-        //   this.vulnClass.series[0].data[4 - item.vuln_level].value =
-        //     item.vuln_total;
-        // });
+        res.data.vulns.forEach(item => {
+          this.processSution.series[0].data[0].value = item.vuln_total;
+          this.processSution.series[0].data[1].value = item.vuln_status;
+          this.processSution.series[0].data[2].value = item.vuln_detail;
+        });
       }
     },
-    // 资产类型风险分布
-    async getVulnLevel() {
-      let res = await this.$api.getVulnLevel();
-      if (res.data.result === 0) {
-         let data = res.data.assets;
-          data.forEach(item => {
-            this.assetsType.series[0].data.push({
-              value: [item.vuln_urgent,item.vuln_high,item.vuln_medium,item.vuln_low,item.vuln_tips],
-              name: item.name
-            });
-            console.log( this.assetsType.series[0].data)
-            this.assetsType.xAxis[0].data.push(item.name);
-            this.assetsType.legend.data.push(item.vuln_type);
-          });
-      }
-    },
+    
     // 区域漏洞分布
     async getAreaVuln() {
       let res = await this.$api.getAreaVuln();
       if (res.data.result === 0) {
-           let data = res.data.assets;
-          data.forEach(item => {
-            this.areavuln.series[0].data.push({
-              value: [item.vuln_urgent,item.vuln_high,item.vuln_medium,item.vuln_low,item.vuln_tips],
-              name: item.area_name
-            });
-            this.areavuln.xAxis[0].data.push(item.area_name);
-            this.areavuln.legend.data.push(item.vuln_type);
-          });
-           
+        let data = res.data.assets;
+        this.areavuln.series[0].data.push(
+              data[0].vuln_tips,
+              // data[1].vuln_tips,
+              // data[2].vuln_tips
+              // item.vuln_tips,
+              // item.vuln_tips
+          )
+          this.areavuln.series[1].data.push(
+              data[0].vuln_low,
+              // data[1].vuln_low,
+              // data[2].vuln_low
+          )
+          this.areavuln.series[2].data.push(
+              data[0].vuln_medium,
+              // data[1].vuln_medium,
+              // data[2].vuln_medium
+          )
+          this.areavuln.series[3].data.push(
+              data[0].vuln_high,
+              // data[1].vuln_high,
+              // data[2].vuln_high
+          )
+          this.areavuln.series[4].data.push(
+              data[0].vuln_urgent,
+              // data[1].vuln_urgent,
+              // data[2].vuln_urgent
+          )  
+        data.forEach(item => {    
+          this.areavuln.xAxis[0].data.push(item.area_name);
+        });
       }
     }
   }

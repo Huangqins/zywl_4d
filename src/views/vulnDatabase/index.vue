@@ -135,7 +135,8 @@ export default {
       pageObj: {},
       defaultPage: {
         rows: 10,
-        page: 1
+        page: 1,
+        isOrder:1
       },
        headers: {
         token: getToken(),
@@ -165,10 +166,18 @@ export default {
     };
   },
   created() {
-    let data=Object.assign({},this.defaultPage,{isOrder:1})
-    this.kbInfo(data);
+   this.params=Object.assign({},this.defaultPage)
+    this.kbInfo(this.params);
   },
   methods: {
+     // 触发分页
+    pageChange(pageObj) {
+      this.pageObj = pageObj; 
+      let { page, rows } = pageObj,
+        params = { page, rows, is_page: 0,isOrder:1 };
+      this.params = params;
+      this.kbInfo(params);
+    },
     searchAsset() {
       let data = Object.assign({}, this.params, {
         vuln_name:this.vuln_name,
@@ -216,14 +225,7 @@ export default {
         this.$message.error(`模板文件下载失败`);
       }
     },
-    // 触发分页
-    pageChange(pageObj) {
-      this.pageObj = pageObj; 
-      let { page, rows } = pageObj,
-        params = { page, rows, is_page: 0 };
-      this.params = params;
-      this.kbInfo(params);
-    },
+   
     // 漏洞库列表
     async kbInfo(params) {
       let res = await this.$api.kbInfo(params);
