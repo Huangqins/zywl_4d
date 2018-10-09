@@ -62,7 +62,7 @@
                         <template slot-scope="scope">
                             <el-button type="text" size="mini" v-if="scope.row.order_status === 1" @click="update(scope.row)">修改</el-button>
                             <el-button type="text" size="mini" v-if="scope.row.order_status === 5" @click="update(scope.row)">查看</el-button>
-                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status !== 3 &&  scope.row.order_status !== 1 && scope.row.order_status !== 5" @click="check(scope.row)">审核</el-button>
+                            <el-button type="text" size="mini" v-if="$auth('05-01-03') && scope.row.order_status === 2" @click="check(scope.row)">审核</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
