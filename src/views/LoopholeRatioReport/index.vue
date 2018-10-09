@@ -93,7 +93,6 @@ export default {
       ],
       vulnData: [],
       vulnpageTotal: 0,
-      tableData3: [],
       mock: [
         {
           group_name: "操作类型",
@@ -147,17 +146,7 @@ export default {
           }
         },
         legend: {
-          data: [
-            "直接访问",
-            "邮件营销",
-            "联盟广告",
-            "视频广告",
-            "搜索引擎",
-            "百度",
-            "谷歌",
-            "必应",
-            "其他"
-          ]
+          data: [ '已整改','未整改'  ]
         },
         grid: {
           left: "3%",
@@ -169,40 +158,25 @@ export default {
           {
             type: "category",
             data: [],
+            axisLabel: {
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          },
 
           }
         ],
         yAxis: [
           {
-            type: "value"
+            type: "value",
+            axisLabel: {
+            textStyle: {
+              color: "#CCCCCC"
+            }
+          }
           }
         ],
-        series: [
-          // {
-          //   name: "百度",
-          //   type: "bar",
-          //   stack: "搜索引擎",
-          //   data: [620, 732, 701, 734, 1090, 1130, 1120]
-          // },
-          // {
-          //   name: "谷歌",
-          //   type: "bar",
-          //   stack: "搜索引擎",
-          //   data: [120, 132, 101, 134, 290, 230, 220]
-          // },
-          // {
-          //   name: "必应",
-          //   type: "bar",
-          //   stack: "搜索引擎",
-          //   data: [60, 72, 71, 74, 190, 130, 110]
-          // },
-          // {
-          //   name: "其他",
-          //   type: "bar",
-          //   stack: "搜索引擎",
-          //   data: [62, 82, 91, 84, 109, 110, 120]
-          // }
-        ]
+        series: [  ]
       }
     };
   },
@@ -301,6 +275,7 @@ export default {
           }
         });
         this.option.series = series;
+        
       }
     },
 
