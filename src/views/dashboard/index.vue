@@ -722,11 +722,11 @@ export default {
       if (res.data.result == 0 && res.data.vulns.length > 0) {
         let data = res.data.vulns;
         data.forEach(item => {
-          if (item.scan_type == "2") {
+          if (item.vuln_class == "2") {
             this.webvulnTotal = item.vuln_Num;
-          } else if (item.scan_type == "3") {
+          } else if (item.vuln_class == "3") {
             this.ywvulnTotal = item.vuln_Num;
-          } else if (item.scan_type == "1") {
+          } else if (item.vuln_class == "1") {
             this.mainvulnTotal = item.vuln_Num;
           }
         });
