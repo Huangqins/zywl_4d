@@ -722,11 +722,11 @@ export default {
       if (res.data.result == 0 && res.data.vulns.length > 0) {
         let data = res.data.vulns;
         data.forEach(item => {
-          if (item.vuln_class == "web漏洞") {
+          if (item.scan_type == "2") {
             this.webvulnTotal = item.vuln_Num;
-          } else if (item.vuln_class == "业务风险") {
+          } else if (item.scan_type == "3") {
             this.ywvulnTotal = item.vuln_Num;
-          } else if (item.vuln_class == "主机漏洞") {
+          } else if (item.scan_type == "1") {
             this.mainvulnTotal = item.vuln_Num;
           }
         });
