@@ -168,7 +168,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+            data: [],
+
           }
         ],
         yAxis: [
@@ -177,30 +178,30 @@ export default {
           }
         ],
         series: [
-          {
-            name: "百度",
-            type: "bar",
-            stack: "搜索引擎",
-            data: [620, 732, 701, 734, 1090, 1130, 1120]
-          },
-          {
-            name: "谷歌",
-            type: "bar",
-            stack: "搜索引擎",
-            data: [120, 132, 101, 134, 290, 230, 220]
-          },
-          {
-            name: "必应",
-            type: "bar",
-            stack: "搜索引擎",
-            data: [60, 72, 71, 74, 190, 130, 110]
-          },
-          {
-            name: "其他",
-            type: "bar",
-            stack: "搜索引擎",
-            data: [62, 82, 91, 84, 109, 110, 120]
-          }
+          // {
+          //   name: "百度",
+          //   type: "bar",
+          //   stack: "搜索引擎",
+          //   data: [620, 732, 701, 734, 1090, 1130, 1120]
+          // },
+          // {
+          //   name: "谷歌",
+          //   type: "bar",
+          //   stack: "搜索引擎",
+          //   data: [120, 132, 101, 134, 290, 230, 220]
+          // },
+          // {
+          //   name: "必应",
+          //   type: "bar",
+          //   stack: "搜索引擎",
+          //   data: [60, 72, 71, 74, 190, 130, 110]
+          // },
+          // {
+          //   name: "其他",
+          //   type: "bar",
+          //   stack: "搜索引擎",
+          //   data: [62, 82, 91, 84, 109, 110, 120]
+          // }
         ]
       }
     };
@@ -219,27 +220,30 @@ export default {
     async vulnMonth() {
       let res = await this.$api.vulnMonth();
       if (res.data.result == "0") {
-        // let data = res.data.vulns;
-        let data = this.mock;
+        let data = res.data.vulns;
+        console.log(data.filter(item => {
+          return item.vuln_total !== 0
+        }), '数量')
+        // let data = this.mock;
         let timeArr = [],
           typeArr = [],
           lastArr = [];
         timeArr = data.map(item => {
           return item.vuln_IP;
         });
+        timeArr = Array.from(new Set(timeArr));
         // 类型提取，需要所有类型
         typeArr = data.map(item => {
           return item.group_name;
         });
         typeArr = Array.from(new Set(typeArr));
-        console.log(typeArr);
-        timeArr = Array.from(new Set(timeArr));
         this.option.xAxis[0].data = timeArr;
         let temp = ["已整改", "未整改"];
         // 创建seria
         let series = [];
-
+        
         typeArr.forEach(item => {
+          
           temp.forEach(it => {
             series.push({
               name:`${it}${item}`,
@@ -250,25 +254,24 @@ export default {
             });
           });
         });
+        console.log(series)
         // 模拟基本结构
-        this.mock.forEach(item => {
+        res.data.vulns.forEach(item => {
           if (
-            item.vuln_status === 0 ||
-            item.vuln_status === 3 ||
-            item.vuln_status === 4
+            item.vuln_status == 0 ||
+            item.vuln_status == 3 ||
+            item.vuln_status == 4
           ) {
             item.status = "未整改" + item.group_name;
           } else {
             item.status = "已整改" + item.group_name;
           }
         });
-
         series.forEach(item => {
           let temp = [];
-          temp = this.mock.filter(it => {
-            return it.status === item.status;
-          });
-
+          temp =res.data.vulns.filter(it => {             
+            return it.status == item.status;
+          });         
           temp.forEach(ti => {
             for (let i = 0; i < timeArr.length; i++) {
               if (ti.vuln_IP === timeArr[i]) {
@@ -297,7 +300,6 @@ export default {
             }
           }
         });
-        console.log(series);
         this.option.series = series;
       }
     },
