@@ -26,6 +26,7 @@
           <div class="pic">
             <div class="pic-num">共进行扫描{{taskInfo.target_task_num}}次</div>
             <div class="circle ing"></div>
+            <z-progress></z-progress>
           </div>
         </div>
         <!--  -->
@@ -190,7 +191,7 @@
           <el-table-column prop="vuln_name" label="风险名称" align="center" show-overflow-tooltip></el-table-column>
           <el-table-column prop="vuln_level" label="风险等级" align="center">
             <template slot-scope="scope">
-                <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
+              <vuln-degree :vuln_level="scope.row.vuln_level"></vuln-degree>
             </template>
           </el-table-column>
           <el-table-column prop="vuln_class" label="风险类型" align="center" show-overflow-tooltip></el-table-column>
@@ -211,6 +212,7 @@ import vulnDegree from "@/components/vulnDegree";
 import { formatTime, fomatterTime } from "@/utils";
 import route from "mixins/route";
 import Charts from "@/components/Charts";
+import zProgress from "@/components/Progress";
 
 const vulnMap = [
   "极低风险数",
@@ -233,7 +235,8 @@ export default {
   components: {
     panel,
     Charts,
-    vulnDegree
+    vulnDegree,
+    zProgress
   },
   created() {
     let { target_id } = this.pageInfo;
@@ -472,13 +475,13 @@ export default {
           padding: 10px 10px 10px 15px;
         }
         .circle {
-          width: 119px;
-          height: 119px;
-          margin: 18px auto;
+          width: 110px;
+          height: 110px;
+          margin: 0 auto;
           background: url(../../../public/img/png/circle.png) center center
               no-repeat,
             url(../../../public/img/png/circlebg.png) center center no-repeat;
-          background-size: 119px 119px, 119px 119px;
+          background-size: 110px 110px, 110px 110px;
         }
         .circle.ing {
           animation: ing 2s linear infinite;
