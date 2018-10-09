@@ -26,7 +26,9 @@
           <div class="pic">
             <div class="pic-num">共进行扫描{{taskInfo.target_task_num}}次</div>
             <div class="circle ing"></div>
-            <z-progress></z-progress>
+              <div style="margin: 10px;">
+                <z-progress></z-progress>
+              </div>
           </div>
         </div>
         <!--  -->
