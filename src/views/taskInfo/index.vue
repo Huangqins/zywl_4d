@@ -15,7 +15,7 @@
           <el-option v-for="item in executionmodeS" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-button class="btn">查询</el-button>
+        <!-- <el-button class="btn">查询</el-button> -->
       </div>
       <div>
         <el-button type="primary" @click="addDialog">
