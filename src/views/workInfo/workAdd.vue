@@ -163,6 +163,7 @@ export default {
         this.auditUserList = res.data.lists.map(item => {
           return { label: item.userName, value: item.userName };
         });
+        this.form.audit_user = this.auditUserList[0].value;
       }
     },
     selectVuln(row) {
@@ -174,7 +175,7 @@ export default {
       // this.selectData = sel.map(item => item.vuln_id);
     },
     async taskname() {
-      let res = await this.$api.taskname();
+      let res = await this.$api.taskname({flag: '1'});
       if (res.data.result === 0) {
         this.orders = res.data.targets.map(item => {
           return { label: item.target_name, value: item.target_id };

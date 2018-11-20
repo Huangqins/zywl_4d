@@ -226,7 +226,7 @@ const ApiSchema = {
     taskname: {
         url: `${path}task/getTargetName`,
         method: 'post',
-        keys: ''
+        keys: ['flag']
     },
     //风险类型
     vulnType: {
